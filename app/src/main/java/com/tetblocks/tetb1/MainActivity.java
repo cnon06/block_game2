@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  turn_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
-    int first=3, last = 7, vertical=0,direction=1, max_right=6, max_direction=3, block_type=6, speed=800, lvl=1;
+    int first=3, last = 7, vertical=0,direction=1, max_right=6, max_direction=3, block_type=5, speed=800, lvl=1;
     boolean coords [][]  = new boolean[20][10];
     boolean direction_control=true;
 
