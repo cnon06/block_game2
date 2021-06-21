@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  turn_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
-    int first=3, last = 7, vertical=0,direction=1, max_right=6, max_direction=3, block_type=5, speed=800, lvl=1;
+    int first=3, last = 7, vertical=0,direction=1, max_right=6, max_direction=3, block_type=7, speed=800, lvl=1;
     boolean coords [][]  = new boolean[20][10];
     boolean direction_control=true;
 
@@ -262,6 +262,10 @@ public class MainActivity extends AppCompatActivity {
 
             case 6:
                 regular_T_d1();
+                break;
+
+            case 7:
+                square();
                 break;
 
         }
@@ -847,7 +851,7 @@ public class MainActivity extends AppCompatActivity {
     public  void square()
     {
 
-        max_right=8;
+        max_right=8; max_direction=2;
 
         for(int y=0;y<coords.length;y++) {
 
