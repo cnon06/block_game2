@@ -26,9 +26,13 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  turn_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
-    int first=3, last = 7, vertical=0,direction=1, max_right=6, max_direction=3, block_type=7, speed=800, lvl=1;
+    int first=3, last = 7, vertical=0,direction=1, max_right=6, max_direction=3, block_type=4, speed=800, lvl=1;
     boolean coords [][]  = new boolean[20][10];
-    boolean direction_control=true;
+    boolean direction_control=true, timer_pause_start=true;
+
+    blocks blcks = new blocks();
+
+
 
 
     @Override
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
+
 
 
         switch (lvl)
@@ -90,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
 
                             right_arrow.setImageResource(R.drawable.red_right_arrow);
 
-                            if(first<max_right)
+                            if(blcks.first<blcks.max_right)
                             {
-                                first++;
+                                blcks.first++;
 
 
                                screen_refresh();
@@ -126,13 +131,13 @@ public class MainActivity extends AppCompatActivity {
 
                         int direction_h_w=0;
 
-                        if(direction_control) direction_h_w=0; else  direction_h_w=-1;
+                        if(blcks.direction_control) direction_h_w=0; else  direction_h_w=-1;
 
                         left_arrow.setImageResource(R.drawable.red_left_arrow);
 
-                        if(first>direction_h_w)
+                        if(blcks.first>direction_h_w)
                         {
-                            first--;
+                            blcks.first--;
 
                            screen_refresh();
 
@@ -165,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                         direction++;
-                        if(direction>=max_direction) direction=1;
+                        if(direction>=blcks.max_direction) direction=1;
 
                         screen_refresh();
                         return true;
@@ -235,8 +240,8 @@ public class MainActivity extends AppCompatActivity {
     timer1();
     }
 
-
-    public void block_type_d1()
+/*
+  public void block_type_d1()
     {
         switch (block_type)
         {
@@ -343,6 +348,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+ */
+
+
+
+
 
  public void screen_refresh()
     {
@@ -350,35 +360,41 @@ public class MainActivity extends AppCompatActivity {
         switch (direction)
         {
             case 1:
-
-                block_type_d1();
+                blcks.block_type_d1();
+               // block_type_d1();
 
 
             break;
 
-            case 2:
 
-                block_type_d2();
+
+               case 2:
+                blcks.block_type_d2();
+              //  block_type_d2();
 
                 break;
 
 
                 case 3:
-
-                    block_type_d3();
+                    blcks.block_type_d3();
+                  //  block_type_d3();
 
                 break;
 
 
             case 4:
-                block_type_d4();
+                blcks.block_type_d4();
+              //  block_type_d4();
 
 
                 break;
 
+
+
         }
 
 
+        /*
         for(int y=0;y<coords.length;y++)
         {
 
@@ -391,30 +407,46 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+         */
 
+        for(int y=0;y<blcks.coords.length;y++)
+        {
+
+            for(int x=0;x<blcks.coords[0].length;x++)
+            {
+
+                if(blcks.coords[y][x]==true)  iv [x] [y].setImageResource(R.drawable.tet2);
+                else  iv [x] [y].setImageResource(R.drawable.tet1);
+
+            }
+
+        }
     }
 
+    /*
+         public void msg_box(String msg)
+            {
+
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage(msg);
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
 
 
-    public void msg_box(String msg)
-    {
 
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage(msg);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+
+                alertDialog.show();
+
+            }
+     */
 
 
 
-
-        alertDialog.show();
-
-    }
 
     public void timer1()
     {
@@ -431,12 +463,15 @@ public class MainActivity extends AppCompatActivity {
                 try
                 {
 
-                    while (vertical<30)
+                    //while (blcks.vertical<30)
+                        while (timer_pause_start)
                     {
                         sleep(speed);
-                        Log.d("",vertical+"");
+                      //  Log.d("",vertical+"");
 
-                        vertical++;
+
+                        if(blcks.vertical>18) blcks.vertical=0;
+                        blcks.vertical++;
 
                       screen_refresh();
 
@@ -454,10 +489,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    public  void regular_T_d1()
+/*
+public  void regular_T_d1()
     {
         direction_control=true;
         max_right=7; max_direction=5;
@@ -739,23 +772,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public  void regular_T()
-    {
-
-        max_right=7;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-                if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                else if(x>=first+1 && x<=first+1 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
 
 
 
@@ -856,7 +872,7 @@ public class MainActivity extends AppCompatActivity {
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
-                //if(x>=apsis && x<=apsis+3 && y>=ordinate &&  y<= ordinate) coords[y][x]=false;
+
                 if(x>=first && x<=first+1 && y>=vertical &&  y<= vertical+1) coords[y][x]=false;
                 else  coords[y][x]=true;
             }
@@ -883,7 +899,7 @@ public class MainActivity extends AppCompatActivity {
                     if(first>max_right) first--;
                     if(first<0) first++;
 
-                    //if(x>=apsis && x<=apsis+3 && y>=ordinate &&  y<= ordinate) coords[y][x]=false;
+
                     if(x>=first && x<=first+3 && y>=vertical &&  y<= vertical) coords[y][x]=false;
                     else  coords[y][x]=true;
                 }
@@ -907,7 +923,7 @@ public class MainActivity extends AppCompatActivity {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-               // if(x>=apsis && x<=apsis && y>=ordinate &&  y<= ordinate+3) coords[y][x]=false;
+
                 if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+3-1) coords[y][x]=false;
                 else  coords[y][x]=true;
             }
@@ -915,6 +931,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+ */
+
+
+
+
 
 
 
