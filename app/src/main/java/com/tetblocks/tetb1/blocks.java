@@ -9,7 +9,7 @@ public class blocks
 {
 
 
-    int first=3, last = 7, vertical=0,direction=1, max_right=6, max_direction=3, block_type=4, speed=800, lvl=1;
+    int first=3, last = 7, vertical=0,direction=1, max_right=6, max_direction=3, block_type=1, speed=800, lvl=1;
     boolean coords [][]  = new boolean[20][10];
     boolean direction_control=true;
 

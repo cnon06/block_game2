@@ -470,7 +470,39 @@ public class MainActivity extends AppCompatActivity {
                       //  Log.d("",vertical+"");
 
 
-                        if(blcks.vertical>18) blcks.vertical=0;
+                       // if(blcks.vertical>18) blcks.vertical=0;
+
+
+                        for(int y=0;y<blcks.coords.length;y++) {
+
+                            for (int x = 0; x < blcks.coords[0].length; x++) {
+
+
+                                if(blcks.coords[y][x]==false && y>=19)
+                                {
+
+                                    blcks.vertical=0;
+                                    blcks.block_type++;
+                                    if(blcks.block_type>7) blcks.block_type=1;
+                                }
+
+                                /*
+                                 if(first>max_right) first--;
+                                if(first<-1) first++;
+
+                                if(x>=first+2 && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
+                                else if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
+                                else  coords[y][x]=true;
+                                 */
+
+
+                            }
+
+                        }
+
+
+
+
                         blcks.vertical++;
 
                       screen_refresh();
