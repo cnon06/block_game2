@@ -9,7 +9,7 @@ public class blocks
 {
 
 
-    int first=3, vertical=0, max_right=6, max_direction=3, block_type=1;
+    int first=3, vertical=0, max_right=6, max_direction=3, block_type=4;
     boolean coords [][]  = new boolean[20][10];
     boolean direction_control=true;
 
@@ -494,7 +494,8 @@ blocks()
 
             for (int x = 0; x < coords[0].length; x++) {
 
-
+                if(vertical<1) vertical++;
+                if(vertical>17) vertical--;
 
 
                 if(x>=first && x<=first && y>=vertical+1 &&  y<= vertical+2) coords[y][x]=false;

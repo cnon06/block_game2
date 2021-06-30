@@ -359,7 +359,8 @@ public class MainActivity extends AppCompatActivity {
                                 {
 
                                     blcks.vertical=-1;
-                                   /*
+                                    direction=1;
+                                    /*
                                      blcks.block_type++;
                                     if(blcks.block_type>7) blcks.block_type=1;
                                     */
