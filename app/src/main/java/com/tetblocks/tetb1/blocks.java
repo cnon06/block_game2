@@ -9,9 +9,12 @@ public class blocks
 {
 
 
-    int first=3, vertical=0, max_right=6, max_direction=3, block_type=4;
+    int first=3, vertical=0, max_right=6, max_direction=3, block_type=7;
     boolean coords [][]  = new boolean[20][10];
     boolean direction_control=true;
+
+
+
 
 blocks()
 {
@@ -21,6 +24,61 @@ blocks()
 
 
 }
+
+
+    public void up_down_block_control()
+    {
+        for(int y=0;y<coords.length;y++) {
+
+            for (int x = 0; x < coords[0].length; x++) {
+
+
+                /*
+                 if(first>max_right) first--;
+                if(first<0) first++;
+
+                if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
+                else if(x>=first+1 && x<=first+1 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
+                else  coords[y][x]=true;
+                 */
+
+
+
+
+                if(coords[y][x]==false)
+                {
+
+                    switch (block_type)
+                    {
+
+                        case 1:
+                        if(y<=0) vertical=1;
+                        if(y>17) vertical=17;
+                        break;
+
+                        case 2: case 3:
+                            if(y<=0) vertical=0;
+                            if(y>18) vertical=17;
+                            break;
+
+                        case 4: case 5:
+                            if(y<=0) vertical=1;
+                            if(y>18) vertical=18;
+                            break;
+
+
+                    }
+
+
+                }
+
+            }
+
+        }
+    }
+
+
+
 
 
     public void block_type_d1()
@@ -357,6 +415,8 @@ blocks()
                 if(first<0) first++;
 
 
+
+
                 if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
                 else if(x>=first && x<=first && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
                 else  coords[y][x]=true;
@@ -406,6 +466,8 @@ blocks()
 
                 if(first>max_right) first--;
                 if(first<-1) first++;
+
+
 
                 if(x>=first+2 && x<=first+2 && y>=vertical-1 &&  y<= vertical-1) coords[y][x]=false;
                 else if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
@@ -494,8 +556,6 @@ blocks()
 
             for (int x = 0; x < coords[0].length; x++) {
 
-                if(vertical<1) vertical++;
-                if(vertical>17) vertical--;
 
 
                 if(x>=first && x<=first && y>=vertical+1 &&  y<= vertical+2) coords[y][x]=false;
@@ -569,8 +629,6 @@ blocks()
 
             for (int x = 0; x < coords[0].length; x++) {
 
-                if(vertical<1) vertical++;
-                if(vertical>17) vertical--;
 
 
                 if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+3-1) coords[y][x]=false;

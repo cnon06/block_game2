@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  turn_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
-    int direction=1, speed=800, lvl=1;
-    boolean coords [][]  = new boolean[20][10];
+    int direction=1, speed=1000, lvl=1;
+  //  boolean coords [][]  = new boolean[20][10];
     boolean timer_pause_start=true;
 
     blocks blcks = new blocks();
@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
                         direction++;
                         if(direction>=blcks.max_direction) direction=1;
+                        blcks.up_down_block_control();
 
                         screen_refresh();
                         return true;
@@ -344,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
                         while (timer_pause_start)
                     {
                         sleep(speed);
+                       // sleep(100);
                       //  Log.d("",vertical+"");
 
 
