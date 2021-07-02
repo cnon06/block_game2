@@ -9,7 +9,7 @@ public class blocks
 {
 
 
-    int first=3, vertical=0, max_right=6, max_direction=3, block_type=7;
+    int first=3, vertical=0, max_right=6, max_direction=3, block_type=6;
     boolean coords [][]  = new boolean[20][10];
     boolean direction_control=true;
 
@@ -25,6 +25,27 @@ blocks()
 
 }
 
+
+    public void horizontal_calibrate_blocks()
+    {
+        switch (block_type)
+        {
+
+            case 1:  case 2: case 3:   case 4: case 5: case 6:
+            first=3;
+            break;
+
+
+            case 7:
+                first=4;
+                break;
+
+
+            //  break;
+
+
+        }
+    }
 
     public void up_down_block_control()
     {
@@ -61,7 +82,7 @@ blocks()
                             if(y>18) vertical=17;
                             break;
 
-                        case 4: case 5:
+                        case 4: case 5: case 6:
                             if(y<=0) vertical=1;
                             if(y>18) vertical=18;
                             break;

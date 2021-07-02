@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-
+        blcks.horizontal_calibrate_blocks();
 
         switch (lvl)
         {
@@ -362,6 +362,13 @@ public class MainActivity extends AppCompatActivity {
 
                                     blcks.vertical=-1;
                                     direction=1;
+
+
+                                    blcks.horizontal_calibrate_blocks();
+
+
+
+
                                     /*
                                      blcks.block_type++;
                                     if(blcks.block_type>7) blcks.block_type=1;
