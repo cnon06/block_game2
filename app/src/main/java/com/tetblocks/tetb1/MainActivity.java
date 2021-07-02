@@ -129,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
                         Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         vibe.vibrate(100);
 
+
+
+
+                        /*
                         int direction_h_w=0;
 
                         if(blcks.direction_control) direction_h_w=0; else  direction_h_w=-1;
@@ -143,6 +147,11 @@ public class MainActivity extends AppCompatActivity {
 
                         }
 
+                         */
+                       // blcks.first--;
+                        left_arrow.setImageResource(R.drawable.red_left_arrow);
+                        blcks.right_left_block_control();
+                        screen_refresh();
                         return true;
                     case MotionEvent.ACTION_UP:
 
@@ -360,7 +369,12 @@ public class MainActivity extends AppCompatActivity {
                                 if(blcks.coords[y][x]==false && y>=19)
                                 {
 
+                                    /*
+                                     blcks.block_type++;
+                                    if(blcks.block_type>7) blcks.block_type=0;
                                     blcks.vertical=-1;
+                                     */
+
                                     direction=1;
 
 

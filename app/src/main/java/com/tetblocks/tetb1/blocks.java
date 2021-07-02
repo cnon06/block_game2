@@ -2,42 +2,40 @@ package com.tetblocks.tetb1;
 
 import android.util.Log;
 
-public class blocks
+public class blocks {
+
+    int first = 3, vertical = 0, max_right = 6, max_direction = 3, block_type = 1;
+    boolean coords[][] = new boolean[20][10];
+    boolean direction_control = true;
 
 
-
-{
-
-
-    int first=3, vertical=0, max_right=6, max_direction=3, block_type=6;
-    boolean coords [][]  = new boolean[20][10];
-    boolean direction_control=true;
+    blocks() {
+        Log.d("", "Class works");
 
 
+    }
 
 
-blocks()
-{
-    Log.d("","Class works");
+    public void horizontal_calibrate_blocks() {
 
+        // block_type++;
+        if (block_type > 7) block_type = 0;
+        vertical = -1;
 
+        switch (block_type) {
 
-
-}
-
-
-    public void horizontal_calibrate_blocks()
-    {
-        switch (block_type)
-        {
-
-            case 1:  case 2: case 3:   case 4: case 5: case 6:
-            first=3;
-            break;
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                first = 3;
+                break;
 
 
             case 7:
-                first=4;
+                first = 4;
                 break;
 
 
@@ -46,6 +44,29 @@ blocks()
 
         }
     }
+
+
+    public void right_left_block_control() {
+        boolean dont_move = true;
+
+        for (int y = 0; y < coords.length; y++) {
+
+            for (int x = 0; x < coords[0].length; x++) {
+
+
+                if (coords[y][x] == false) {
+                    if (x < 1) dont_move = false;
+                }
+
+
+            }
+
+        }
+
+        if(dont_move) first--;
+    }
+
+
 
     public void up_down_block_control()
     {
@@ -508,7 +529,7 @@ blocks()
     public  void reverse_z_d1()
     {
 
-        max_right=7; max_direction=3;
+        max_right=8; max_direction=3;
 
         for(int y=0;y<coords.length;y++) {
 
@@ -552,7 +573,7 @@ blocks()
 
     public  void regular_z_d1()
     {
-        max_right=7; max_direction=3;
+        max_right=8; max_direction=3;
 
         for(int y=0;y<coords.length;y++) {
 
@@ -594,7 +615,7 @@ blocks()
     public  void square()
     {
 
-        max_right=8; max_direction=2;
+        max_right=9; max_direction=2;
 
         for(int y=0;y<coords.length;y++) {
 
@@ -623,8 +644,8 @@ blocks()
 
             for (int x = 0; x < coords[0].length; x++) {
 
-                if(first>max_right) first--;
-                if(first<0) first++;
+               // if(first>max_right) first--;
+               // if(first<0) first++;
 
 
                 if(x>=first && x<=first+3 && y>=vertical &&  y<= vertical) coords[y][x]=false;
