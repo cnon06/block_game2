@@ -94,8 +94,11 @@ public class MainActivity extends AppCompatActivity {
                             vibe.vibrate(100);
 
                             right_arrow.setImageResource(R.drawable.red_right_arrow);
+                            blcks.right_left_block_control(false);
+                            screen_refresh();
 
-                            if(blcks.first<blcks.max_right)
+                            /*
+                              if(blcks.first<blcks.max_right)
                             {
                                 blcks.first++;
 
@@ -103,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
                                screen_refresh();
 
                             }
+                             */
+
 
                             return true;
                         case MotionEvent.ACTION_UP:
@@ -150,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                          */
                        // blcks.first--;
                         left_arrow.setImageResource(R.drawable.red_left_arrow);
-                        blcks.right_left_block_control();
+                        blcks.right_left_block_control(true);
                         screen_refresh();
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -181,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                         direction++;
                         if(direction>=blcks.max_direction) direction=1;
                         blcks.up_down_block_control();
+                        blcks.direction_right_left_block_control();
 
                         screen_refresh();
                         return true;
@@ -208,6 +214,8 @@ public class MainActivity extends AppCompatActivity {
                         vibe.vibrate(100);
 
                         down_arrow.setImageResource(R.drawable.red_down_arrow);
+
+                    //    Toast.makeText(getApplicationContext(),blcks.width()+"",Toast.LENGTH_SHORT).show();
                         return true;
                     case MotionEvent.ACTION_UP:
 
@@ -380,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     blcks.horizontal_calibrate_blocks();
 
-
+                                  //  Toast.makeText(getApplicationContext(),"Hello Javatpoint",Toast.LENGTH_SHORT).show();
 
 
                                     /*

@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class blocks {
 
-    int first = 3, vertical = 0, max_right = 6, max_direction = 3, block_type = 1;
+    int first = 3, vertical = 0, max_right = 6, max_direction = 3, block_type = 7;
     boolean coords[][] = new boolean[20][10];
     boolean direction_control = true;
 
@@ -45,9 +45,61 @@ public class blocks {
         }
     }
 
+        /*
+           public int width()
+    // public void direction_right_left_block_control(boolean right_left)
+    {
 
-    public void right_left_block_control() {
-        boolean dont_move = true;
+        boolean find_first_y=true;
+        int y_min = 0, y_max = 0;
+
+        for (int y = 0; y < coords.length; y++) {
+
+            for (int x = 0; x < coords[0].length; x++) {
+
+                if (coords[y][x] == false) {
+
+
+                    if(find_first_y)
+                    {
+                        y_min = y; find_first_y=false;
+                    }
+
+                    y_max = y;
+
+                }
+
+            }
+
+        }
+            return y_max-y_min;
+    }
+         */
+
+
+
+
+    public void direction_right_left_block_control()
+    // public void direction_right_left_block_control(boolean right_left)
+    {
+                int width = 3;
+
+            switch (block_type)
+            {
+                case 1:
+                    width =3;
+                    break;
+
+                case 7:
+                    width =1;
+                    break;
+
+                default:
+                    width = 2;
+                    break;
+            }
+
+        boolean dont_move_to_right = true, dont_move_to_left = true;
 
         for (int y = 0; y < coords.length; y++) {
 
@@ -55,7 +107,55 @@ public class blocks {
 
 
                 if (coords[y][x] == false) {
-                    if (x < 1) dont_move = false;
+
+
+                    if (x < 1) first = x;
+                    if(x>8) first= x-width; //first=6;
+                    //dont_move_to_right = false;
+                  //  if (x > 8) dont_move_to_left = false;
+                    //  if (x > 6) dont_move = false;
+                }
+
+
+            }
+
+        }
+        /*
+           if(dont_move_to_right && right_left) first--;
+        if(dont_move_to_left && !right_left) first++;
+         */
+        /*
+          if(dont_move_to_right && right_left) first--;
+        if(dont_move_to_left && !right_left) first++;
+         */
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+        public void right_left_block_control(boolean right_left)
+    {
+        boolean dont_move_to_right = true, dont_move_to_left = true;
+
+        for (int y = 0; y < coords.length; y++) {
+
+            for (int x = 0; x < coords[0].length; x++) {
+
+
+                if (coords[y][x] == false) {
+                    if (x < 1) dont_move_to_right = false;
+                    if (x > 8) dont_move_to_left = false;
+                  //  if (x > 6) dont_move = false;
                 }
 
 
@@ -63,7 +163,10 @@ public class blocks {
 
         }
 
-        if(dont_move) first--;
+    if(dont_move_to_right && right_left) first--;
+    if(dont_move_to_left && !right_left) first++;
+
+
     }
 
 
@@ -236,15 +339,20 @@ public class blocks {
     public  void regular_T_d1()
     {
         direction_control=true;
-        max_right=7; max_direction=5;
+       // max_right=7;
+        max_direction=5;
 
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-                if(first>max_right) first--;
+
+                /*
+                 if(first>max_right) first--;
                 if(first<0) first++;
+                 */
+
 
                 if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
                 else if(x>=first+1 && x<=first+1 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
@@ -259,15 +367,18 @@ public class blocks {
     public  void regular_T_d2()
     {
         direction_control=true;
-        max_right=8; max_direction=5;
+      // max_right=8;
+        max_direction=5;
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-
-                if(first>max_right) first--;
+                /*
+                    if(first>max_right) first--;
                 if(first<0) first++;
+                 */
+
 
                 if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
                 else if(x>=first && x<=first && y>=vertical &&  y<= vertical) coords[y][x]=false;
@@ -281,14 +392,19 @@ public class blocks {
     public  void regular_T_d3()
     {
         direction_control=true;
-        max_right=7; max_direction=5;
+        // max_right=7;
+        max_direction=5;
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
+
+                /*
                 if(first>max_right) first--;
                 if(first<0) first++;
+
+                 */
 
 
                 if(x>=first+1 && x<=first+1 && y>=vertical &&  y<= vertical) coords[y][x]=false;
@@ -305,16 +421,19 @@ public class blocks {
     {
 
         direction_control=false;
-        max_right=7; max_direction=5;
+      //  max_right=7;
+        max_direction=5;
 
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-
-                if(first>max_right) first--;
+                /*
+                 if(first>max_right) first--;
                 if(first<-1) first++;
+                 */
+
 
                 if(x>=first+2 && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
                 else if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
@@ -329,15 +448,19 @@ public class blocks {
     public  void reverse_L_d1()
     {
         direction_control=true;
-        max_right=7; max_direction=5;
+        //max_right=7;
+        max_direction=5;
 
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-                if(first>max_right) first--;
+                /*
+                 if(first>max_right) first--;
                 if(first<0) first++;
+
+                 */
 
                 if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
                 else if(x>=first && x<=first && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
@@ -351,15 +474,18 @@ public class blocks {
     public  void reverse_L_d2()
     {
         direction_control=true;
-        max_right=8; max_direction=5;
+       // max_right=8;
+        max_direction=5;
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-
+                /*
                 if(first>max_right) first--;
                 if(first<0) first++;
+                 */
+
 
                 if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
                 else if(x>=first && x<=first && y>=vertical-1 &&  y<= vertical-1) coords[y][x]=false;
@@ -374,14 +500,18 @@ public class blocks {
     public  void reverse_L_d3()
     {
         direction_control=true;
-        max_right=7; max_direction=5;
+       // max_right=7;
+        max_direction=5;
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-                if(first>max_right) first--;
+                /*
+                 if(first>max_right) first--;
                 if(first<0) first++;
+                 */
+
 
 
                 if(x>=first+2 && x<=first+2 && y>=vertical-1 &&  y<= vertical-1) coords[y][x]=false;
@@ -397,16 +527,19 @@ public class blocks {
     {
 
         direction_control=false;
-        max_right=7; max_direction=5;
+      //  max_right=7;
+        max_direction=5;
 
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-
+                /*
                 if(first>max_right) first--;
                 if(first<-1) first++;
+
+                 */
 
                 if(x>=first+2 && x<=first+2 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
                 else if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
@@ -422,15 +555,19 @@ public class blocks {
     public  void regular_L_d1()
     {
         direction_control=true;
-        max_right=7; max_direction=5;
+       // max_right=7;
+        max_direction=5;
 
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
+                /*
                 if(first>max_right) first--;
                 if(first<0) first++;
+                 */
+
 
 
                 if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
@@ -446,16 +583,17 @@ public class blocks {
     public  void regular_L_d2()
     {
         direction_control=true;
-        max_right=8; max_direction=5;
+       // max_right=8;
+        max_direction=5;
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-
-                if(first>max_right) first--;
+                /*
+                 if(first>max_right) first--;
                 if(first<0) first++;
-
+                 */
 
 
 
@@ -475,14 +613,18 @@ public class blocks {
     public  void regular_L_d3()
     {
         direction_control=true;
-        max_right=7; max_direction=5;
+       // max_right=7;
+        max_direction=5;
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-                if(first>max_right) first--;
+                /*
+                   if(first>max_right) first--;
                 if(first<0) first++;
+                 */
+
 
 
                 if(x>=first && x<=first && y>=vertical-1 &&  y<= vertical-1) coords[y][x]=false;
@@ -498,16 +640,19 @@ public class blocks {
     {
 
         direction_control=false;
-        max_right=7; max_direction=5;
+       // max_right=7;
+        max_direction=5;
 
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-
-                if(first>max_right) first--;
+                /*
+                  if(first>max_right) first--;
                 if(first<-1) first++;
+
+                 */
 
 
 
@@ -529,13 +674,15 @@ public class blocks {
     public  void reverse_z_d1()
     {
 
-        max_right=8; max_direction=3;
+        //max_right=8;
+
+        max_direction=3;
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-                if(first>max_right) first--;
+               // if(first>max_right) first--;
 
                 if(x>=first+1 && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
                 else if(x>=first && x<=first+1 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
@@ -550,7 +697,8 @@ public class blocks {
     {
 
 
-        max_right=8; max_direction=3;
+      //  max_right=8;
+        max_direction=3;
 
         for(int y=0;y<coords.length;y++) {
 
@@ -573,14 +721,15 @@ public class blocks {
 
     public  void regular_z_d1()
     {
-        max_right=8; max_direction=3;
+       // max_right=8;
+        max_direction=3;
 
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
 
-                if(first>max_right) first--;
+               // if(first>max_right) first--;
 
                 if(x>=first && x<=first+1 && y>=vertical &&  y<= vertical) coords[y][x]=false;
                 else if(x>=first+1 && x<=first+2 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
@@ -592,7 +741,10 @@ public class blocks {
 
     public  void regular_z_d2()
     {
-        max_right=8; max_direction=3;
+        //max_right=8;
+
+
+        max_direction=3;
 
         for(int y=0;y<coords.length;y++) {
 
@@ -615,7 +767,10 @@ public class blocks {
     public  void square()
     {
 
-        max_right=9; max_direction=2;
+        //max_right=9;
+
+
+        max_direction=2;
 
         for(int y=0;y<coords.length;y++) {
 
@@ -638,7 +793,9 @@ public class blocks {
 
 
         direction_control=true;
-        max_right=6; max_direction=3;
+        //max_right=6;
+
+        max_direction=3;
 
         for(int y=0;y<coords.length;y++) {
 
@@ -663,7 +820,8 @@ public class blocks {
     public  void bar_d2()
     {
         direction_control=false;
-        max_right=8; max_direction=3;
+        //max_right=8;
+        max_direction=3;
 
 
 
