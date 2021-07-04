@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView iv [] [],right_arrow, left_arrow,  turn_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
     int direction=1, speed=1000, lvl=1;
-  //  boolean coords [][]  = new boolean[20][10];
+
     boolean timer_pause_start=true;
 
     blocks blcks = new blocks();
@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         blcks.horizontal_calibrate_blocks();
+
+
 
         switch (lvl)
         {
@@ -97,17 +99,6 @@ public class MainActivity extends AppCompatActivity {
                             blcks.right_left_block_control(false);
                             screen_refresh();
 
-                            /*
-                              if(blcks.first<blcks.max_right)
-                            {
-                                blcks.first++;
-
-
-                               screen_refresh();
-
-                            }
-                             */
-
 
                             return true;
                         case MotionEvent.ACTION_UP:
@@ -134,26 +125,6 @@ public class MainActivity extends AppCompatActivity {
                         Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         vibe.vibrate(100);
 
-
-
-
-                        /*
-                        int direction_h_w=0;
-
-                        if(blcks.direction_control) direction_h_w=0; else  direction_h_w=-1;
-
-                        left_arrow.setImageResource(R.drawable.red_left_arrow);
-
-                        if(blcks.first>direction_h_w)
-                        {
-                            blcks.first--;
-
-                           screen_refresh();
-
-                        }
-
-                         */
-                       // blcks.first--;
                         left_arrow.setImageResource(R.drawable.red_left_arrow);
                         blcks.right_left_block_control(true);
                         screen_refresh();
@@ -269,8 +240,6 @@ public class MainActivity extends AppCompatActivity {
         {
             case 1:
                 blcks.block_type_d1();
-               // block_type_d1();
-
 
             break;
 
@@ -278,22 +247,19 @@ public class MainActivity extends AppCompatActivity {
 
                case 2:
                 blcks.block_type_d2();
-              //  block_type_d2();
 
                 break;
 
 
                 case 3:
                     blcks.block_type_d3();
-                  //  block_type_d3();
+
 
                 break;
 
 
             case 4:
                 blcks.block_type_d4();
-              //  block_type_d4();
-
 
                 break;
 
@@ -333,8 +299,6 @@ public class MainActivity extends AppCompatActivity {
                         });
 
 
-
-
                 alertDialog.show();
 
             }
@@ -362,10 +326,6 @@ public class MainActivity extends AppCompatActivity {
                         while (timer_pause_start)
                     {
                         sleep(speed);
-                       // sleep(100);
-                      //  Log.d("",vertical+"");
-
-
 
 
 
@@ -377,27 +337,15 @@ public class MainActivity extends AppCompatActivity {
                                 if(blcks.coords[y][x]==false && y>=19)
                                 {
 
-                                    /*
-                                     blcks.block_type++;
-                                    if(blcks.block_type>7) blcks.block_type=0;
-                                    blcks.vertical=-1;
-                                     */
-
+                                    blcks.block_type++;
                                     direction=1;
-
 
                                     blcks.horizontal_calibrate_blocks();
 
                                   //  Toast.makeText(getApplicationContext(),"Hello Javatpoint",Toast.LENGTH_SHORT).show();
 
 
-                                    /*
-                                     blcks.block_type++;
-                                    if(blcks.block_type>7) blcks.block_type=1;
-                                    */
-
                                 }
-
 
                             }
 
@@ -512,7 +460,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void space_between_game_board_and_controller(int Height)
     {
-        //space_between_game_board_and_controller
+
                 space_between_game_board_and_controller  = new LinearLayout(this);
         LinearLayout.LayoutParams space_between_game_board_and_controller_parms = new LinearLayout.LayoutParams(2500,Height);
         ln1.addView(space_between_game_board_and_controller,space_between_game_board_and_controller_parms);
