@@ -4,8 +4,8 @@ import android.util.Log;
 
 public class blocks {
 
-    int first = 3, vertical = 1, max_right = 6, max_direction = 3, block_type = 1;
-    boolean coords[][] = new boolean[20][10];
+    int first = 3, vertical = 1, max_direction = 3, block_type = 1;
+    boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10];
     boolean direction_control = true;
 
 
@@ -15,10 +15,45 @@ public class blocks {
 
     }
 
+    public void calibrate_record_blocks() {
+        for(int y=0;y<coords.length;y++) {
+
+            for (int x = 0; x < coords[0].length; x++) {
+
+
+
+                    record_blocks [y][x] = true ;
+
+
+
+            }
+
+        }
+    }
+
+    public void record_blocks() {
+        for(int y=0;y<coords.length;y++) {
+
+            for (int x = 0; x < coords[0].length; x++) {
+
+
+                if(coords[y][x]==false)
+                {
+                     record_blocks [y][x] = coords[y][x] ;
+                }
+
+
+            }
+
+        }
+    }
 
     public void horizontal_calibrate_blocks() {
 
-        // block_type++;
+
+
+
+
         if (block_type > 7) block_type = 0;
         vertical = -1;
 
@@ -75,7 +110,7 @@ public class blocks {
                 if (coords[y][x] == false) {
 
                     if (x < 1) first = x;
-                    if(x>8) first= x-width; //first=6;
+                    if(x>8) first= x-width;
 
                 }
 

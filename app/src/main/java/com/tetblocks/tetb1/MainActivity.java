@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        blcks.calibrate_record_blocks();
+
         blcks.horizontal_calibrate_blocks();
 
 
@@ -276,12 +278,20 @@ public class MainActivity extends AppCompatActivity {
             for(int x=0;x<blcks.coords[0].length;x++)
             {
 
-                if(blcks.coords[y][x]==true)  iv [x] [y].setImageResource(R.drawable.tet2);
+                if(blcks.coords[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet2);
+
                 else  iv [x] [y].setImageResource(R.drawable.tet1);
+
+              if(blcks.record_blocks[y][x]== false ) iv [x] [y].setImageResource(R.drawable.tet1);
 
             }
 
         }
+
+
+       // iv [6] [4].setImageResource(R.drawable.tet1);
+
+
     }
 
 
@@ -337,6 +347,8 @@ public class MainActivity extends AppCompatActivity {
                                 if(blcks.coords[y][x]==false && y>=19)
                                 {
 
+
+                                 blcks.record_blocks();
                                     blcks.block_type++;
                                     direction=1;
 
@@ -357,6 +369,7 @@ public class MainActivity extends AppCompatActivity {
                         blcks.vertical++;
 
                       screen_refresh();
+
 
 
                     }
