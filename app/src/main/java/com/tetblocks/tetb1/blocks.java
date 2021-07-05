@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class blocks {
 
-    int first = 3, vertical = 1, max_direction = 3, block_type = 1;
+    int first = 3, vertical = 0, max_direction = 3, block_type = 1 ,direction=2;
     boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10];
     boolean direction_control = true;
 
@@ -13,6 +13,25 @@ public class blocks {
         Log.d("", "Class works");
 
 
+    }
+
+
+    public void record_blocks_2()
+    {
+        for(int y=0;y<coords.length;y++) {
+
+            for (int x = 0; x < coords[0].length; x++) {
+
+
+                if(!coords[y][x] && !record_blocks [y+1][x])
+                {
+                    record_blocks [y][x] = coords[y][x] ;
+                }
+
+
+            }
+
+        }
     }
 
     public void calibrate_record_blocks() {
@@ -37,7 +56,7 @@ public class blocks {
             for (int x = 0; x < coords[0].length; x++) {
 
 
-                if(coords[y][x]==false)
+                if(!coords[y][x])
                 {
                      record_blocks [y][x] = coords[y][x] ;
                 }
@@ -51,20 +70,19 @@ public class blocks {
     public void horizontal_calibrate_blocks() {
 
 
-
-
-
+            direction=1;
         if (block_type > 7) block_type = 0;
         vertical = -1;
 
         switch (block_type) {
 
             case 1:
-            case 2:
+                case 2:
             case 3:
             case 4:
             case 5:
             case 6:
+
                 first = 3;
                 break;
 
@@ -84,40 +102,73 @@ public class blocks {
     public void direction_right_left_block_control()
 
     {
-                int width = 3;
+
 
             switch (block_type)
             {
                 case 1:
-                    width =3;
+
+                    switch (direction)
+                    {
+                        case 1:
+                            if(first==-1) first++;
+                            if(first==8) first=first-2;
+                            if(first==7) first=first-1;
+                            break;
+
+
+                    }
+
+
                     break;
 
-                case 7:
-                    width =1;
+                case 2: case 3:
+                    switch (direction)
+                    {
+                        case 1:
+                           // if(first==-1) first++;
+                            if(first==8) first=first-1;
+                          //  if(first==7) first=first-1;
+                            break;
+
+                    }
                     break;
 
-                default:
-                    width = 2;
-                    break;
-            }
+                case 4: case 5: case 6:
+                switch (direction)
+                {
 
+                    case 1:
+                        // if(first==-1) first++;
 
-        for (int y = 0; y < coords.length; y++) {
+                        if(first==-1) first++;
+                        //  if(first==7) first=first-1;
+                        break;
 
-            for (int x = 0; x < coords[0].length; x++) {
+                    case 3:
+                        // if(first==-1) first++;
+                        if(first==8) first=first-1;
+                        if(first==-1) first++;
+                        //  if(first==7) first=first-1;
+                        break;
 
+                    case 4:
+                        // if(first==-1) first++;
 
-                if (coords[y][x] == false) {
-
-                    if (x < 1) first = x;
-                    if(x>8) first= x-width;
+                        if(first==-1) first++;
+                        //  if(first==7) first=first-1;
+                        break;
 
                 }
+                break;
 
 
+                default:
+
+                    break;
             }
 
-        }
+
 
     }
 

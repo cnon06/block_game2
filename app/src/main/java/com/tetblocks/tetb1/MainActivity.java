@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  turn_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
-    int direction=1, speed=1000, lvl=1;
+    int speed=1000, lvl=1;
 
     boolean timer_pause_start=true;
 
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         blcks.calibrate_record_blocks();
 
         blcks.horizontal_calibrate_blocks();
+        blcks.vertical=0;
 
 
 
@@ -156,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
                         turn_arrow.setImageResource(R.drawable.red_repeat);
 
 
-                        direction++;
-                        if(direction>=blcks.max_direction) direction=1;
+                        blcks.direction++;
+                        if(blcks.direction>=blcks.max_direction) blcks.direction=1;
                         blcks.up_down_block_control();
                         blcks.direction_right_left_block_control();
 
@@ -238,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
  public void screen_refresh()
     {
 
-        switch (direction)
+        switch (blcks.direction)
         {
             case 1:
                 blcks.block_type_d1();
@@ -338,10 +339,33 @@ public class MainActivity extends AppCompatActivity {
                         sleep(speed);
 
 
+                      //  Log.d("",blcks.first+"");
+                     //   blcks.record_blocks_2();
 
                         for(int y=0;y<blcks.coords.length;y++) {
 
                             for (int x = 0; x < blcks.coords[0].length; x++) {
+
+
+
+                                try {
+                                    if(!blcks.coords[y][x] && !blcks.record_blocks[y+1][x])
+                                    {
+                                        blcks.record_blocks();
+                                        blcks.direction=1;
+
+                                        blcks.horizontal_calibrate_blocks();
+                                        Log.d("",y+"");
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.d("",y+"");
+                                }
+
+
+
+
 
 
                                 if(blcks.coords[y][x]==false && y>=19)
@@ -349,8 +373,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                                  blcks.record_blocks();
-                                    blcks.block_type++;
-                                    direction=1;
+                                   // blcks.block_type++;
+                                    blcks.direction=1;
 
                                     blcks.horizontal_calibrate_blocks();
 
