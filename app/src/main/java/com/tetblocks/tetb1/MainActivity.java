@@ -99,9 +99,46 @@ public class MainActivity extends AppCompatActivity {
                             vibe.vibrate(100);
 
                             right_arrow.setImageResource(R.drawable.red_right_arrow);
-                            blcks.right_left_block_control(false);
-                            screen_refresh();
+                          //  blcks.right_left_block_control(false);
 
+
+
+
+                            boolean dont_go_to_right=false;
+
+                              for(int y=0;y<blcks.coords.length;y++) {
+
+                                for (int x = 0; x < blcks.coords[0].length; x++) {
+
+
+                                    try {
+                                        if (!blcks.coords[y][x] && !blcks.record_blocks[y][x+1]) {
+
+
+                                            dont_go_to_right=true;
+
+                                      //      Log.d("", x + "right control");
+                                        }
+                                        else
+                                        {
+                                          //  Log.d("", x + "right control");
+                                        }
+
+                                    } catch (Exception e) {
+                                      //  Log.d("", e + "");
+                                    }
+
+                                }}
+
+
+                                if(!dont_go_to_right)
+                                {
+                                    blcks.right_left_block_control(false);
+                                    screen_refresh();
+
+                                }
+
+                            dont_go_to_right=false;
 
                             return true;
                         case MotionEvent.ACTION_UP:
@@ -129,8 +166,49 @@ public class MainActivity extends AppCompatActivity {
                         vibe.vibrate(100);
 
                         left_arrow.setImageResource(R.drawable.red_left_arrow);
-                        blcks.right_left_block_control(true);
+
+
+                        boolean dont_go_to_right=false;
+
+                        for(int y=0;y<blcks.coords.length;y++) {
+
+                            for (int x = 0; x < blcks.coords[0].length; x++) {
+
+
+                                try {
+                                    if (!blcks.coords[y][x] && !blcks.record_blocks[y][x-1]) {
+
+
+                                        dont_go_to_right=true;
+
+                                      //  Log.d("", x + "right control");
+                                    }
+                                    else
+                                    {
+                                        //  Log.d("", x + "right control");
+                                    }
+
+                                } catch (Exception e) {
+                                  //  Log.d("", e + "");
+                                }
+
+                            }}
+
+
+                        if(!dont_go_to_right)
+                        {
+                            blcks.right_left_block_control(true);
+                            screen_refresh();
+
+                        }
+
+                        dont_go_to_right=false;
+
+                        /*
+                         blcks.right_left_block_control(true);
                         screen_refresh();
+                         */
+
                         return true;
                     case MotionEvent.ACTION_UP:
 
@@ -290,9 +368,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-       // iv [6] [4].setImageResource(R.drawable.tet1);
-
-
     }
 
 
@@ -355,12 +430,12 @@ public class MainActivity extends AppCompatActivity {
                                         blcks.direction=1;
 
                                         blcks.horizontal_calibrate_blocks();
-                                        Log.d("",y+"");
+                                     //   Log.d("",y+"");
                                     }
                                 }
                                 catch (Exception e)
                                 {
-                                    Log.d("",y+"");
+                                 //   Log.d("",y+"");
                                 }
 
 

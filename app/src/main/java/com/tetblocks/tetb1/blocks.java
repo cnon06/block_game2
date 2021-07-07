@@ -16,24 +16,6 @@ public class blocks {
     }
 
 
-    public void record_blocks_2()
-    {
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-
-                if(!coords[y][x] && !record_blocks [y+1][x])
-                {
-                    record_blocks [y][x] = coords[y][x] ;
-                }
-
-
-            }
-
-        }
-    }
-
     public void calibrate_record_blocks() {
         for(int y=0;y<coords.length;y++) {
 
