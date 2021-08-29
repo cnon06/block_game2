@@ -26,9 +26,13 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  turn_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
-    int first=3, last = 7, vertical=0,direction=1, max_right=6, max_direction=3, block_type=2, speed=800, lvl=1;
-    boolean coords [][]  = new boolean[20][10];
-    boolean direction_control=true;
+    int speed=1000, lvl=1;
+
+    boolean timer_pause_start=true;
+
+    blocks blcks = new blocks();
+
+
 
 
     @Override
@@ -40,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
+
+        blcks.calibrate_record_blocks();
+
+        blcks.horizontal_calibrate_blocks();
+        blcks.vertical=0;
+
 
 
         switch (lvl)
@@ -89,15 +99,46 @@ public class MainActivity extends AppCompatActivity {
                             vibe.vibrate(100);
 
                             right_arrow.setImageResource(R.drawable.red_right_arrow);
-
-                            if(first<max_right)
-                            {
-                                first++;
+                          //  blcks.right_left_block_control(false);
 
 
-                               screen_refresh();
 
-                            }
+
+                            boolean dont_go_to_right=false;
+
+                              for(int y=0;y<blcks.coords.length;y++) {
+
+                                for (int x = 0; x < blcks.coords[0].length; x++) {
+
+
+                                    try {
+                                        if (!blcks.coords[y][x] && !blcks.record_blocks[y][x+1]) {
+
+
+                                            dont_go_to_right=true;
+
+                                      //      Log.d("", x + "right control");
+                                        }
+                                        else
+                                        {
+                                          //  Log.d("", x + "right control");
+                                        }
+
+                                    } catch (Exception e) {
+                                      //  Log.d("", e + "");
+                                    }
+
+                                }}
+
+
+                                if(!dont_go_to_right)
+                                {
+                                    blcks.right_left_block_control(false);
+                                    screen_refresh();
+
+                                }
+
+                            dont_go_to_right=false;
 
                             return true;
                         case MotionEvent.ACTION_UP:
@@ -124,19 +165,49 @@ public class MainActivity extends AppCompatActivity {
                         Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         vibe.vibrate(100);
 
-                        int direction_h_w=0;
-
-                        if(direction_control) direction_h_w=0; else  direction_h_w=-1;
-
                         left_arrow.setImageResource(R.drawable.red_left_arrow);
 
-                        if(first>direction_h_w)
-                        {
-                            first--;
 
-                           screen_refresh();
+                        boolean dont_go_to_right=false;
+
+                        for(int y=0;y<blcks.coords.length;y++) {
+
+                            for (int x = 0; x < blcks.coords[0].length; x++) {
+
+
+                                try {
+                                    if (!blcks.coords[y][x] && !blcks.record_blocks[y][x-1]) {
+
+
+                                        dont_go_to_right=true;
+
+                                      //  Log.d("", x + "right control");
+                                    }
+                                    else
+                                    {
+                                        //  Log.d("", x + "right control");
+                                    }
+
+                                } catch (Exception e) {
+                                  //  Log.d("", e + "");
+                                }
+
+                            }}
+
+
+                        if(!dont_go_to_right)
+                        {
+                            blcks.right_left_block_control(true);
+                            screen_refresh();
 
                         }
+
+                        dont_go_to_right=false;
+
+                        /*
+                         blcks.right_left_block_control(true);
+                        screen_refresh();
+                         */
 
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -164,8 +235,10 @@ public class MainActivity extends AppCompatActivity {
                         turn_arrow.setImageResource(R.drawable.red_repeat);
 
 
-                        direction++;
-                        if(direction>=max_direction) direction=1;
+                        blcks.direction++;
+                        if(blcks.direction>=blcks.max_direction) blcks.direction=1;
+                        blcks.up_down_block_control();
+                        blcks.direction_right_left_block_control();
 
                         screen_refresh();
                         return true;
@@ -193,6 +266,8 @@ public class MainActivity extends AppCompatActivity {
                         vibe.vibrate(100);
 
                         down_arrow.setImageResource(R.drawable.red_down_arrow);
+
+                    //    Toast.makeText(getApplicationContext(),blcks.width()+"",Toast.LENGTH_SHORT).show();
                         return true;
                     case MotionEvent.ACTION_UP:
 
@@ -236,163 +311,87 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void block_type_d1()
-    {
-        switch (block_type)
-        {
-            case 1:
-                bar_d1();
-                break;
-
-            case 2:
-                regular_z_d1();
-                break;
-
-            case 3:
-                reverse_z_d1();
-                break;
-
-            case 4:
-                regular_L_d1();
-                break;
-
-            case 5:
-                reverse_L_d1();
-                break;
-
-        }
-    }
 
 
-    public void block_type_d2()
-    {
-        switch (block_type)
-        {
-            case 1:
-                bar_d2();
-                break;
-
-            case 2:
-                regular_z_d2();
-                break;
-
-            case 3:
-                reverse_z_d2();
-                break;
-
-            case 4:
-                regular_L_d2();
-                break;
-
-
-            case 5:
-                reverse_L_d2();
-                break;
-        }
-    }
-
-
-    public void block_type_d3()
-    {
-        switch (block_type)
-        {
-
-            case 4:
-                regular_L_d3();
-                break;
-
-            case 5:
-                reverse_L_d3();
-                break;
-        }
-    }
-
-    public void block_type_d4()
-    {
-        switch (block_type)
-        {
-
-            case 4:
-                regular_L_d4();
-                break;
-
-            case 5:
-                reverse_L_d4();
-                break;
-        }
-    }
 
  public void screen_refresh()
     {
 
-        switch (direction)
+        switch (blcks.direction)
         {
             case 1:
-
-                block_type_d1();
-
+                blcks.block_type_d1();
 
             break;
 
-            case 2:
 
-                block_type_d2();
+
+               case 2:
+                blcks.block_type_d2();
 
                 break;
 
 
                 case 3:
+                    blcks.block_type_d3();
 
-                    block_type_d3();
 
                 break;
 
 
             case 4:
-                block_type_d4();
-
+                blcks.block_type_d4();
 
                 break;
+
+
 
         }
 
 
-        for(int y=0;y<coords.length;y++)
+
+
+        for(int y=0;y<blcks.coords.length;y++)
         {
 
-            for(int x=0;x<coords[0].length;x++)
+            for(int x=0;x<blcks.coords[0].length;x++)
             {
 
-                if(coords[y][x]==true)  iv [x] [y].setImageResource(R.drawable.tet2);
+                if(blcks.coords[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet2);
+
                 else  iv [x] [y].setImageResource(R.drawable.tet1);
+
+              if(blcks.record_blocks[y][x]== false ) iv [x] [y].setImageResource(R.drawable.tet1);
 
             }
 
         }
 
-    }
-
-
-
-    public void msg_box(String msg)
-    {
-
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage(msg);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-
-
-
-        alertDialog.show();
 
     }
+
+
+         public void msg_box(String msg)
+            {
+
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage(msg);
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+
+                alertDialog.show();
+
+            }
+
+
+
+
 
     public void timer1()
     {
@@ -409,14 +408,67 @@ public class MainActivity extends AppCompatActivity {
                 try
                 {
 
-                    while (vertical<30)
+
+                        while (timer_pause_start)
                     {
                         sleep(speed);
-                        Log.d("",vertical+"");
 
-                        vertical++;
+
+                      //  Log.d("",blcks.first+"");
+                     //   blcks.record_blocks_2();
+
+                        for(int y=0;y<blcks.coords.length;y++) {
+
+                            for (int x = 0; x < blcks.coords[0].length; x++) {
+
+
+
+                                try {
+                                    if(!blcks.coords[y][x] && !blcks.record_blocks[y+1][x])
+                                    {
+                                        blcks.record_blocks();
+                                        blcks.direction=1;
+
+                                        blcks.horizontal_calibrate_blocks();
+                                     //   Log.d("",y+"");
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                 //   Log.d("",y+"");
+                                }
+
+
+
+
+
+
+                                if(blcks.coords[y][x]==false && y>=19)
+                                {
+
+
+                                 blcks.record_blocks();
+                                   // blcks.block_type++;
+                                    blcks.direction=1;
+
+                                    blcks.horizontal_calibrate_blocks();
+
+                                  //  Toast.makeText(getApplicationContext(),"Hello Javatpoint",Toast.LENGTH_SHORT).show();
+
+
+                                }
+
+                            }
+
+                        }
+
+
+
+
+                        blcks.vertical++;
 
                       screen_refresh();
+
 
 
                     }
@@ -428,390 +480,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }.start();
-
-    }
-
-        /*
-        public  void reverse_L()
-            {
-
-                max_right=7;
-
-                for(int y=0;y<coords.length;y++) {
-
-                    for (int x = 0; x < coords[0].length; x++) {
-
-                        if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                        else if(x>=first && x<=first && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                        else  coords[y][x]=true;
-                    }
-
-                }
-
-            }
-         */
-
-
-
-    public  void reverse_L_d1()
-    {
-        direction_control=true;
-        max_right=7; max_direction=5;
-
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-                if(first>max_right) first--;
-                if(first<0) first++;
-
-                if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                else if(x>=first && x<=first && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-    public  void reverse_L_d2()
-    {
-        direction_control=true;
-        max_right=8; max_direction=5;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-
-                if(first>max_right) first--;
-                if(first<0) first++;
-
-                if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
-                else if(x>=first && x<=first && y>=vertical-1 &&  y<= vertical-1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-
-    public  void reverse_L_d3()
-    {
-        direction_control=true;
-        max_right=7; max_direction=5;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-                if(first>max_right) first--;
-                if(first<0) first++;
-
-
-                if(x>=first+2 && x<=first+2 && y>=vertical-1 &&  y<= vertical-1) coords[y][x]=false;
-                else if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-    public  void regular_L_d1()
-    {
-        direction_control=true;
-        max_right=7; max_direction=5;
-
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-                if(first>max_right) first--;
-                if(first<0) first++;
-
-                if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                else if(x>=first+2 && x<=first+2 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-
-    public  void regular_L_d2()
-    {
-        direction_control=true;
-        max_right=8; max_direction=5;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-
-                if(first>max_right) first--;
-                if(first<0) first++;
-
-                if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
-               else if(x>=first && x<=first && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-
-    public  void reverse_L_d4()
-    {
-
-        direction_control=false;
-        max_right=7; max_direction=5;
-
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-
-                if(first>max_right) first--;
-                if(first<-1) first++;
-
-                if(x>=first+2 && x<=first+2 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                else if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-
-    public  void regular_L_d3()
-    {
-        direction_control=true;
-        max_right=7; max_direction=5;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-                if(first>max_right) first--;
-                if(first<0) first++;
-
-
-                if(x>=first && x<=first && y>=vertical-1 &&  y<= vertical-1) coords[y][x]=false;
-                else if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-    public  void regular_L_d4()
-    {
-
-        direction_control=false;
-        max_right=7; max_direction=5;
-
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-
-                if(first>max_right) first--;
-                if(first<-1) first++;
-
-                if(x>=first+2 && x<=first+2 && y>=vertical-1 &&  y<= vertical-1) coords[y][x]=false;
-                else if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-
-    public  void regular_T()
-    {
-
-        max_right=7;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-                if(x>=first && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                else if(x>=first+1 && x<=first+1 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-
-
-
-
-    public  void reverse_z_d1()
-    {
-
-        max_right=7; max_direction=3;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-                if(first>max_right) first--;
-
-                if(x>=first+1 && x<=first+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                else if(x>=first && x<=first+1 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-    public  void reverse_z_d2()
-    {
-
-
-        max_right=8; max_direction=3;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-
-
-
-                if(x>=first && x<=first && y>=vertical &&  y<= vertical+1) coords[y][x]=false;
-                else if(x>=first+1 && x<=first+1 && y>=vertical+1 &&  y<= vertical+2) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-        }
-
-
-
-
-    }
-
-
-    public  void regular_z_d1()
-    {
-        max_right=7; max_direction=3;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-
-                if(first>max_right) first--;
-
-                if(x>=first && x<=first+1 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                else if(x>=first+1 && x<=first+2 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-        }
-
-    }
-
-    public  void regular_z_d2()
-    {
-        max_right=8; max_direction=3;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-
-
-
-                if(x>=first && x<=first && y>=vertical+1 &&  y<= vertical+2) coords[y][x]=false;
-                else if(x>=first+1 && x<=first+1 && y>=vertical &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-        }
-
-    }
-
-
-
-
-
-    public  void square()
-    {
-
-        max_right=8;
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-                //if(x>=apsis && x<=apsis+3 && y>=ordinate &&  y<= ordinate) coords[y][x]=false;
-                if(x>=first && x<=first+1 && y>=vertical &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
-
-    }
-
-
-
-
-
-  public  void bar_d1()
-    {
-
-
-            direction_control=true;
-            max_right=6; max_direction=3;
-
-            for(int y=0;y<coords.length;y++) {
-
-                for (int x = 0; x < coords[0].length; x++) {
-
-                    if(first>max_right) first--;
-                    if(first<0) first++;
-
-                    //if(x>=apsis && x<=apsis+3 && y>=ordinate &&  y<= ordinate) coords[y][x]=false;
-                    if(x>=first && x<=first+3 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                    else  coords[y][x]=true;
-                }
-
-            }
-
-
-
-    }
-
-
-
-    public  void bar_d2()
-    {
-        direction_control=false;
-        max_right=8; max_direction=3;
-
-
-
-        for(int y=0;y<coords.length;y++) {
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-               // if(x>=apsis && x<=apsis && y>=ordinate &&  y<= ordinate+3) coords[y][x]=false;
-                if(x>=first+1 && x<=first+1 && y>=vertical-1 &&  y<= vertical+3-1) coords[y][x]=false;
-                else  coords[y][x]=true;
-            }
-
-        }
 
     }
 
@@ -904,7 +572,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void space_between_game_board_and_controller(int Height)
     {
-        //space_between_game_board_and_controller
+
                 space_between_game_board_and_controller  = new LinearLayout(this);
         LinearLayout.LayoutParams space_between_game_board_and_controller_parms = new LinearLayout.LayoutParams(2500,Height);
         ln1.addView(space_between_game_board_and_controller,space_between_game_board_and_controller_parms);
