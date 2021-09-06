@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -24,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout ln1, lln [],controller, space_between_game_board_and_controller;
     LinearLayout.LayoutParams parms, controller_parms;
-    ImageView iv [] [],right_arrow, left_arrow,  turn_arrow, down_arrow, double_down_arrow ;
+    ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
     int speed=1000, lvl=1;
+    boolean go_go_go=false;
 
     boolean timer_pause_start=true;
 
@@ -45,100 +47,102 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        blcks.calibrate_record_blocks();
+        // blcks.bar_d1();
 
-        blcks.horizontal_calibrate_blocks();
-        blcks.vertical=0;
-
-
-
-        switch (lvl)
+        try {
+            blcks.calibrate_record_blocks();
+            blcks.max_direction_list();
+            blcks.setMax_direction();
+            blcks.first_horizontal_position_list();
+        }
+        catch (Exception e)
         {
-            case 1:
-                speed=800;
-                break;
-
-            case 2:
-                speed=500;
-                break;
-
-            case 3:
-                speed=200;
-                break;
 
         }
 
-        ln1 = findViewById(R.id.ln1);
-
-       lp1 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
-        );
-
-        ln1.setOrientation(LinearLayout.VERTICAL);
 
 
-        // Butonların ve gameboardın yerleri aşağıdaki methodlar ile yapılmıştır
 
-        game_board(70,70);
-        space_between_game_board_and_controller(100);
-        controller();
-        space_between_game_board_and_controller(100);
-        controller2();
-        screen_refresh();
+
+        try {
+            ln1 = findViewById(R.id.ln1);
+
+            lp1 = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
+            );
+
+            ln1.setOrientation(LinearLayout.VERTICAL);
+
+
+            // Butonların ve gameboardın yerleri aşağıdaki methodlar ile yapılmıştır
+
+            game_board(70,70);
+            space_between_game_board_and_controller(100);
+            controller();
+            space_between_game_board_and_controller(100);
+            controller2();
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+
+
+
+
 
 
 
             right_arrow.setOnTouchListener(new View.OnTouchListener() {
                 @SuppressLint("ClickableViewAccessibility")
                 @Override
-                public boolean onTouch(View v, MotionEvent event) {
+                public boolean onTouch(View v, MotionEvent event)  {
                     switch(event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
 
                             Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             vibe.vibrate(100);
 
+
                             right_arrow.setImageResource(R.drawable.red_right_arrow);
-                          //  blcks.right_left_block_control(false);
+
+                            try {
+
+
+                                if(blcks.vertical==-1) blcks.vertical=0;
 
 
 
-
-                            boolean dont_go_to_right=false;
-
-                              for(int y=0;y<blcks.coords.length;y++) {
-
-                                for (int x = 0; x < blcks.coords[0].length; x++) {
+                                    if(blcks.dont_go_right())
+                                    {
 
 
-                                    try {
-                                        if (!blcks.coords[y][x] && !blcks.record_blocks[y][x+1]) {
-
-
-                                            dont_go_to_right=true;
-
-                                      //      Log.d("", x + "right control");
-                                        }
-                                        else
+                                        if(blcks.dont_go_right2())
                                         {
-                                          //  Log.d("", x + "right control");
+
+                                            blcks.horizontal++;
+                                            blcks.direction2();
+
+                                           // blcks.max_min2();
+
+                                            screen_refresh();
+
+
                                         }
 
-                                    } catch (Exception e) {
-                                      //  Log.d("", e + "");
+
+
+
                                     }
 
-                                }}
 
+                            }
+                            catch (Exception e)
+                            {
 
-                                if(!dont_go_to_right)
-                                {
-                                    blcks.right_left_block_control(false);
-                                    screen_refresh();
-
-                                }
-
-                            dont_go_to_right=false;
+                            }
 
                             return true;
                         case MotionEvent.ACTION_UP:
@@ -168,46 +172,34 @@ public class MainActivity extends AppCompatActivity {
                         left_arrow.setImageResource(R.drawable.red_left_arrow);
 
 
-                        boolean dont_go_to_right=false;
-
-                        for(int y=0;y<blcks.coords.length;y++) {
-
-                            for (int x = 0; x < blcks.coords[0].length; x++) {
-
-
-                                try {
-                                    if (!blcks.coords[y][x] && !blcks.record_blocks[y][x-1]) {
+                        try {
+                            if(blcks.vertical==-1) blcks.vertical=0;
+                            if(blcks.dont_go_left())
+                            {
 
 
-                                        dont_go_to_right=true;
+                                if(blcks.dont_go_left2())
+                                {
 
-                                      //  Log.d("", x + "right control");
-                                    }
-                                    else
-                                    {
-                                        //  Log.d("", x + "right control");
-                                    }
+                                    blcks.horizontal--;
 
-                                } catch (Exception e) {
-                                  //  Log.d("", e + "");
+                                    blcks.direction2();
+
+
+                                 //   blcks.max_min2();
+
+                                    screen_refresh();
+
+
                                 }
 
-                            }}
-
-
-                        if(!dont_go_to_right)
-                        {
-                            blcks.right_left_block_control(true);
-                            screen_refresh();
+                            }
 
                         }
+                        catch (Exception e)
+                        {
 
-                        dont_go_to_right=false;
-
-                        /*
-                         blcks.right_left_block_control(true);
-                        screen_refresh();
-                         */
+                        }
 
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -222,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        turn_arrow.setOnTouchListener(new View.OnTouchListener() {
+        direction_arrow.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -232,19 +224,55 @@ public class MainActivity extends AppCompatActivity {
                         Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         vibe.vibrate(100);
 
-                        turn_arrow.setImageResource(R.drawable.red_repeat);
+                        direction_arrow.setImageResource(R.drawable.red_repeat);
+
+                       // blcks.horizontal=1;
+
+                        try {
+                            blcks.direction++;
+
+                            if(blcks.direction>blcks.max_direction) blcks.direction=1;
 
 
-                        blcks.direction++;
-                        if(blcks.direction>=blcks.max_direction) blcks.direction=1;
-                        blcks.up_down_block_control();
-                        blcks.direction_right_left_block_control();
+                          //  go_go_go=true;
 
-                        screen_refresh();
+                            blcks.direction2();
+                            // blcks.max_min();
+
+
+                            screen_refresh();
+
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
+
+
+                        try {
+                            blcks.max_min2();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println(e);
+                        }
+
+
                         return true;
                     case MotionEvent.ACTION_UP:
 
-                        turn_arrow.setImageResource(R.drawable.repeat);
+                        direction_arrow.setImageResource(R.drawable.repeat);
+
+                            try {
+                                blcks.direction2();
+                                screen_refresh();
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+
 
                         return true;
                 }
@@ -266,6 +294,9 @@ public class MainActivity extends AppCompatActivity {
                         vibe.vibrate(100);
 
                         down_arrow.setImageResource(R.drawable.red_down_arrow);
+
+
+                      //  blcks.max_direction_list();
 
                     //    Toast.makeText(getApplicationContext(),blcks.width()+"",Toast.LENGTH_SHORT).show();
                         return true;
@@ -307,49 +338,83 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    timer1();
+  timer1();
+    //    timer2();
     }
 
 
 
 
 
- public void screen_refresh()
+ public void screen_refresh() throws Exception
     {
 
-        switch (blcks.direction)
+  blcks.merge_blocks();
+
+
+        try {
+
+            for(int y=0;y<blcks.merge_blocks.length;y++)
+            {
+
+                for(int x=0;x<blcks.merge_blocks[0].length;x++)
+                {
+
+
+
+
+                    if(blcks.merge_blocks[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet6);
+
+                    else  iv [x] [y].setImageResource(R.drawable.tet7);
+
+
+
+                }
+
+            }
+
+
+        }
+        catch (Exception e)
         {
-            case 1:
-                blcks.block_type_d1();
-
-            break;
+            System.out.println(e);
+        }
 
 
+        /*
+        try {
 
-               case 2:
-                blcks.block_type_d2();
+    for(int y=0;y<blcks.coords.length;y++)
+    {
 
-                break;
-
-
-                case 3:
-                    blcks.block_type_d3();
-
-
-                break;
+        for(int x=0;x<blcks.coords[0].length;x++)
+        {
 
 
-            case 4:
-                blcks.block_type_d4();
 
-                break;
+
+               if(blcks.coords[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet6);
+
+            else  iv [x] [y].setImageResource(R.drawable.tet4);
 
 
 
         }
 
+    }
 
 
+}
+catch (Exception e)
+{
+System.out.println(e);
+}
+         */
+
+
+
+/*
+try {
 
         for(int y=0;y<blcks.coords.length;y++)
         {
@@ -357,21 +422,34 @@ public class MainActivity extends AppCompatActivity {
             for(int x=0;x<blcks.coords[0].length;x++)
             {
 
-                if(blcks.coords[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet2);
 
-                else  iv [x] [y].setImageResource(R.drawable.tet1);
 
-              if(blcks.record_blocks[y][x]== false ) iv [x] [y].setImageResource(R.drawable.tet1);
+                if(blcks.record_blocks[y][x]== false ) iv [x] [y].setImageResource(R.drawable.tet1);
 
             }
 
         }
 
 
+
+            blcks.check_record_blocks();
+
+    }
+catch (Exception e)
+        {
+            System.out.println(e);
+        }
+ */
+
+
+
+
+
     }
 
 
-         public void msg_box(String msg)
+    /*
+    public void msg_box(String msg)
             {
 
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
@@ -389,6 +467,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+     */
+
+
 
 
 
@@ -398,78 +479,29 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        new Thread(){
 
-            @Override
-            public void run() {
-
-
+        Thread thread = new Thread(){
+            public void run(){
+                System.out.println("Thread Running");
 
                 try
                 {
 
-
-                        while (timer_pause_start)
+                    while (timer_pause_start)
                     {
-                        sleep(speed);
-
-
-                      //  Log.d("",blcks.first+"");
-                     //   blcks.record_blocks_2();
-
-                        for(int y=0;y<blcks.coords.length;y++) {
-
-                            for (int x = 0; x < blcks.coords[0].length; x++) {
-
-
-
-                                try {
-                                    if(!blcks.coords[y][x] && !blcks.record_blocks[y+1][x])
-                                    {
-                                        blcks.record_blocks();
-                                        blcks.direction=1;
-
-                                        blcks.horizontal_calibrate_blocks();
-                                     //   Log.d("",y+"");
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                 //   Log.d("",y+"");
-                                }
-
-
-
-
-
-
-                                if(blcks.coords[y][x]==false && y>=19)
-                                {
-
-
-                                 blcks.record_blocks();
-                                   // blcks.block_type++;
-                                    blcks.direction=1;
-
-                                    blcks.horizontal_calibrate_blocks();
-
-                                  //  Toast.makeText(getApplicationContext(),"Hello Javatpoint",Toast.LENGTH_SHORT).show();
-
-
-                                }
-
-                            }
-
-                        }
 
 
 
 
                         blcks.vertical++;
+                        blcks.direction2();
+                        screen_refresh();
+                        sleep(800);
+                        //screen_refresh();
+                        blcks.restart_blocks();
+                        if(!blcks.dont_go_down()) blcks.first_horizontal_position();
 
-                      screen_refresh();
-
-
+                     //   screen_refresh();
 
                     }
 
@@ -478,30 +510,38 @@ public class MainActivity extends AppCompatActivity {
                 {
                     System.out.println("Error code 10:"+ed);
                 }
+
             }
-        }.start();
+        };
+
+        thread.start();
+
 
     }
 
 
 
 
-    public void game_board(int Width, int Height)
+    public void game_board(int Width, int Height) throws Exception
     {
-        lln  = new LinearLayout[20];
-        parms = new LinearLayout.LayoutParams(Width,Height);
-        iv  = new ImageView[10] [20];
+
+        try {
+
+
+            lln  = new LinearLayout[20];
+            parms = new LinearLayout.LayoutParams(Width,Height);
+            iv  = new ImageView[10] [20];
 
 
 
-        for(int i=0;i<lln.length;i++)
-        {
+            for(int i=0;i<lln.length;i++)
+            {
 
-            lln [i] = new LinearLayout(this);
-            ln1.addView(lln[i],lp1);
+                lln [i] = new LinearLayout(this);
+                ln1.addView(lln[i],lp1);
 
-            lln [i].setOrientation(LinearLayout.HORIZONTAL);
-            lln[i].setGravity(Gravity.CENTER);
+                lln [i].setOrientation(LinearLayout.HORIZONTAL);
+                lln[i].setGravity(Gravity.CENTER);
 
 
             /* game boardı merkeze almak için lln[i].setGravity(Gravity.CENTER); kullanılıyor
@@ -520,17 +560,25 @@ public class MainActivity extends AppCompatActivity {
              */
 
 
-               for(int y=0;y<iv.length;y++)
-            {
-                iv [y] [i]= new ImageView(this);
-                iv [y] [i].setImageResource(R.drawable.tet2);
-                lln[i].addView(iv[y][i], lp1);
-                iv[y][i].setLayoutParams(parms);
+                for(int y=0;y<iv.length;y++)
+                {
+                    iv [y] [i]= new ImageView(this);
+                     iv [y] [i].setImageResource(R.drawable.tet6);
+                    lln[i].addView(iv[y][i], lp1);
+                    iv[y][i].setLayoutParams(parms);
+
+                }
+
 
             }
 
 
         }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
 
 
 
@@ -538,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void controller()
+    public void controller() throws Exception
     {
         controller  = new LinearLayout(this);
         ln1.addView(controller,lp1);
@@ -547,13 +595,13 @@ public class MainActivity extends AppCompatActivity {
 
         left_arrow();
         between_arrows(200,200);
-        turn_arrow();
+        direction_arrow();
         between_arrows(200,200);
         right_arrow();
 
     }
 
-    public void controller2()
+    public void controller2() throws Exception
     {
         controller  = new LinearLayout(this);
         ln1.addView(controller,lp1);
@@ -570,7 +618,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void space_between_game_board_and_controller(int Height)
+    public void space_between_game_board_and_controller(int Height) throws Exception
     {
 
                 space_between_game_board_and_controller  = new LinearLayout(this);
@@ -579,7 +627,7 @@ public class MainActivity extends AppCompatActivity {
         space_between_game_board_and_controller.setOrientation(LinearLayout.HORIZONTAL);
     }
 
-    public void between_arrows(int Width,int Height)
+    public void between_arrows(int Width,int Height) throws Exception
     {
 
         LinearLayout between_arrows  = new LinearLayout(this);
@@ -591,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void left_arrow()
+    public void left_arrow() throws Exception
     {
         left_arrow= new ImageView(this);
         left_arrow.setImageResource(R.drawable.left_arrow);
@@ -600,16 +648,16 @@ public class MainActivity extends AppCompatActivity {
         left_arrow.setLayoutParams(controller_parms);
     }
 
-    public void turn_arrow()
+    public void direction_arrow() throws Exception
     {
-        turn_arrow= new ImageView(this);
-        turn_arrow.setImageResource(R.drawable.repeat);
-        controller.addView(turn_arrow, lp1);
+        direction_arrow= new ImageView(this);
+        direction_arrow.setImageResource(R.drawable.repeat);
+        controller.addView(direction_arrow, lp1);
         controller_parms = new LinearLayout.LayoutParams(200,200);
-        turn_arrow.setLayoutParams(controller_parms);
+        direction_arrow.setLayoutParams(controller_parms);
     }
 
-    public void right_arrow()
+    public void right_arrow() throws Exception
     {
         right_arrow= new ImageView(this);
         right_arrow.setImageResource(R.drawable.right_arrow);
@@ -620,7 +668,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-      public void down_arrow()
+      public void down_arrow() throws Exception
     {
         down_arrow= new ImageView(this);
         down_arrow.setImageResource(R.drawable.down_arrow);
@@ -629,7 +677,7 @@ public class MainActivity extends AppCompatActivity {
         down_arrow.setLayoutParams(controller_parms);
     }
 
-    public void double_down_arrow()
+    public void double_down_arrow() throws Exception
     {
         double_down_arrow= new ImageView(this);
         double_down_arrow.setImageResource(R.drawable.doublearrow);
