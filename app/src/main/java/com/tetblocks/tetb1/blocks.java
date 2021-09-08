@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 public class blocks {
 
-    int horizontal = 3, vertical = -1, max_direction = 3, block_type =1 ,direction=1, block_width=0, block_height=0;
+   protected int horizontal = 3, vertical = -1, max_direction = 3, block_type =1 ,direction=1, block_width=0, block_height=0;
 
  //   int check_record_blocks_xmin=0, check_record_blocks_xmax=0, check_record_blocks_ymin=0, check_record_blocks_ymax=0, max_min_xmin=0, max_min_xmax=0, max_min_ymin=0, max_min_ymax=0;
 
@@ -26,7 +26,7 @@ public class blocks {
 
 
 
-    public void merge_blocks() throws Exception
+    protected void merge_blocks() throws Exception
     {
         for(int y=0;y<merge_blocks.length;y++) {
 
@@ -93,10 +93,10 @@ public class blocks {
     {
 
 
-        int xmax=0, xmin=50, width=0, ymin=50, ymax=0, height=0, block_width=0, block_height=0;
-        int gogo=0;
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+        int x_intersection=0;
 
-
+       boolean try2= false, go_left=false;
 
         for(int y=0;y<coords.length;y++) {
             for (int x = 0; x < coords[0].length; x++) {
@@ -107,12 +107,28 @@ public class blocks {
                     if(y<ymin)ymin=y;
                 }
 
-                if(!record_blocks[y][x] && !coords[y][x]) gogo++;
+                if(!record_blocks[y][x] && !coords[y][x])     if(xmin<=x && x>=xmax)
+                {
+                    x_intersection=x;   //try2=true;
+                  if(x_intersection!=xmin) go_left=true;
+                }
+
+
 
             }
         }
 
-        System.out.println("XMIN: "+xmin+" XMAX: "+xmax+" YMIN: "+ymin+" YMAX: "+ymax+" gogo: "+gogo);
+
+      if(x_intersection!=0)
+      {
+        // if(left_right)
+       // if(!go_left)
+         if(go_left)   horizontal-=(xmax-x_intersection)+1; else horizontal+=(x_intersection-xmin)+1;
+
+      }
+
+
+        System.out.println("x_intersection>=xmin: ");
 
       //  horizontal = horizontal + gogo;
 
@@ -205,7 +221,7 @@ public class blocks {
     public void max_min() throws Exception
     {
 
-        int xmax=0, xmin=50, width=0, ymin=50, ymax=0, height=0, block_width=0, block_height=0;
+        int xmax=0, xmin=50, ymin=50, ymax=0,  block_width2=0, block_height2=0;
 
 
 
@@ -240,19 +256,19 @@ public class blocks {
 
 
 
-        block_width=xmax-xmin+1;
-        block_height=ymax-ymin+1;
+        block_width2=xmax-xmin+1;
+        block_height2=ymax-ymin+1;
 
 
 
          int gogo=0, gogo2=0;
-      if(block_width>-10 && vertical>0)   gogo = this.block_width-block_width;
+      if(block_width2>-10 && vertical>0)   gogo = this.block_width-block_width2;
 
 
     if(xmin>0)   horizontal = horizontal-gogo; else horizontal = horizontal+gogo;
 
 
-        gogo2 = this.block_height-block_height;
+        gogo2 = this.block_height-block_height2;
       if(ymax>=19)  vertical = vertical - gogo2;
 
 
@@ -544,6 +560,7 @@ public class blocks {
 
         direction();
         max_min();
+       max_min2();
         direction();
       //  max_min2();
 

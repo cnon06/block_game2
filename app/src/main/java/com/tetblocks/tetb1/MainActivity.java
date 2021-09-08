@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                             blcks.direction2();
                             // blcks.max_min();
 
-
+                           // blcks.max_min2();
                             screen_refresh();
 
                         }
@@ -249,14 +249,24 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 
+                        /*
+                         try {
+                            blcks.max_min2();
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
 
                         try {
-                            blcks.max_min2();
+                            screen_refresh();
                         }
                         catch (Exception e)
                         {
                             System.out.println(e);
                         }
+                         */
+
 
 
                         return true;
