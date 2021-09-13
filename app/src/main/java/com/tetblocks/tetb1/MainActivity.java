@@ -123,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
                                         {
 
                                             blcks.horizontal++;
-                                            blcks.direction2();
+                                         blcks.direction2();
 
-                                           // blcks.max_min2();
+
 
                                             screen_refresh();
 
@@ -183,10 +183,10 @@ public class MainActivity extends AppCompatActivity {
 
                                     blcks.horizontal--;
 
-                                    blcks.direction2();
+                                  blcks.direction2();
 
 
-                                 //   blcks.max_min2();
+
 
                                     screen_refresh();
 
@@ -237,10 +237,9 @@ public class MainActivity extends AppCompatActivity {
                           //  go_go_go=true;
 
                             blcks.direction2();
-                            // blcks.max_min();
 
-                           // blcks.max_min2();
                             screen_refresh();
+
 
                         }
                         catch (Exception e)
@@ -504,9 +503,10 @@ catch (Exception e)
 
 
                         blcks.vertical++;
-                        blcks.direction2();
+                       blcks.direction2();
                         screen_refresh();
                         sleep(800);
+
                         //screen_refresh();
                         blcks.restart_blocks();
                         if(!blcks.dont_go_down()) blcks.first_horizontal_position();

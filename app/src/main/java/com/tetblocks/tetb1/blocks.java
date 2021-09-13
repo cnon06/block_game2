@@ -13,6 +13,7 @@ public class blocks {
 
 
     boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10];
+    boolean  ghost_blocks1 [][] = new boolean[20][10];
     boolean direction_control = true;
     NavigableMap<String,Integer> max_direction2=new TreeMap();
    NavigableMap<String,Integer> first_horizontal_position= new TreeMap();
@@ -24,6 +25,33 @@ public class blocks {
 
     }
 
+
+
+
+    protected void ghost_blocks1() throws Exception
+    {
+        for(int y=0;y<ghost_blocks1.length;y++) {
+
+
+
+            for (int x = 0; x < ghost_blocks1[0].length; x++) {
+
+                try {
+
+                    ghost_blocks1[y][x] = coords [y][x];
+
+                    //if(!record_blocks[y][x])  merge_blocks[y][x] = record_blocks [y][x];
+                }
+                catch (Exception er)
+                {
+                    System.out.println(er);
+                }
+
+
+            }
+
+        }
+    }
 
 
     protected void merge_blocks() throws Exception
@@ -89,14 +117,13 @@ public class blocks {
 
 
 
-    public void max_min2() throws Exception
+
+    public void max_min2x() throws Exception
     {
-
-
         int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
-        int x_intersection=0;
+        int x_intersection=0, y_intersection=0;
 
-       boolean try2= false, go_left=false;
+       boolean try2= false, go_left=false, go_up=false;
 
         for(int y=0;y<coords.length;y++) {
             for (int x = 0; x < coords[0].length; x++) {
@@ -107,69 +134,109 @@ public class blocks {
                     if(y<ymin)ymin=y;
                 }
 
-                if(!record_blocks[y][x] && !coords[y][x])     if(xmin<=x && x>=xmax)
+                if(!record_blocks[y][x] && !coords[y][x])
                 {
-                    x_intersection=x;   //try2=true;
-                  if(x_intersection!=xmin) go_left=true;
+                    if(xmin<=x && x>=xmax)
+                    {
+                        x_intersection=x;   //try2=true;
+                        if(x_intersection!=xmin) go_left=true;
+                       // y_intersection = y;
+                       // if(y_intersection!=ymin) go_up=true;
+                    }
+
+                    /*
+                       if(ymin<=y && y>=ymax)
+                    {
+
+                        y_intersection = y;
+                        if(y_intersection!=ymin) go_up=true;
+                    }
+                     */
                 }
-
-
 
             }
         }
 
+                 if(x_intersection!=0)
+            {
 
-      if(x_intersection!=0)
-      {
-        // if(left_right)
-       // if(!go_left)
-         if(go_left)   horizontal-=(xmax-x_intersection)+1; else horizontal+=(x_intersection-xmin)+1;
+                if(block_width>block_height)
 
-      }
+                if(go_left)   horizontal-=(xmax-x_intersection)+1; else horizontal+=(x_intersection-xmin)+1;
+               // else if(go_up)   vertical-=(ymax-y_intersection)+1; else vertical+=(y_intersection-ymin)+1;
+        }
+    /*
+     if(y_intersection!=0) {
 
+              vertical-=(y_intersection-ymin)-2;
 
-        System.out.println("x_intersection>=xmin: ");
-
-      //  horizontal = horizontal + gogo;
+        }
+     */
 
         /*
-           for(int y=0;y<record_blocks.length;y++) {
+         if(y_intersection!=0)
+        {
+            if(go_up)   vertical-=(ymax-y_intersection)+1; else vertical+=(y_intersection-ymin)+1;
+        }
+         */
+       // System.out.println("ymax: "+ymax+" ymin: "+ymin);
+    }
 
+    public void max_min2y() throws Exception
+    {
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+        int x_intersection=0, y_intersection=0;
 
+        boolean try2= false,  go_up=false, break_me=false, dont_make_trw_1=false;
+        int trw=0;
 
-            for (int x = 0; x < record_blocks[0].length; x++) {
-
-
-                if(!record_blocks[y][x]) {
+        for(int y=0;y<coords.length;y++) {
+            for (int x = 0; x < coords[0].length; x++) {
+                if(!coords[y][x]) {
                     if(x>xmax)xmax=x;
                     if(x<xmin)xmin=x;
                     if(y>ymax)ymax=y;
                     if(y<ymin)ymin=y;
-
                 }
 
+
+
+                if(!record_blocks[y][x] && !coords[y][x])
+                {
+                    trw++;
+                    if(ymin<=y && y<=ymax)
+                    {
+                        y_intersection=y;   //try2=true;
+                        if(y_intersection!=ymin) go_up=true;
+                      //  break_me=true;
+
+                    }
+
+                }
+             //   if(break_me) break;
             }
+           // if(break_me) break;
+        }
+
+        if(y_intersection!=0)
+        {
+
+            if(block_width<block_height)
+
+
+               if(trw==2)
+               {
+                   vertical=vertical-(ymax-y_intersection)-2;
+                  dont_make_trw_1=true;
+               }
+
+          if(!dont_make_trw_1)  if(go_up)   vertical-=(ymax-y_intersection)+1; else vertical+=(y_intersection-ymin)+1;
+
 
         }
 
-         */
-
-
-
-        /*
-          max_min_xmin=xmin;
-        max_min_xmax=xmax;
-        max_min_ymin=ymin;
-        max_min_ymax=ymax;
-
-         */
-
-
-
-
-
+        System.out.println("ymax: "+ymax+" ymin: "+ymin+" trw: "+trw);
     }
-
 
     public void calibrate_record_blocks() throws Exception
     {
@@ -410,8 +477,6 @@ public class blocks {
         }
 
 
-
-
         if(y1>=19) return false;
         else  return true;
 
@@ -560,8 +625,11 @@ public class blocks {
 
         direction();
         max_min();
-       max_min2();
+       // direction();
+         max_min2x();
+        max_min2y();
         direction();
+
       //  max_min2();
 
 
@@ -1002,7 +1070,7 @@ public class blocks {
     {
         block_width=2;
         block_height=3;
-    //    max_direction=3;
+
 
         for(int y=0;y<coords.length;y++) {
 
@@ -1028,7 +1096,7 @@ public class blocks {
         block_width=3;
         block_height=2;
 
-    //    max_direction=3;
+
 
         for(int y=0;y<coords.length;y++) {
 
@@ -1049,7 +1117,7 @@ public class blocks {
         block_width=2;
         block_height=3;
 
-      //  max_direction=3;
+
 
         for(int y=0;y<coords.length;y++) {
 
