@@ -1,16 +1,142 @@
 package com.tetblocks.tetb1;
 
+import java.util.NavigableMap;
+import java.util.TreeMap;
+
 public class ghost1 {
 
-    int  block_width=0, block_height=2, direction=0, block_type=0;
+    int vertical=0, horizontal=0;
+    int  block_width=0, block_height=2, direction=2, block_type=1;
     boolean  ghost_blocks1 [][] = new boolean[20][10];
     blocks blcks = new blocks();
-    
-    
+    NavigableMap<String,Integer> first_horizontal_position= new TreeMap();
+
+
+
     ghost1()
     {
-        
+        for(int y=0;y<ghost_blocks1.length;y++) {
+
+            for (int x = 0; x < ghost_blocks1[0].length; x++) {
+
+                 ghost_blocks1[y][x]=true;
+            }
+
+        }
+
+
+        try {
+            first_horizontal_position_list();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+
     }
+
+    public void first_horizontal_position_list() throws Exception
+    {
+
+        first_horizontal_position.put("bar",3);
+        first_horizontal_position.put("regular_z",3);
+        first_horizontal_position.put("reverse_z",3);
+        first_horizontal_position.put("regular_L",3);
+        first_horizontal_position.put("reverse_L",3);
+        first_horizontal_position.put("T",3);
+        first_horizontal_position.put("square",4);
+
+
+    }
+
+
+    public void first_horizontal_position() throws Exception
+    {
+
+
+        //record_blocks();
+
+        /*
+         switch (block_type)
+        {
+            case 1:
+                horizontal = first_horizontal_position.get("bar");
+                break;
+
+            case 2:
+                horizontal = first_horizontal_position.get("regular_z");
+                break;
+
+            case 3:
+                horizontal = first_horizontal_position.get("reverse_z");
+                break;
+
+            case 4:
+                horizontal = first_horizontal_position.get("regular_L");
+                break;
+
+            case 5:
+                horizontal = first_horizontal_position.get("reverse_L");
+                break;
+            case 6:
+                horizontal = first_horizontal_position.get("T");
+                break;
+
+            case 7:
+                horizontal = first_horizontal_position.get("square");
+                break;
+
+        }
+         */
+
+
+        vertical=1;  direction=1; horizontal=3;
+        bar_d2();
+        System.out.println("ghst first horizontal");
+
+    }
+
+
+    /*
+
+
+    public void restart_blocks() throws Exception
+    {
+
+        boolean rty=false;
+
+        for(int y=0;y<ghost_blocks1.length;y++) {
+
+
+
+            for (int x = 0; x < ghost_blocks1[0].length; x++) {
+
+                try {
+                    if(!coords[y][x] && !record_blocks[y+1][x]) {
+
+                        rty=true;
+
+
+                    }
+                }
+                catch (Exception er)
+                {
+                    System.out.println(er);
+                }
+
+
+            }
+
+        }
+
+        if(rty) first_horizontal_position();
+
+        // if(max_min_ymin==check_record_blocks_ymax+1) first_horizontal_position();
+
+    }
+
+     */
 
 
     public void direction() throws Exception
@@ -574,7 +700,7 @@ public class ghost1 {
 
 
 
-                if(x>=blcks.horizontal+1 && x<=blcks.horizontal+1 && y>=blcks.vertical-1 &&  y<= blcks.vertical+3-1) ghost_blocks1[y][x]=false;
+                if(x>=blcks.horizontal+1 && x<=blcks.horizontal+1 && y>=vertical-1 &&  y<= vertical+3-1) ghost_blocks1[y][x]=false;
                 else  ghost_blocks1[y][x]=true;
             }
 

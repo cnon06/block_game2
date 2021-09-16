@@ -2,56 +2,60 @@ package com.tetblocks.tetb1;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 3, block_type =1 ,direction=1, block_width=0, block_height=0;
-
- //   int check_record_blocks_xmin=0, check_record_blocks_xmax=0, check_record_blocks_ymin=0, check_record_blocks_ymax=0, max_min_xmin=0, max_min_xmax=0, max_min_ymin=0, max_min_ymax=0;
+   protected int horizontal = 3, vertical = -1, max_direction = 3, block_type =7 ,direction=1, block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0;
 
 
-    boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10];
-    boolean  ghost_blocks1 [][] = new boolean[20][10];
-    boolean direction_control = true;
+
+
+    boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10];
+
+    List <Integer> intersection_list_x = new ArrayList<>();
+    List <Integer> intersection_list_y = new ArrayList<>();
+
+
     NavigableMap<String,Integer> max_direction2=new TreeMap();
    NavigableMap<String,Integer> first_horizontal_position= new TreeMap();
     String is_vertical_horizontal="";
 
+ //  ghost1 ghst1 = new ghost1();
 
     blocks() {
 
-
+     //   ghst1 = new ghost1();
     }
 
 
 
-
-    protected void ghost_blocks1() throws Exception
+    public boolean check_merge_blocks() throws Exception
     {
-        for(int y=0;y<ghost_blocks1.length;y++) {
+
+        boolean check=false;
+
+
+        for (int x = 0; x < merge_blocks[0].length; x++) {
 
 
 
-            for (int x = 0; x < ghost_blocks1[0].length; x++) {
-
-                try {
-
-                    ghost_blocks1[y][x] = coords [y][x];
-
-                    //if(!record_blocks[y][x])  merge_blocks[y][x] = record_blocks [y][x];
-                }
-                catch (Exception er)
-                {
-                    System.out.println(er);
-                }
+           if(!merge_blocks[0][x]) check=true ;
 
 
-            }
 
         }
+
+        return check;
+
     }
+
+
+
 
 
     protected void merge_blocks() throws Exception
@@ -109,11 +113,84 @@ public class blocks {
 
             }
 
-            if(rty) first_horizontal_position();
+            if(rty)
+            {
+                first_horizontal_position();
+
+
+            }
 
        // if(max_min_ymin==check_record_blocks_ymax+1) first_horizontal_position();
 
     }
+
+
+
+    public boolean max_min2x_dont_go() throws Exception
+    {
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+        int x_intersection=0, y_intersection=0;
+        int x1=0, y1=0 ,x2=0, y2=0;
+      //  boolean try2= false, go_left=false, go_up=false;
+
+        int count =0;
+
+        boolean dont_go=false;
+
+        for(int y=0;y<coords.length;y++) {
+            for (int x = 0; x < coords[0].length; x++) {
+                if(!coords[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+
+
+                if(!record_blocks[y][x] && !coords[y][x])
+                {
+                    if(xmin<=x && x>=xmax)
+                    {
+                        dont_go=true;
+
+                    }
+
+                }
+
+            }
+
+
+
+        }
+
+        if(x_intersection!=0)
+        {
+
+           // if(y1==y2 && x1==x2+1 )  dont_go=true;
+          //  if(y1==y2+1 && x1==x2 ) dont_go=true;
+
+         //   if(block_width>block_height)
+          //      if(go_left)   horizontal-=(xmax-x_intersection)+1; else horizontal+=(x_intersection-xmin)+1;
+
+        }
+
+
+
+            if(dont_go)
+
+            {
+                //direction=0;
+              // direction--;
+                System.out.println("dont go");
+            }
+
+        return dont_go;
+
+
+    }
+
+
 
 
 
@@ -140,18 +217,9 @@ public class blocks {
                     {
                         x_intersection=x;   //try2=true;
                         if(x_intersection!=xmin) go_left=true;
-                       // y_intersection = y;
-                       // if(y_intersection!=ymin) go_up=true;
+
                     }
 
-                    /*
-                       if(ymin<=y && y>=ymax)
-                    {
-
-                        y_intersection = y;
-                        if(y_intersection!=ymin) go_up=true;
-                    }
-                     */
                 }
 
             }
@@ -162,24 +230,19 @@ public class blocks {
 
                 if(block_width>block_height)
 
-                if(go_left)   horizontal-=(xmax-x_intersection)+1; else horizontal+=(x_intersection-xmin)+1;
-               // else if(go_up)   vertical-=(ymax-y_intersection)+1; else vertical+=(y_intersection-ymin)+1;
-        }
-    /*
-     if(y_intersection!=0) {
+                if(go_left)
+                {
+                    horizontal-=(xmax-x_intersection)+1;
+                }
+                    else
+                {
+                    horizontal+=(x_intersection-xmin)+1; // max_min2x_dont_go();
+                }
 
-              vertical-=(y_intersection-ymin)-2;
+
 
         }
-     */
 
-        /*
-         if(y_intersection!=0)
-        {
-            if(go_up)   vertical-=(ymax-y_intersection)+1; else vertical+=(y_intersection-ymin)+1;
-        }
-         */
-       // System.out.println("ymax: "+ymax+" ymin: "+ymin);
     }
 
     public void max_min2y() throws Exception
@@ -208,14 +271,14 @@ public class blocks {
                     {
                         y_intersection=y;   //try2=true;
                         if(y_intersection!=ymin) go_up=true;
-                      //  break_me=true;
+
 
                     }
 
                 }
-             //   if(break_me) break;
+
             }
-           // if(break_me) break;
+
         }
 
         if(y_intersection!=0)
@@ -235,7 +298,7 @@ public class blocks {
 
         }
 
-        System.out.println("ymax: "+ymax+" ymin: "+ymin+" trw: "+trw);
+     //   System.out.println("ymax: "+ymax+" ymin: "+ymin+" trw: "+trw);
     }
 
     public void calibrate_record_blocks() throws Exception
@@ -279,7 +342,7 @@ public class blocks {
             }
 
 
-   //  record_blocks [5][6] = false;
+
 
     }
 
@@ -313,14 +376,6 @@ public class blocks {
         }
 
 
-      //  Log.d("Max Min ","Ymin: "+ymin+" Ymax: "+ymax+" Xmin: "+xmin+" Xmax: "+xmax);
-
-      //  check_record_blocks_xmin=xmin;
-      //  check_record_blocks_xmax=xmax;
-      //  check_record_blocks_ymin=ymin;
-       // check_record_blocks_ymax=ymax;
-
-
 
 
         block_width2=xmax-xmin+1;
@@ -338,9 +393,6 @@ public class blocks {
         gogo2 = this.block_height-block_height2;
       if(ymax>=19)  vertical = vertical - gogo2;
 
-
-
-      //  return horizontal;
 
 
     }
@@ -530,7 +582,7 @@ public class blocks {
                     if(!record_blocks[y][x] && !coords[y][x+1])
                     {
                         thr = false;
-                        //   System.out.println("dont go right 2");
+
 
                     }
 
@@ -628,6 +680,8 @@ public class blocks {
        // direction();
          max_min2x();
         max_min2y();
+
+        // max_min2x_dont_go();
         direction();
 
       //  max_min2();
@@ -638,37 +692,50 @@ public class blocks {
         public void direction() throws Exception
         {
 
-
-
-
-             switch (direction)
+        try {
+            switch (direction)
             {
                 case 1:
                     block_type_d1();
                     //horizontal
-              //      is_vertical_horizontal="horizontal";
+                    //      is_vertical_horizontal="horizontal";
                     break;
 
                 case 2:
                     block_type_d2();
                     //vertical
-              //      is_vertical_horizontal="vertical";
+                    //      is_vertical_horizontal="vertical";
                     break;
 
                 case 3:
                     block_type_d3();
                     //horizontal
-              //      is_vertical_horizontal="horizontal";
+                    //      is_vertical_horizontal="horizontal";
                     break;
 
                 case 4:
                     block_type_d4();
                     //vertical
-               //     is_vertical_horizontal="horizontal";
+                    //     is_vertical_horizontal="horizontal";
                     break;
 
 
             }
+
+
+
+
+
+
+
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+
 
 
         }
@@ -682,30 +749,37 @@ public class blocks {
         {
             case 1:
                 bar_d1();
+                ghost_bar_d2();
                 break;
 
             case 2:
                 regular_z_d1();
+                ghost_regular_z_d2();
                 break;
 
             case 3:
                 reverse_z_d1();
+                ghost_reverse_z_d2();
                 break;
 
             case 4:
                 regular_L_d1();
+                ghost_regular_L_d2();
                 break;
 
             case 5:
                 reverse_L_d1();
+                ghost_reverse_L_d2();
                 break;
 
             case 6:
                T_d1();
+               ghost_T_d2();
                 break;
 
             case 7:
                 square();
+                ghost_square();
                 break;
 
         }
@@ -718,27 +792,33 @@ public class blocks {
         {
             case 1:
                 bar_d2();
+                ghost_bar_d1();
                 break;
 
             case 2:
                 regular_z_d2();
+                ghost_regular_z_d1();
                 break;
 
             case 3:
                 reverse_z_d2();
+                ghost_reverse_z_d1();
                 break;
 
             case 4:
                 regular_L_d2();
+                ghost_regular_L_d3();
                 break;
 
 
             case 5:
                 reverse_L_d2();
+                ghost_reverse_L_d3();
                 break;
 
             case 6:
                T_d2();
+               ghost_T_d3();
                 break;
 
         }
@@ -752,14 +832,17 @@ public class blocks {
 
             case 4:
                 regular_L_d3();
+                ghost_regular_L_d4();
                 break;
 
             case 5:
                 reverse_L_d3();
+                ghost_reverse_L_d4();
                 break;
 
             case 6:
                T_d3();
+               ghost_T_d4();
                 break;
         }
     }
@@ -771,14 +854,17 @@ public class blocks {
 
             case 4:
                 regular_L_d4();
+                ghost_regular_L_d1();
                 break;
 
             case 5:
                 reverse_L_d4();
+                ghost_reverse_L_d1();
                 break;
 
             case 6:
                T_d4();
+               ghost_T_d1();
                 break;
 
         }
@@ -1178,8 +1264,6 @@ public class blocks {
         }
 
 
-
-
     }
 
 
@@ -1209,6 +1293,425 @@ public class blocks {
     }
 
 
+    public  void ghost_T_d1() throws Exception
+    {
+
+        ghost_block_width=3;
+        ghost_block_height=2;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+                if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+
+    public  void ghost_T_d2() throws Exception
+    {
+
+
+        ghost_block_width=2;
+        ghost_block_height=3;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else if(x>=horizontal && x<=horizontal && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+    public  void ghost_T_d3() throws Exception
+    {
+
+        ghost_block_width=3;
+        ghost_block_height=2;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else if(x>=horizontal && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+
+    public  void ghost_T_d4() throws Exception
+    {
+        ghost_block_width=2;
+        ghost_block_height=3;
+
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+                if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+
+    public  void ghost_reverse_L_d1() throws Exception
+    {
+
+        ghost_block_width = 3;
+        ghost_block_height=2;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else if(x>=horizontal && x<=horizontal && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+    public  void ghost_reverse_L_d2() throws Exception
+    {
+
+        ghost_block_width = 2;
+        ghost_block_height=3;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else if(x>=horizontal && x<=horizontal && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+
+    public  void ghost_reverse_L_d3() throws Exception
+    {
+
+        ghost_block_width = 3;
+        ghost_block_height=2;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
+                else if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+    public  void ghost_reverse_L_d4() throws Exception
+    {
+
+        ghost_block_width = 2;
+        ghost_block_height=3;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+
+
+    public  void ghost_regular_L_d1() throws Exception
+    {
+
+
+        ghost_block_width = 3;
+        ghost_block_height=2;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+                if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+
+    public  void ghost_regular_L_d2() throws Exception
+    {
+
+        ghost_block_width = 2;
+        ghost_block_height=3;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else if(x>=horizontal && x<=horizontal && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+
+
+
+
+    public  void ghost_regular_L_d3() throws Exception
+    {
+
+        ghost_block_width = 3;
+        ghost_block_height=2;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal && x<=horizontal && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
+                else if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+    public  void ghost_regular_L_d4() throws Exception
+    {
+
+        ghost_block_width = 2;
+        ghost_block_height=3;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
+                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+
+
+
+
+    public  void ghost_reverse_z_d1() throws Exception
+    {
+        ghost_block_width=3;
+        ghost_block_height=2;
+
+
+        //   max_direction=3;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal+1 && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else if(x>=horizontal && x<=horizontal+1 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+    public  void ghost_reverse_z_d2() throws Exception
+    {
+        ghost_block_width=2;
+        ghost_block_height=3;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+
+                if(x>=horizontal && x<=horizontal && y>=vertical &&  y<= vertical+1) ghost1[y][x]=false;
+                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical+1 &&  y<= vertical+2) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+        }
+
+
+
+
+    }
+
+
+    public  void ghost_regular_z_d1() throws Exception
+    {
+
+        ghost_block_width=3;
+        ghost_block_height=2;
+
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal && x<=horizontal+1 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else if(x>=horizontal+1 && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+        }
+
+    }
+
+    public  void ghost_regular_z_d2() throws Exception
+    {
+
+        ghost_block_width=2;
+        ghost_block_height=3;
+
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal && x<=horizontal && y>=vertical+1 &&  y<= vertical+2) ghost1[y][x]=false;
+                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+        }
+
+    }
+
+
+    public  void ghost_square() throws  Exception
+    {
+
+
+        ghost_block_width=2;
+        ghost_block_height=2;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+                if(x>=horizontal && x<=horizontal+1 && y>=vertical &&  y<= vertical+1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+    }
+
+
+
+
+
+    public  void ghost_bar_d1() throws Exception
+    {
+
+
+        ghost_block_width=4;
+        ghost_block_height=1;
+
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+                if(x>=horizontal && x<=horizontal+3 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+
+    }
+
+
+
+    public  void ghost_bar_d2() throws Exception
+    {
+
+        ghost_block_width=1;
+        ghost_block_height=4;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+
+
+                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+3-1) ghost1[y][x]=false;
+                else  ghost1[y][x]=true;
+            }
+
+        }
+
+
+
+
+    }
 
 
 

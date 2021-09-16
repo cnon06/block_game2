@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     boolean timer_pause_start=true;
 
     blocks blcks = new blocks();
+  //  ghost1 ghst1 = new ghost1();
 
 
 
@@ -359,6 +360,9 @@ public class MainActivity extends AppCompatActivity {
     {
 
   blcks.merge_blocks();
+    //ghst1.direction();
+        //ghst1.bar_d2();
+
 
 
         try {
@@ -371,10 +375,21 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+                    if(blcks.merge_blocks[y][x]==false )  iv [x] [y].setImageResource(R.drawable.tet7);
+               else   if(blcks.ghost1[y][x]==false)  iv [x] [y].setImageResource(R.drawable.tet1);
+                    else  iv [x] [y].setImageResource(R.drawable.tet6);
 
-                    if(blcks.merge_blocks[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet6);
+
+                    /*
+                      if(blcks.merge_blocks[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet6);
+
+
+
+                 if(ghst1.ghost_blocks1[y][x]==false)  iv [x] [y].setImageResource(R.drawable.tet1);
 
                     else  iv [x] [y].setImageResource(R.drawable.tet7);
+                     */
+
 
 
 
@@ -388,6 +403,41 @@ public class MainActivity extends AppCompatActivity {
         {
             System.out.println(e);
         }
+
+
+
+        /*
+         try {
+
+            for(int y=0;y<ghst1.ghost_blocks1.length;y++)
+            {
+
+                for(int x=0;x<ghst1.ghost_blocks1[0].length;x++)
+                {
+
+
+
+
+                    if(ghst1.ghost_blocks1[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet1);
+
+                    else  iv [x] [y].setImageResource(R.drawable.tet3);
+
+
+                }
+
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+         */
+
+
+
 
 
         /*
@@ -491,7 +541,7 @@ catch (Exception e)
 
         Thread thread = new Thread(){
             public void run(){
-                System.out.println("Thread Running");
+              //  System.out.println("Thread Running");
 
                 try
                 {
@@ -501,14 +551,18 @@ catch (Exception e)
 
 
 
-
+                      //  ghst1.vertical++;
                         blcks.vertical++;
                        blcks.direction2();
+                    //  ghst1.direction();
+
                         screen_refresh();
                         sleep(800);
 
                         //screen_refresh();
                         blcks.restart_blocks();
+
+
                         if(!blcks.dont_go_down()) blcks.first_horizontal_position();
 
                      //   screen_refresh();
