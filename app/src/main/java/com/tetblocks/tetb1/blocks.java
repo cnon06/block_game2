@@ -10,7 +10,7 @@ import java.util.TreeMap;
 
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 3, block_type =7 ,direction=1, block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0;
+   protected int horizontal = 3, vertical = -1, max_direction = 3, block_type =5 ,direction=1, block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0;
 
 
 
@@ -924,9 +924,16 @@ public class blocks {
             for (int x = 0; x < coords[0].length; x++) {
 
 
-                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical &&  y<= vertical) coords[y][x]=false;
+                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical-1) coords[y][x]=false;
+                else if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
+                else  coords[y][x]=true;
+
+                    /*
+                    if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical &&  y<= vertical) coords[y][x]=false;
                 else if(x>=horizontal && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
                 else  coords[y][x]=true;
+                     */
+
             }
 
         }
@@ -1345,8 +1352,9 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
-                else if(x>=horizontal && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+
+                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
+                else if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
