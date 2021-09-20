@@ -229,7 +229,37 @@ public class MainActivity extends AppCompatActivity {
 
                        // blcks.horizontal=1;
 
+
+
                         try {
+                             blcks.ghost_max_min2x();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println(e);
+                        }
+
+
+                        try {
+                            blcks.ghost_max_min2x2();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println(e);
+                        }
+
+
+                        try {
+                          blcks.ghost_max_min2x3();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println(e);
+                        }
+
+                        try {
+
+
                             blcks.direction++;
 
                             if(blcks.direction>blcks.max_direction) blcks.direction=1;

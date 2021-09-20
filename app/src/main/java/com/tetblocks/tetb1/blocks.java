@@ -4,13 +4,16 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 3, block_type =5 ,direction=1, block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0;
+   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =5 ,direction=1, block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0;
 
 
 
@@ -23,6 +26,9 @@ public class blocks {
 
     NavigableMap<String,Integer> max_direction2=new TreeMap();
    NavigableMap<String,Integer> first_horizontal_position= new TreeMap();
+   // HashMap<Integer,Integer> x_y_record= new HashMap<>();
+
+    NavigableMap<Integer,Integer> x_y_record= new TreeMap();
     String is_vertical_horizontal="";
 
  //  ghost1 ghst1 = new ghost1();
@@ -31,29 +37,6 @@ public class blocks {
 
      //   ghst1 = new ghost1();
     }
-
-
-
-    public boolean check_merge_blocks() throws Exception
-    {
-
-        boolean check=false;
-
-
-        for (int x = 0; x < merge_blocks[0].length; x++) {
-
-
-
-           if(!merge_blocks[0][x]) check=true ;
-
-
-
-        }
-
-        return check;
-
-    }
-
 
 
 
@@ -125,195 +108,254 @@ public class blocks {
     }
 
 
-
-    public boolean max_min2x_dont_go() throws Exception
+    public void ghost_max_min2x2() throws Exception
     {
+
         int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
-        int x_intersection=0, y_intersection=0;
-        int x1=0, y1=0 ,x2=0, y2=0;
-      //  boolean try2= false, go_left=false, go_up=false;
+        int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
 
-        int count =0;
+        boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
 
-        boolean dont_go=false;
 
-        for(int y=0;y<coords.length;y++) {
-            for (int x = 0; x < coords[0].length; x++) {
-                if(!coords[y][x]) {
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
                     if(x>xmax)xmax=x;
                     if(x<xmin)xmin=x;
                     if(y>ymax)ymax=y;
                     if(y<ymin)ymin=y;
                 }
 
+            }
+        }
+
+      gogo_x = ghost_block_width-(xmax-xmin+1);
+
+       // gogo_y = ghost_block_height-(ymax-ymin+1);
 
 
-                if(!record_blocks[y][x] && !coords[y][x])
-                {
-                    if(xmin<=x && x>=xmax)
-                    {
-                        dont_go=true;
+       if(xmax==9)   horizontal -=gogo_x;
+        if(xmin==0) horizontal +=gogo_x;
+       // if(ymax==19)   vertical -=gogo_y;
 
-                    }
+
+    }
+
+
+    public void ghost_max_min2x3() throws Exception
+    {
+
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+        int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
+
+        boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
+
+       // gogo_x = ghost_block_width-(xmax-xmin+1);
+
+        gogo_y = ghost_block_height-(ymax-ymin+1);
+
+
+      //  if(xmax==9)   horizontal -=gogo_x; else horizontal +=gogo_x;
+        if(ymax==19)   vertical -=gogo_y;
+
+
+    }
+
+
+    public void ghost_max_min2x4(boolean go_down, boolean go_right, int gogox, int gogoy) throws Exception
+    {
+
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+       // int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
+
+      // boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
 
                 }
 
             }
-
-
-
         }
 
-        if(x_intersection!=0)
+
+
+
+    }
+
+
+
+
+    public void ghost_max_min2x() throws Exception
+    {
+
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+        int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
+
+        boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+                 if(!record_blocks[y][x] && !ghost1[y][x])
+                {
+
+                    if(xmin==x)
+                    {
+                        go_right=true;
+                        gogo_x++;
+                    }
+
+                }
+            if(go_right) break;
+            }
+        }
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+                if(!record_blocks[y][x] && !ghost1[y][x])
+                {
+
+                    if(ymin==y)
+                    {
+                        go_down =true;
+                        gogo_y++;
+                    }
+                }
+            }
+        }
+
+        if(!go_right)
         {
-
-           // if(y1==y2 && x1==x2+1 )  dont_go=true;
-          //  if(y1==y2+1 && x1==x2 ) dont_go=true;
-
-         //   if(block_width>block_height)
-          //      if(go_left)   horizontal-=(xmax-x_intersection)+1; else horizontal+=(x_intersection-xmin)+1;
-
-        }
-
-
-
-            if(dont_go)
-
-            {
-                //direction=0;
-              // direction--;
-                System.out.println("dont go");
-            }
-
-        return dont_go;
-
-
-    }
-
-
-
-
-
-
-    public void max_min2x() throws Exception
-    {
-        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
-        int x_intersection=0, y_intersection=0;
-
-       boolean try2= false, go_left=false, go_up=false;
-
-        for(int y=0;y<coords.length;y++) {
-            for (int x = 0; x < coords[0].length; x++) {
-                if(!coords[y][x]) {
-                    if(x>xmax)xmax=x;
-                    if(x<xmin)xmin=x;
-                    if(y>ymax)ymax=y;
-                    if(y<ymin)ymin=y;
-                }
-
-                if(!record_blocks[y][x] && !coords[y][x])
-                {
-                    if(xmin<=x && x>=xmax)
+            for(int y=0;y<ghost1.length;y++) {
+                for (int x = 0; x < ghost1[0].length; x++) {
+                    if(!record_blocks[y][x] && !ghost1[y][x])
                     {
-                        x_intersection=x;   //try2=true;
-                        if(x_intersection!=xmin) go_left=true;
+
+                        if(xmax==x)
+                        {
+                            gogo_x++;
+                            go_one_step_x=true;
+                        }
 
                     }
-
+                    if(go_one_step_x) break;
                 }
-
             }
-        }
 
-                 if(x_intersection!=0)
-            {
-
-                if(block_width>block_height)
-
-                if(go_left)
-                {
-                    horizontal-=(xmax-x_intersection)+1;
-                }
-                    else
-                {
-                    horizontal+=(x_intersection-xmin)+1; // max_min2x_dont_go();
-                }
-
-
-
-        }
-
-    }
-
-    public void max_min2y() throws Exception
-    {
-        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
-        int x_intersection=0, y_intersection=0;
-
-        boolean try2= false,  go_up=false, break_me=false, dont_make_trw_1=false;
-        int trw=0;
-
-        for(int y=0;y<coords.length;y++) {
-            for (int x = 0; x < coords[0].length; x++) {
-                if(!coords[y][x]) {
-                    if(x>xmax)xmax=x;
-                    if(x<xmin)xmin=x;
-                    if(y>ymax)ymax=y;
-                    if(y<ymin)ymin=y;
-                }
-
-
-
-                if(!record_blocks[y][x] && !coords[y][x])
-                {
-                    trw++;
-                    if(ymin<=y && y<=ymax)
+            for(int y=0;y<ghost1.length;y++) {
+                for (int x = 0; x < ghost1[0].length; x++) {
+                    if(!record_blocks[y][x] && !ghost1[y][x])
                     {
-                        y_intersection=y;   //try2=true;
-                        if(y_intersection!=ymin) go_up=true;
-
-
+                        if(xmax-1==x)
+                        {
+                            if(go_one_step_x) gogo_x++; else gogo_x+=2;
+                        }
                     }
-
                 }
-
             }
 
         }
 
-        if(y_intersection!=0)
+        if(!go_down)
         {
+            for(int y=0;y<ghost1.length;y++) {
+                for (int x = 0; x < ghost1[0].length; x++) {
+                    if(!record_blocks[y][x] && !ghost1[y][x])
+                    {
 
-            if(block_width<block_height)
+                        if(ymax==y)
+                        {
+                            gogo_y++;
+                            go_one_step_y=true;
+                        }
 
+                    }
+                    if(go_one_step_y) break;
+                }
 
-               if(trw==2)
-               {
-                   vertical=vertical-(ymax-y_intersection)-2;
-                  dont_make_trw_1=true;
-               }
+            }
 
-          if(!dont_make_trw_1)  if(go_up)   vertical-=(ymax-y_intersection)+1; else vertical+=(y_intersection-ymin)+1;
+            for(int y=0;y<ghost1.length;y++) {
+                for (int x = 0; x < ghost1[0].length; x++) {
+                    if(!record_blocks[y][x] && !ghost1[y][x])
+                    {
 
+                        if(ymax-1==y)
+                        {
+
+                            if(go_one_step_y) gogo_y++; else gogo_y+=2;
+                        }
+
+                    }
+                }
+            }
 
         }
 
-     //   System.out.println("ymax: "+ymax+" ymin: "+ymin+" trw: "+trw);
+
+        if(!go_right) gogo_x*=-1;
+        if(!go_down) gogo_y*=-1;
+
+
+
+
+        if(ghost_block_width>ghost_block_height) horizontal += gogo_x;
+        else vertical += gogo_y;
+
     }
+
+
 
     public void calibrate_record_blocks() throws Exception
     {
 
-
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-
-
                 record_blocks [y][x] = true ;
-
-
 
             }
 
@@ -324,8 +366,6 @@ public class blocks {
     public void record_blocks() throws Exception
     {
 
-
-
       for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
@@ -335,67 +375,11 @@ public class blocks {
                 {
                     record_blocks [y][x] = coords[y][x] ;
                 }
-
-
                   }
 
             }
-
-
-
-
     }
 
-
-
-    public void max_min() throws Exception
-    {
-
-        int xmax=0, xmin=50, ymin=50, ymax=0,  block_width2=0, block_height2=0;
-
-
-
-
-        for(int y=0;y<coords.length;y++) {
-
-
-
-            for (int x = 0; x < coords[0].length; x++) {
-
-
-                if(!coords[y][x]) {
-                    if(x>xmax)xmax=x;
-                    if(x<xmin)xmin=x;
-                    if(y>ymax)ymax=y;
-                    if(y<ymin)ymin=y;
-
-                }
-
-            }
-
-        }
-
-
-
-
-        block_width2=xmax-xmin+1;
-        block_height2=ymax-ymin+1;
-
-
-
-         int gogo=0, gogo2=0;
-      if(block_width2>-10 && vertical>0)   gogo = this.block_width-block_width2;
-
-
-    if(xmin>0)   horizontal = horizontal-gogo; else horizontal = horizontal+gogo;
-
-
-        gogo2 = this.block_height-block_height2;
-      if(ymax>=19)  vertical = vertical - gogo2;
-
-
-
-    }
 
 
     public void setMax_direction() throws Exception
@@ -506,8 +490,6 @@ public class blocks {
     }
 
 
-
-
     public boolean dont_go_down() throws Exception
     {
 
@@ -533,8 +515,6 @@ public class blocks {
         else  return true;
 
     }
-
-
 
     public boolean dont_go_left() throws Exception
     {
@@ -565,7 +545,6 @@ public class blocks {
     }
 
 
-
     public boolean dont_go_left2() throws Exception
     {
 
@@ -583,14 +562,10 @@ public class blocks {
                     {
                         thr = false;
 
-
                     }
 
-
                 }
-
             }
-
         }
         catch (Exception e)
         {
@@ -618,7 +593,7 @@ public class blocks {
                      if(!record_blocks[y][x] && !coords[y][x-1])
                      {
                          thr = false;
-                      //   System.out.println("dont go right 2");
+
 
                      }
 
@@ -676,15 +651,7 @@ public class blocks {
     {
 
         direction();
-        max_min();
-       // direction();
-         max_min2x();
-        max_min2y();
 
-        // max_min2x_dont_go();
-        direction();
-
-      //  max_min2();
 
 
     }
@@ -722,21 +689,11 @@ public class blocks {
 
             }
 
-
-
-
-
-
-
-
         }
         catch (Exception e)
         {
             System.out.println(e);
         }
-
-
-
 
         }
 
@@ -928,11 +885,6 @@ public class blocks {
                 else if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) coords[y][x]=false;
                 else  coords[y][x]=true;
 
-                    /*
-                    if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical &&  y<= vertical) coords[y][x]=false;
-                else if(x>=horizontal && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) coords[y][x]=false;
-                else  coords[y][x]=true;
-                     */
 
             }
 
@@ -1089,9 +1041,6 @@ public class blocks {
     }
 
 
-
-
-
     public  void regular_L_d3() throws Exception
     {
 
@@ -1135,15 +1084,11 @@ public class blocks {
 
 
 
-
-
     public  void reverse_z_d1() throws Exception
     {
         block_width=3;
         block_height=2;
 
-
-     //   max_direction=3;
 
         for(int y=0;y<coords.length;y++) {
 
@@ -1178,8 +1123,6 @@ public class blocks {
         }
 
 
-
-
     }
 
 
@@ -1210,8 +1153,6 @@ public class blocks {
         block_width=2;
         block_height=3;
 
-
-
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
@@ -1229,10 +1170,8 @@ public class blocks {
     public  void square() throws  Exception
     {
 
-
         block_width=2;
         block_height=2;
-
 
         for(int y=0;y<coords.length;y++) {
 
@@ -1247,22 +1186,15 @@ public class blocks {
     }
 
 
-
-
-
     public  void bar_d1() throws Exception
     {
-
 
         block_width=4;
         block_height=1;
 
-
-
         for(int y=0;y<coords.length;y++) {
 
             for (int x = 0; x < coords[0].length; x++) {
-
 
                 if(x>=horizontal && x<=horizontal+3 && y>=vertical &&  y<= vertical) coords[y][x]=false;
                 else  coords[y][x]=true;
@@ -1293,9 +1225,6 @@ public class blocks {
             }
 
         }
-
-
-
 
     }
 
@@ -1565,8 +1494,6 @@ public class blocks {
         ghost_block_height=2;
 
 
-        //   max_direction=3;
-
         for(int y=0;y<ghost1.length;y++) {
 
             for (int x = 0; x < ghost1[0].length; x++) {
@@ -1669,17 +1596,12 @@ public class blocks {
     }
 
 
-
-
-
     public  void ghost_bar_d1() throws Exception
     {
 
 
         ghost_block_width=4;
         ghost_block_height=1;
-
-
 
         for(int y=0;y<ghost1.length;y++) {
 
@@ -1694,8 +1616,6 @@ public class blocks {
 
 
     }
-
-
 
     public  void ghost_bar_d2() throws Exception
     {
@@ -1716,11 +1636,6 @@ public class blocks {
 
         }
 
-
-
-
     }
-
-
 
 }
