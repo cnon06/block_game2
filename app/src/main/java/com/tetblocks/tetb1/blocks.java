@@ -11,14 +11,18 @@ import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
 
+
+
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =5 ,direction=1, block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0;
+   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =1 ,direction=1,
+           block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0,ghost_horizontal = 3, ghost_vertical = -1, gogo_x=0, gogo_y=0;
 
 
 
 
-    boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10];
+    boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10],
+            ghost2 [][] = new boolean[20][10];
 
     List <Integer> intersection_list_x = new ArrayList<>();
     List <Integer> intersection_list_y = new ArrayList<>();
@@ -29,16 +33,54 @@ public class blocks {
    // HashMap<Integer,Integer> x_y_record= new HashMap<>();
 
     NavigableMap<Integer,Integer> x_y_record= new TreeMap();
-    String is_vertical_horizontal="";
 
- //  ghost1 ghst1 = new ghost1();
+
 
     blocks() {
 
-     //   ghst1 = new ghost1();
+
     }
 
+    public boolean ghost2() throws Exception
+    {
 
+        int gogox=0, gogoy=0;
+        boolean dont_go=false;
+
+
+        if(ghost_block_width>ghost_block_height) gogox = gogo_x;
+        else gogoy= gogo_y;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+                try {
+
+                  if (!ghost1[y][x] && !record_blocks[y+gogoy][x+gogox])
+                  {
+                      dont_go = true;
+                      System.out.println("dont go feweew");
+                  }
+
+
+
+                }
+                catch (Exception er)
+                {
+                    System.out.println(er);
+                }
+
+
+            }
+
+        }
+
+
+
+        return dont_go;
+    }
 
 
     protected void merge_blocks() throws Exception
@@ -103,9 +145,13 @@ public class blocks {
 
             }
 
-       // if(max_min_ymin==check_record_blocks_ymax+1) first_horizontal_position();
+
 
     }
+
+
+
+
 
 
     public void ghost_max_min2x2() throws Exception
@@ -134,8 +180,27 @@ public class blocks {
        // gogo_y = ghost_block_height-(ymax-ymin+1);
 
 
-       if(xmax==9)   horizontal -=gogo_x;
+        if(xmax==9)   ghost_horizontal -=gogo_x;
+        if(xmin==0)  ghost_horizontal +=gogo_x;
+
+
+        /*
+         if(ghost_max_min_control()) ghost_horizontal=horizontal;
+        else horizontal=ghost_horizontal;
+         */
+
+    //  horizontal=ghost_horizontal;
+
+
+        /*
+         if(xmax==9)   horizontal -=gogo_x;
         if(xmin==0) horizontal +=gogo_x;
+         */
+
+
+
+     //   ghost_horizontal=horizontal;
+
        // if(ymax==19)   vertical -=gogo_y;
 
 
@@ -168,47 +233,22 @@ public class blocks {
         gogo_y = ghost_block_height-(ymax-ymin+1);
 
 
-      //  if(xmax==9)   horizontal -=gogo_x; else horizontal +=gogo_x;
-        if(ymax==19)   vertical -=gogo_y;
+
+       // if(ymax==19)   vertical -=gogo_y;
+
+        if(ymax==19)   ghost_vertical -=gogo_y;
 
 
-    }
+        /*
+        if(ghost_max_min_control()) ghost_vertical=vertical;
+        else vertical=ghost_vertical;
+         */
 
-
-    public void ghost_max_min2x4(boolean go_down, boolean go_right, int gogox, int gogoy) throws Exception
-    {
-
-        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
-       // int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
-
-      // boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
-
-
-        for(int y=0;y<ghost1.length;y++) {
-            for (int x = 0; x < ghost1[0].length; x++) {
-                if(!ghost1[y][x]) {
-                    if(x>xmax)xmax=x;
-                    if(x<xmin)xmin=x;
-                    if(y>ymax)ymax=y;
-                    if(y<ymin)ymin=y;
-                }
-
-            }
-        }
-
-        for(int y=0;y<ghost1.length;y++) {
-            for (int x = 0; x < ghost1[0].length; x++) {
-                if(!ghost1[y][x]) {
-
-                }
-
-            }
-        }
-
-
-
+     // vertical=ghost_vertical;
 
     }
+
+
 
 
 
@@ -217,9 +257,15 @@ public class blocks {
     {
 
         int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
-        int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
+      //  int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
 
         boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
+
+
+        gogo_x=0; gogo_y=0;
+
+        ghost_horizontal=horizontal;
+        ghost_vertical=vertical;
 
 
         for(int y=0;y<ghost1.length;y++) {
@@ -340,9 +386,32 @@ public class blocks {
 
 
 
+        ghost2();
 
-        if(ghost_block_width>ghost_block_height) horizontal += gogo_x;
-        else vertical += gogo_y;
+
+             if(!ghost2())
+             {
+                 if(ghost_block_width>ghost_block_height) ghost_horizontal += gogo_x;
+                 else ghost_vertical += gogo_y;
+             }
+
+
+      //  ghost2();
+
+
+
+    //  horizontal = ghost_horizontal;
+        // vertical=ghost_vertical;
+
+
+
+        /*
+         horizontal = ghost_horizontal;
+        vertical=ghost_vertical;
+         */
+
+
+
 
     }
 
@@ -451,8 +520,10 @@ public class blocks {
     public void first_horizontal_position() throws Exception
     {
 
+       // ghost2();
 
-        record_blocks();
+
+      record_blocks();
 
         switch (block_type)
         {
@@ -485,7 +556,13 @@ public class blocks {
 
         }
 
+
           vertical=-1;  direction=1;
+
+
+          ghost_horizontal=horizontal;
+          ghost_vertical=vertical;
+
 
     }
 
@@ -1196,7 +1273,7 @@ public class blocks {
 
             for (int x = 0; x < coords[0].length; x++) {
 
-                if(x>=horizontal && x<=horizontal+3 && y>=vertical &&  y<= vertical) coords[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal+3 && y>=ghost_vertical &&  y<= ghost_vertical) coords[y][x]=false;
                 else  coords[y][x]=true;
             }
 
@@ -1220,7 +1297,7 @@ public class blocks {
 
 
 
-                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+3-1) coords[y][x]=false;
+                if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical-1 &&  y<= ghost_vertical+3-1) coords[y][x]=false;
                 else  coords[y][x]=true;
             }
 
@@ -1239,8 +1316,8 @@ public class blocks {
 
             for (int x = 0; x < ghost1[0].length; x++) {
 
-                if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
-                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal+2 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical+1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1261,8 +1338,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
-                else if(x>=horizontal && x<=horizontal && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical-1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal && x<=ghost_horizontal && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1282,8 +1359,8 @@ public class blocks {
 
 
 
-                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
-                else if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical-1 &&  y<= ghost_vertical-1) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal && x<=ghost_horizontal+2 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1303,8 +1380,8 @@ public class blocks {
 
             for (int x = 0; x < ghost1[0].length; x++) {
 
-                if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
-                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+2 && x<=ghost_horizontal+2 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical-1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1325,8 +1402,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
-                else if(x>=horizontal && x<=horizontal && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal+2 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal && x<=ghost_horizontal && y>=ghost_vertical+1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1345,8 +1422,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
-                else if(x>=horizontal && x<=horizontal && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical-1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal && x<=ghost_horizontal && y>=ghost_vertical-1 &&  y<= ghost_vertical-1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1366,8 +1443,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
-                else if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+2 && x<=ghost_horizontal+2 && y>=ghost_vertical-1 &&  y<= ghost_vertical-1) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal && x<=ghost_horizontal+2 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1386,8 +1463,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
-                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+2 && x<=ghost_horizontal+2 && y>=ghost_vertical+1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical-1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1409,8 +1486,8 @@ public class blocks {
 
             for (int x = 0; x < ghost1[0].length; x++) {
 
-                if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
-                else if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal+2 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal+2 && x<=ghost_horizontal+2 && y>=ghost_vertical+1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1430,8 +1507,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
-                else if(x>=horizontal && x<=horizontal && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical-1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal && x<=ghost_horizontal && y>=ghost_vertical+1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1454,8 +1531,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal && x<=horizontal && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
-                else if(x>=horizontal && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal && y>=ghost_vertical-1 &&  y<= ghost_vertical-1) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal && x<=ghost_horizontal+2 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1475,8 +1552,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal+2 && x<=horizontal+2 && y>=vertical-1 &&  y<= vertical-1) ghost1[y][x]=false;
-                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+2 && x<=ghost_horizontal+2 && y>=ghost_vertical-1 &&  y<= ghost_vertical-1) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical-1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1499,8 +1576,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal+1 && x<=horizontal+2 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
-                else if(x>=horizontal && x<=horizontal+1 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+1 && x<=ghost_horizontal+2 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal && x<=ghost_horizontal+1 && y>=ghost_vertical+1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1520,8 +1597,8 @@ public class blocks {
 
 
 
-                if(x>=horizontal && x<=horizontal && y>=vertical &&  y<= vertical+1) ghost1[y][x]=false;
-                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical+1 &&  y<= vertical+2) ghost1[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal && y>=ghost_vertical &&  y<= ghost_vertical+1) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical+1 &&  y<= ghost_vertical+2) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
         }
@@ -1545,8 +1622,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal && x<=horizontal+1 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
-                else if(x>=horizontal+1 && x<=horizontal+2 && y>=vertical+1 &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal+1 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal+1 && x<=ghost_horizontal+2 && y>=ghost_vertical+1 &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
         }
@@ -1566,8 +1643,8 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal && x<=horizontal && y>=vertical+1 &&  y<= vertical+2) ghost1[y][x]=false;
-                else if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal && y>=ghost_vertical+1 &&  y<= ghost_vertical+2) ghost1[y][x]=false;
+                else if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
         }
@@ -1587,7 +1664,7 @@ public class blocks {
 
             for (int x = 0; x < ghost1[0].length; x++) {
 
-                if(x>=horizontal && x<=horizontal+1 && y>=vertical &&  y<= vertical+1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal+1 && y>=ghost_vertical &&  y<= ghost_vertical+1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1608,7 +1685,7 @@ public class blocks {
             for (int x = 0; x < ghost1[0].length; x++) {
 
 
-                if(x>=horizontal && x<=horizontal+3 && y>=vertical &&  y<= vertical) ghost1[y][x]=false;
+                if(x>=ghost_horizontal && x<=ghost_horizontal+3 && y>=ghost_vertical &&  y<= ghost_vertical) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 
@@ -1630,7 +1707,7 @@ public class blocks {
 
 
 
-                if(x>=horizontal+1 && x<=horizontal+1 && y>=vertical-1 &&  y<= vertical+3-1) ghost1[y][x]=false;
+                if(x>=ghost_horizontal+1 && x<=ghost_horizontal+1 && y>=ghost_vertical-1 &&  y<= ghost_vertical+3-1) ghost1[y][x]=false;
                 else  ghost1[y][x]=true;
             }
 

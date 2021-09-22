@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                                 if(blcks.vertical==-1) blcks.vertical=0;
+                             blcks.ghost_vertical=blcks.vertical;
 
 
 
@@ -124,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                                         {
 
                                             blcks.horizontal++;
+                                            blcks.ghost_horizontal=blcks.horizontal;
                                          blcks.direction2();
 
 
@@ -175,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
                         try {
                             if(blcks.vertical==-1) blcks.vertical=0;
+                          blcks.ghost_vertical=blcks.vertical;
                             if(blcks.dont_go_left())
                             {
 
@@ -183,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                                 {
 
                                     blcks.horizontal--;
+                                 blcks.ghost_horizontal=blcks.horizontal;
 
                                   blcks.direction2();
 
@@ -227,8 +231,6 @@ public class MainActivity extends AppCompatActivity {
 
                         direction_arrow.setImageResource(R.drawable.red_repeat);
 
-                       // blcks.horizontal=1;
-
 
 
                         try {
@@ -260,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
 
 
-                            blcks.direction++;
+                        if(!blcks.ghost2())  blcks.direction++;
 
                             if(blcks.direction>blcks.max_direction) blcks.direction=1;
 
@@ -436,128 +438,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        /*
-         try {
-
-            for(int y=0;y<ghst1.ghost_blocks1.length;y++)
-            {
-
-                for(int x=0;x<ghst1.ghost_blocks1[0].length;x++)
-                {
-
-
-
-
-                    if(ghst1.ghost_blocks1[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet1);
-
-                    else  iv [x] [y].setImageResource(R.drawable.tet3);
-
-
-                }
-
-            }
-
-
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
-
-         */
-
-
-
-
-
-        /*
-        try {
-
-    for(int y=0;y<blcks.coords.length;y++)
-    {
-
-        for(int x=0;x<blcks.coords[0].length;x++)
-        {
-
-
-
-
-               if(blcks.coords[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet6);
-
-            else  iv [x] [y].setImageResource(R.drawable.tet4);
-
-
-
-        }
-
-    }
-
-
-}
-catch (Exception e)
-{
-System.out.println(e);
-}
-         */
-
-
-
-/*
-try {
-
-        for(int y=0;y<blcks.coords.length;y++)
-        {
-
-            for(int x=0;x<blcks.coords[0].length;x++)
-            {
-
-
-
-                if(blcks.record_blocks[y][x]== false ) iv [x] [y].setImageResource(R.drawable.tet1);
-
-            }
-
-        }
-
-
-
-            blcks.check_record_blocks();
-
-    }
-catch (Exception e)
-        {
-            System.out.println(e);
-        }
- */
-
-
-
 
 
     }
-
-
-    /*
-    public void msg_box(String msg)
-            {
-
-                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                alertDialog.setTitle("Alert");
-                alertDialog.setMessage(msg);
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-
-
-                alertDialog.show();
-
-            }
-
-     */
-
 
 
 
@@ -581,10 +464,11 @@ catch (Exception e)
 
 
 
-                      //  ghst1.vertical++;
+
                         blcks.vertical++;
+                        blcks.ghost_vertical = blcks.vertical;
                        blcks.direction2();
-                    //  ghst1.direction();
+
 
                         screen_refresh();
                         sleep(800);
