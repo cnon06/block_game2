@@ -120,40 +120,65 @@ public class blocks {
         int gogox=0, gogoy=0;
         boolean dont_go=false;
 
+        ghost4=false;
+
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+        // int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
+
+        boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
+
+
+        if(ymax==19)
+        {
+            for(int y=0;y<ghost1.length;y++) {
+
+                for (int x = 0; x < ghost1[0].length; x++) {
+
+                    try {
+
+                        if (!ghost1[y][x] && !record_blocks[y-gogo_y2][x])
+                        {
+                            dont_go = true;
+                            ghost4=true;
+                            System.out.println("dont go ghost3");
+                        }
+
+                        //  if(y+gogoy>19) dont_go2 =true;
+
+
+                    }
+                    catch (Exception er)
+                    {
+                        System.out.println(er);
+                    }
+
+
+                }
+
+            }
+
+        }
         /*
         gogo_y2
          if(ghost_block_width>ghost_block_height) gogox = gogo_x;
         else gogoy= gogo_y;
          */
 
-        ghost4=false;
-
-        for(int y=0;y<ghost1.length;y++) {
-
-            for (int x = 0; x < ghost1[0].length; x++) {
-
-                try {
-
-                    if (!ghost1[y][x] && !record_blocks[y-gogo_y2][x])
-                    {
-                        dont_go = true;
-                        ghost4=true;
-                        System.out.println("dont go ghost3");
-                    }
-
-                    //  if(y+gogoy>19) dont_go2 =true;
 
 
-                }
-                catch (Exception er)
-                {
-                    System.out.println(er);
-                }
-
-
-            }
-
-        }
 
 
         return dont_go;
