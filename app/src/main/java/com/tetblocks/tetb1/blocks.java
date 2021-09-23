@@ -16,13 +16,13 @@ import java.util.TreeMap;
 public class blocks {
 
    protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =1 ,direction=1,
-           block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0,ghost_horizontal = 3, ghost_vertical = -1, gogo_x=0, gogo_y=0;
+           block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0,ghost_horizontal = 3, ghost_vertical = -1, gogo_x=0, gogo_y=0, gogo_y2=0;
 
 
 
 
     boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10],
-            ghost2 [][] = new boolean[20][10];
+            ghost2 [][] = new boolean[20][10], ghost4=false;
 
     List <Integer> intersection_list_x = new ArrayList<>();
     List <Integer> intersection_list_y = new ArrayList<>();
@@ -41,9 +41,130 @@ public class blocks {
 
     }
 
+
+    public boolean ghost5(int gogox) throws Exception
+    {
+
+
+        boolean dont_go=false;
+
+
+
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+       // int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
+
+        boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
+
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
+
+        ghost4=false;
+
+        int b_width=ghost_block_width-(xmax-xmin+1);
+
+
+
+
+            for(int y=0;y<ghost1.length;y++) {
+
+                for (int x = 0; x < ghost1[0].length; x++) {
+
+                    try {
+
+                        if (!ghost1[y][x] && !record_blocks[y][x-gogox])
+                        {
+                            dont_go = true;
+                            ghost4=true;
+                            System.out.println("dont go ghost5");
+                        }
+
+
+                    }
+                    catch (Exception er)
+                    {
+                        System.out.println(er);
+                    }
+
+
+                }
+
+
+
+        }
+
+
+
+
+
+
+
+
+        return dont_go;
+    }
+
+
+
+    public boolean ghost3() throws Exception
+    {
+
+        int gogox=0, gogoy=0;
+        boolean dont_go=false;
+
+        /*
+        gogo_y2
+         if(ghost_block_width>ghost_block_height) gogox = gogo_x;
+        else gogoy= gogo_y;
+         */
+
+        ghost4=false;
+
+        for(int y=0;y<ghost1.length;y++) {
+
+            for (int x = 0; x < ghost1[0].length; x++) {
+
+                try {
+
+                    if (!ghost1[y][x] && !record_blocks[y-gogo_y2][x])
+                    {
+                        dont_go = true;
+                        ghost4=true;
+                        System.out.println("dont go ghost3");
+                    }
+
+                    //  if(y+gogoy>19) dont_go2 =true;
+
+
+                }
+                catch (Exception er)
+                {
+                    System.out.println(er);
+                }
+
+
+            }
+
+        }
+
+
+        return dont_go;
+    }
+
+
+
     public boolean ghost2() throws Exception
     {
 
+        ghost4=false;
         int gogox=0, gogoy=0;
         boolean dont_go=false;
 
@@ -61,9 +182,11 @@ public class blocks {
                   if (!ghost1[y][x] && !record_blocks[y+gogoy][x+gogox])
                   {
                       dont_go = true;
+                      ghost4=true;
                       System.out.println("dont go feweew");
                   }
 
+                //  if(y+gogoy>19) dont_go2 =true;
 
 
                 }
@@ -76,7 +199,6 @@ public class blocks {
             }
 
         }
-
 
 
         return dont_go;
@@ -180,28 +302,25 @@ public class blocks {
        // gogo_y = ghost_block_height-(ymax-ymin+1);
 
 
-        if(xmax==9)   ghost_horizontal -=gogo_x;
-        if(xmin==0)  ghost_horizontal +=gogo_x;
+      //  if(xmax==9)   gogo_x*=-1;
 
-
-        /*
-         if(ghost_max_min_control()) ghost_horizontal=horizontal;
-        else horizontal=ghost_horizontal;
-         */
-
-    //  horizontal=ghost_horizontal;
-
-
-        /*
-         if(xmax==9)   horizontal -=gogo_x;
-        if(xmin==0) horizontal +=gogo_x;
-         */
+       // if(xmin==0)  ghost_horizontal +=gogo_x;
 
 
 
-     //   ghost_horizontal=horizontal;
 
-       // if(ymax==19)   vertical -=gogo_y;
+
+       if(xmax==9)   ghost_horizontal -=gogo_x;
+       if(xmin==0)  ghost_horizontal +=gogo_x;
+
+
+           // ghost_horizontal +=gogo_x;
+
+
+
+
+
+
 
 
     }
@@ -209,6 +328,8 @@ public class blocks {
 
     public void ghost_max_min2x3() throws Exception
     {
+
+        gogo_y2=0;
 
         int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
         int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
@@ -230,13 +351,32 @@ public class blocks {
 
        // gogo_x = ghost_block_width-(xmax-xmin+1);
 
-        gogo_y = ghost_block_height-(ymax-ymin+1);
+        gogo_y2 = ghost_block_height-(ymax-ymin+1);
 
 
 
        // if(ymax==19)   vertical -=gogo_y;
 
-        if(ymax==19)   ghost_vertical -=gogo_y;
+
+
+
+          if(!ghost3())if(ymax==19)
+
+        {
+            ghost_vertical -=gogo_y2;
+            vertical=ghost_vertical;
+        }
+
+
+/*
+ ghost_vertical -=gogo_y2;
+        vertical=ghost_vertical;
+ */
+
+
+
+
+
 
 
         /*
@@ -386,14 +526,22 @@ public class blocks {
 
 
 
-        ghost2();
+       // ghost2();
 
 
-             if(!ghost2())
+
+
+                 if(!ghost2())
              {
+
                  if(ghost_block_width>ghost_block_height) ghost_horizontal += gogo_x;
                  else ghost_vertical += gogo_y;
+
              }
+
+
+
+
 
 
       //  ghost2();
@@ -520,7 +668,7 @@ public class blocks {
     public void first_horizontal_position() throws Exception
     {
 
-       // ghost2();
+
 
 
       record_blocks();

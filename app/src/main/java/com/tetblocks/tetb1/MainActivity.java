@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 
-                        try {
+                          try {
                           blcks.ghost_max_min2x3();
                         }
                         catch (Exception e)
@@ -259,10 +259,12 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println(e);
                         }
 
+
+
                         try {
 
 
-                        if(!blcks.ghost2())  blcks.direction++;
+                         if(!blcks.ghost4)blcks.direction++;
 
                             if(blcks.direction>blcks.max_direction) blcks.direction=1;
 
@@ -476,10 +478,10 @@ public class MainActivity extends AppCompatActivity {
                         //screen_refresh();
                         blcks.restart_blocks();
 
-
                         if(!blcks.dont_go_down()) blcks.first_horizontal_position();
 
-                     //   screen_refresh();
+                        screen_refresh();
+
 
                     }
 
