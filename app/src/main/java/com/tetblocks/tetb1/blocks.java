@@ -22,17 +22,14 @@ public class blocks {
 
 
     boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10],
-            ghost2 [][] = new boolean[20][10], ghost6=false;
+            ghost2 [][] = new boolean[20][10], ghost6=false, ghost7=false;
 
-    List <Integer> intersection_list_x = new ArrayList<>();
-    List <Integer> intersection_list_y = new ArrayList<>();
+
 
 
     NavigableMap<String,Integer> max_direction2=new TreeMap();
    NavigableMap<String,Integer> first_horizontal_position= new TreeMap();
-   // HashMap<Integer,Integer> x_y_record= new HashMap<>();
 
-    NavigableMap<Integer,Integer> x_y_record= new TreeMap();
 
 
 
@@ -44,91 +41,10 @@ public class blocks {
 
 
 
-    public boolean ghost3() throws Exception
-    {
-
-        int gogox=0, gogoy=0;
-        boolean dont_go=false;
-
-
-
-        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
-        // int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
-
-        boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
-
-
-        for(int y=0;y<ghost1.length;y++) {
-            for (int x = 0; x < ghost1[0].length; x++) {
-                if(!ghost1[y][x]) {
-                    if(x>xmax)xmax=x;
-                    if(x<xmin)xmin=x;
-                    if(y>ymax)ymax=y;
-                    if(y<ymin)ymin=y;
-                }
-
-            }
-        }
-
-
-
-        int bwidth=xmax-xmin+1;
-
-        if(ghost_block_width!=bwidth)  dont_go = true;
-
-
-
-        /*
-           if(ymax==19)
-        {
-            for(int y=0;y<ghost1.length;y++) {
-
-                for (int x = 0; x < ghost1[0].length; x++) {
-
-                    try {
-
-                        if (!ghost1[y][x] && !record_blocks[y-gogo_y2][x])
-                        {
-                            dont_go = true;
-                            ghost4=true;
-                            System.out.println("dont go ghost3");
-                        }
-
-                        //  if(y+gogoy>19) dont_go2 =true;
-
-
-                    }
-                    catch (Exception er)
-                    {
-                        System.out.println(er);
-                    }
-
-
-                }
-
-            }
-
-        }
-         */
-
-        /*
-        gogo_y2
-         if(ghost_block_width>ghost_block_height) gogox = gogo_x;
-        else gogoy= gogo_y;
-         */
-
-
-
-
-
-        return dont_go;
-    }
-
-
 
     public boolean ghost2() throws Exception
     {
-
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
 
         int gogox=0, gogoy=0;
         boolean dont_go=false;
@@ -147,19 +63,13 @@ public class blocks {
                   if (!ghost1[y][x] && !record_blocks[y+gogoy][x+gogox])
                   {
                       dont_go = true;
-
-
                   }
-
-                //  if(y+gogoy>19) dont_go2 =true;
-
 
                 }
                 catch (Exception er)
                 {
                     System.out.println(er);
                 }
-
 
             }
 
@@ -168,8 +78,22 @@ public class blocks {
 
 
 
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
 
 
+
+        if((xmax+gogox)>9) dont_go = true;
+       // if((xmin-gogox)<0) dont_go = true;
 
         return dont_go;
     }
@@ -269,14 +193,8 @@ public class blocks {
 
       gogo_x = ghost_block_width-(xmax-xmin+1);
 
-       // gogo_y = ghost_block_height-(ymax-ymin+1);
 
-
-      //  if(xmax==9)   gogo_x*=-1;
-
-       // if(xmin==0)  ghost_horizontal +=gogo_x;
-
-        ghost6=false;
+        ghost6=false; ghost7=false;
 
 
         if(xmax==9)
@@ -297,19 +215,18 @@ public class blocks {
         }
 
 
-        if(xmin==0)  ghost_horizontal +=gogo_x;
+        if(xmin==0) ghost_horizontal +=gogo_x;
 
 
 
-            horizontal=ghost_horizontal;
-
-           // ghost_horizontal +=gogo_x;
+      //  ghost_horizontal +=gogo_x;
 
 
-
+         //   ghost_horizontal +=gogo_x;
 
 
 
+          horizontal=ghost_horizontal;
 
 
     }
@@ -343,12 +260,6 @@ public class blocks {
         gogo_y2 = ghost_block_height-(ymax-ymin+1);
 
 
-
-       // if(ymax==19)   vertical -=gogo_y;
-
-
-
-
           if(ymax==19)
 
         {
@@ -356,24 +267,6 @@ public class blocks {
             vertical=ghost_vertical;
         }
 
-
-/*
- ghost_vertical -=gogo_y2;
-        vertical=ghost_vertical;
- */
-
-
-
-
-
-
-
-        /*
-        if(ghost_max_min_control()) ghost_vertical=vertical;
-        else vertical=ghost_vertical;
-         */
-
-     // vertical=ghost_vertical;
 
     }
 
@@ -515,10 +408,6 @@ public class blocks {
 
 
 
-       // ghost2();
-
-
-
 
                  if(!ghost2())
              {
@@ -527,26 +416,6 @@ public class blocks {
                  else ghost_vertical += gogo_y;
 
              }
-
-
-
-
-
-
-
-
-
-
-    //  horizontal = ghost_horizontal;
-        // vertical=ghost_vertical;
-
-
-
-        /*
-         horizontal = ghost_horizontal;
-        vertical=ghost_vertical;
-         */
-
 
 
 
