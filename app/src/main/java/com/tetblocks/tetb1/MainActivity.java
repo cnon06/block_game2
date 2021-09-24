@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
 
 
-                         if(!blcks.ghost2())blcks.direction++;
+                         if(!blcks.ghost2() && !blcks.ghost6 )blcks.direction++;
 
                             if(blcks.direction>blcks.max_direction) blcks.direction=1;
 

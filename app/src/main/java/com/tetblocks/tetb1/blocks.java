@@ -22,7 +22,7 @@ public class blocks {
 
 
     boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10],
-            ghost2 [][] = new boolean[20][10], ghost4=false;
+            ghost2 [][] = new boolean[20][10], ghost6=false;
 
     List <Integer> intersection_list_x = new ArrayList<>();
     List <Integer> intersection_list_y = new ArrayList<>();
@@ -42,76 +42,6 @@ public class blocks {
     }
 
 
-    public boolean ghost5(int gogox) throws Exception
-    {
-
-
-        boolean dont_go=false;
-
-
-
-        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
-       // int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
-
-        boolean intersection= false, go_right=false, go_down=false, go_one_step_x=false, go_one_step_y=false;
-
-
-        for(int y=0;y<ghost1.length;y++) {
-            for (int x = 0; x < ghost1[0].length; x++) {
-                if(!ghost1[y][x]) {
-                    if(x>xmax)xmax=x;
-                    if(x<xmin)xmin=x;
-                    if(y>ymax)ymax=y;
-                    if(y<ymin)ymin=y;
-                }
-
-            }
-        }
-
-        ghost4=false;
-
-        int b_width=ghost_block_width-(xmax-xmin+1);
-
-
-
-
-            for(int y=0;y<ghost1.length;y++) {
-
-                for (int x = 0; x < ghost1[0].length; x++) {
-
-                    try {
-
-                        if (!ghost1[y][x] && !record_blocks[y][x-gogox])
-                        {
-                            dont_go = true;
-                            ghost4=true;
-                            System.out.println("dont go ghost5");
-                        }
-
-
-                    }
-                    catch (Exception er)
-                    {
-                        System.out.println(er);
-                    }
-
-
-                }
-
-
-
-        }
-
-
-
-
-
-
-
-
-        return dont_go;
-    }
-
 
 
     public boolean ghost3() throws Exception
@@ -120,7 +50,7 @@ public class blocks {
         int gogox=0, gogoy=0;
         boolean dont_go=false;
 
-        ghost4=false;
+
 
         int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
         // int x_intersection=0, y_intersection=0, gogo_x=0, gogo_y=0;
@@ -141,7 +71,15 @@ public class blocks {
         }
 
 
-        if(ymax==19)
+
+        int bwidth=xmax-xmin+1;
+
+        if(ghost_block_width!=bwidth)  dont_go = true;
+
+
+
+        /*
+           if(ymax==19)
         {
             for(int y=0;y<ghost1.length;y++) {
 
@@ -171,6 +109,8 @@ public class blocks {
             }
 
         }
+         */
+
         /*
         gogo_y2
          if(ghost_block_width>ghost_block_height) gogox = gogo_x;
@@ -189,7 +129,7 @@ public class blocks {
     public boolean ghost2() throws Exception
     {
 
-        ghost4=false;
+
         int gogox=0, gogoy=0;
         boolean dont_go=false;
 
@@ -207,8 +147,8 @@ public class blocks {
                   if (!ghost1[y][x] && !record_blocks[y+gogoy][x+gogox])
                   {
                       dont_go = true;
-                      ghost4=true;
-                      System.out.println("dont go feweew");
+
+
                   }
 
                 //  if(y+gogoy>19) dont_go2 =true;
@@ -224,6 +164,11 @@ public class blocks {
             }
 
         }
+
+
+
+
+
 
 
         return dont_go;
@@ -331,13 +276,32 @@ public class blocks {
 
        // if(xmin==0)  ghost_horizontal +=gogo_x;
 
+        ghost6=false;
+
+
+        if(xmax==9)
+
+        {
+
+            for(int y=0;y<ghost1.length;y++) {
+                for (int x = 0; x < ghost1[0].length; x++) {
+                    if(!ghost1[y][x] && !record_blocks[y][x-gogo_x]) {
+                      ghost6=true;
+                    }
+
+                }
+            }
+
+          if(!ghost6)  ghost_horizontal -=gogo_x;
+
+        }
+
+
+        if(xmin==0)  ghost_horizontal +=gogo_x;
 
 
 
-
-       if(xmax==9)   ghost_horizontal -=gogo_x;
-       if(xmin==0)  ghost_horizontal +=gogo_x;
-
+            horizontal=ghost_horizontal;
 
            // ghost_horizontal +=gogo_x;
 
@@ -385,7 +349,7 @@ public class blocks {
 
 
 
-          if(!ghost3())if(ymax==19)
+          if(ymax==19)
 
         {
             ghost_vertical -=gogo_y2;
@@ -569,7 +533,7 @@ public class blocks {
 
 
 
-      //  ghost2();
+
 
 
 
