@@ -415,6 +415,10 @@ public class blocks {
                  if(ghost_block_width>ghost_block_height) ghost_horizontal += gogo_x;
                  else ghost_vertical += gogo_y;
 
+
+                 vertical=ghost_vertical;
+
+
              }
 
 
