@@ -17,7 +17,7 @@ import java.util.TreeMap;
 
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =2 ,direction=1,
+   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =1 ,direction=1,
            block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0,ghost_horizontal = 3, ghost_vertical = -1, gogo_x=0, gogo_y=0, gogo_y2=0;
 
 
@@ -79,32 +79,40 @@ public class blocks {
 
         ListIterator itr = xlist.listIterator();
 
+        Integer prv=-10, next2=0, count=0;
 
-        //boolean fg2=false;
-
-        int mem1=0, ctr=0;
 
         while (itr.hasNext())
         {
+            //System.out.print(" next: "+itr.next());
 
 
-            System.out.print(itr.next()+" ");
+          next2= (int)itr.next();
 
+            String fgr = " next: "+next2;
+          // System.out.print(fgr);
 
-            /*
-              if(itr.next()!=null)
+            if(next2-prv!=2)
             {
-                if(mem1+1==(int)itr.next()) ctr++;
-                mem1=(int)itr.next();
+                System.out.print(fgr);
+                count++;
             }
-             */
 
 
 
-            //  if((int)itr.next()==x) fg2=true;
+
+           prv=next2;
+
+          //  System.out.print(" next: "+itr.next()+" prv: "+prv);
+        //  prv= Integer.parseInt(itr.next().toString());
+
         }
 
-        System.out.println("");
+        System.out.println(" count: "+count);
+
+        count=0;
+
+
 
      xlist.clear();
 
