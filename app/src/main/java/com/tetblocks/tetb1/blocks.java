@@ -4,9 +4,11 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
@@ -15,7 +17,7 @@ import java.util.TreeMap;
 
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =1 ,direction=1,
+   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =2 ,direction=1,
            block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0,ghost_horizontal = 3, ghost_vertical = -1, gogo_x=0, gogo_y=0, gogo_y2=0;
 
 
@@ -23,6 +25,9 @@ public class blocks {
 
     boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10],
             ghost2 [][] = new boolean[20][10], ghost6=false, ghost7=false;
+
+    ArrayList  xlist = new ArrayList<>(); ArrayList  xlist2 = new ArrayList<>();
+
 
 
 
@@ -38,7 +43,73 @@ public class blocks {
 
     }
 
+    public void ghost_left() throws Exception {
 
+
+        boolean bbreak=false;
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x] && record_blocks [y][x])  {
+
+
+                       ListIterator itr = xlist.listIterator();
+
+
+                       boolean fg2=false;
+
+                    while (itr.hasNext())
+                    {
+                        if((int)itr.next()==x) fg2=true;
+                    }
+
+
+
+                   if(!fg2) xlist.add(x);
+                   fg2=false;
+
+
+                }
+
+            }
+        }
+
+
+        Collections.sort(xlist);
+
+        ListIterator itr = xlist.listIterator();
+
+
+        //boolean fg2=false;
+
+        int mem1=0, ctr=0;
+
+        while (itr.hasNext())
+        {
+
+
+            System.out.print(itr.next()+" ");
+
+
+            /*
+              if(itr.next()!=null)
+            {
+                if(mem1+1==(int)itr.next()) ctr++;
+                mem1=(int)itr.next();
+            }
+             */
+
+
+
+            //  if((int)itr.next()==x) fg2=true;
+        }
+
+        System.out.println("");
+
+     xlist.clear();
+
+
+    }
 
 
 
@@ -94,6 +165,10 @@ public class blocks {
 
         if((xmax+gogox)>9) dont_go = true;
        // if((xmin-gogox)<0) dont_go = true;
+
+
+
+
 
         return dont_go;
     }

@@ -261,6 +261,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+                          try {
+                            blcks.ghost_left();
+                          }
+                          catch (Exception e)
+                          {
+                              System.out.println(e);
+                          }
+
+
+
                         try {
 
 
