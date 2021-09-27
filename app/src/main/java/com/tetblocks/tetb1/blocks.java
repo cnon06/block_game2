@@ -17,7 +17,7 @@ import java.util.TreeMap;
 
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =1 ,direction=1,
+   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =4 ,direction=1,
            block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0,ghost_horizontal = 3, ghost_vertical = -1, gogo_x=0, gogo_y=0, gogo_y2=0;
 
 
@@ -43,18 +43,14 @@ public class blocks {
 
     }
 
-    public void ghost_left() throws Exception {
+    public boolean ghost_left() throws Exception {
 
-
-        boolean bbreak=false;
 
         for(int y=0;y<ghost1.length;y++) {
             for (int x = 0; x < ghost1[0].length; x++) {
                 if(!ghost1[y][x] && record_blocks [y][x])  {
 
-
                        ListIterator itr = xlist.listIterator();
-
 
                        boolean fg2=false;
 
@@ -62,7 +58,6 @@ public class blocks {
                     {
                         if((int)itr.next()==x) fg2=true;
                     }
-
 
 
                    if(!fg2) xlist.add(x);
@@ -84,13 +79,12 @@ public class blocks {
 
         while (itr.hasNext())
         {
-            //System.out.print(" next: "+itr.next());
+
 
 
           next2= (int)itr.next();
 
             String fgr = " next: "+next2;
-          // System.out.print(fgr);
 
             if(next2-prv!=2)
             {
@@ -98,17 +92,14 @@ public class blocks {
                 count++;
             }
 
-
-
-
            prv=next2;
 
-          //  System.out.print(" next: "+itr.next()+" prv: "+prv);
-        //  prv= Integer.parseInt(itr.next().toString());
 
         }
 
         System.out.println(" count: "+count);
+
+        int balance = ghost_block_width-count;
 
         count=0;
 
@@ -116,6 +107,41 @@ public class blocks {
 
      xlist.clear();
 
+
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
+
+
+        boolean dontgo2=false;
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x] && !record_blocks [y][x])  {
+
+                dontgo2=true;
+
+                }
+
+            }
+        }
+
+
+        boolean dontgo=false;
+
+        if(xmin-balance<0 && dontgo2) dontgo=true;
+
+        return  dontgo;
 
     }
 

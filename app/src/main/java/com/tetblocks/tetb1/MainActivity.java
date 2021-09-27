@@ -234,25 +234,19 @@ public class MainActivity extends AppCompatActivity {
 
 
                         try {
-                             blcks.ghost_max_min2x();
-                        }
-                        catch (Exception e)
-                        {
-                            System.out.println(e);
-                        }
 
+                            if(!blcks.ghost_left())
+                            {
+                                blcks.ghost_max_min2x();
+                                blcks.ghost_max_min2x2();
+                                blcks.ghost_max_min2x3();
+                                blcks.ghost_left();
+                                if(!blcks.ghost2() && !blcks.ghost6 )blcks.direction++;
+                                if(blcks.direction>blcks.max_direction) blcks.direction=1;
+                                blcks.direction2();
+                                screen_refresh();
+                            }
 
-                        try {
-                            blcks.ghost_max_min2x2();
-                        }
-                        catch (Exception e)
-                        {
-                            System.out.println(e);
-                        }
-
-
-                          try {
-                          blcks.ghost_max_min2x3();
                         }
                         catch (Exception e)
                         {
@@ -261,57 +255,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-                          try {
-                            blcks.ghost_left();
-                          }
-                          catch (Exception e)
-                          {
-                              System.out.println(e);
-                          }
-
-
-
-                        try {
-
-
-                         if(!blcks.ghost2() && !blcks.ghost6 )blcks.direction++;
-
-                            if(blcks.direction>blcks.max_direction) blcks.direction=1;
-
-
-                          //  go_go_go=true;
-
-                            blcks.direction2();
-
-                            screen_refresh();
-
-
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-
-                        /*
-                         try {
-                            blcks.max_min2();
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-
-                        try {
-                            screen_refresh();
-                        }
-                        catch (Exception e)
-                        {
-                            System.out.println(e);
-                        }
-                         */
 
 
 
