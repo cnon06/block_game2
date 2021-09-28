@@ -235,11 +235,14 @@ public class MainActivity extends AppCompatActivity {
 
                         try {
 
-                            if(!blcks.ghost_left())
+                           //if(!blcks.ghost_left())
+                          if(!blcks.ghost_left() && !blcks.ghost_left2())
+                          //if(!blcks.ghost_left() && !blcks.ghost_left2() && !blcks.ghost_down())
                             {
                                 blcks.ghost_max_min2x();
                                 blcks.ghost_max_min2x2();
                                 blcks.ghost_max_min2x3();
+
                                 blcks.ghost_left();
                                 if(!blcks.ghost2() && !blcks.ghost6 )blcks.direction++;
                                 if(blcks.direction>blcks.max_direction) blcks.direction=1;

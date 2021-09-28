@@ -17,7 +17,7 @@ import java.util.TreeMap;
 
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =4 ,direction=1,
+   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =1 ,direction=1,
            block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0,ghost_horizontal = 3, ghost_vertical = -1, gogo_x=0, gogo_y=0, gogo_y2=0;
 
 
@@ -42,6 +42,125 @@ public class blocks {
 
 
     }
+
+
+
+    public boolean ghost_down() throws Exception {
+
+
+
+
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
+
+
+        int bbheight = ghost_block_height-(ymax-ymin+1);
+
+
+
+
+        boolean dontgo2=false;
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(x<ghost1[0].length-1)
+                {
+
+                     if(!ghost1 [y][x] && !record_blocks [ymax+bbheight][x])  {
+                     //   System.out.print(" X print: "+x);
+                        dontgo2=true; }
+                }
+
+
+
+            }
+        }
+
+
+        System.out.println("bbheight: "+bbheight+" dontgo2: "+dontgo2+" ymin: "+ ymin+" ymax: "+ymax);
+
+
+        if((ymax+bbheight)<19) dontgo2=false;
+
+        //  if(xmin-balance<0 && dontgo2) dontgo=true;
+
+        return  dontgo2;
+
+    }
+
+
+
+
+
+    public boolean ghost_left2() throws Exception {
+
+
+
+
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
+
+
+        int bbwidth = ghost_block_width-(xmax-xmin+1);
+
+
+
+
+        boolean dontgo2=false;
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+              if(x<ghost1[0].length-1)
+              {
+
+                // if(x<4) if(!ghost1 [y][x] && !record_blocks [y][xmax+bbwidth])
+                  if(x<4) if(!ghost1 [y][x] && !record_blocks [y][x+bbwidth])
+                  {
+                      System.out.print(" X print: "+x);
+                      dontgo2=true; }
+              }
+
+
+
+            }
+        }
+
+
+
+        if(xmin-bbwidth>-1) dontgo2=false;
+       // System.out.println("xmin-bbwidth: "+(xmin-bbwidth));
+
+      //  System.out.println("bbwidth: "+bbwidth+" dontgo2: "+dontgo2);
+
+      //  if(xmin-balance<0 && dontgo2) dontgo=true;
+
+        return  dontgo2;
+
+    }
+
+
 
     public boolean ghost_left() throws Exception {
 
@@ -88,7 +207,7 @@ public class blocks {
 
             if(next2-prv!=2)
             {
-                System.out.print(fgr);
+              //  System.out.print(fgr);
                 count++;
             }
 
@@ -97,7 +216,7 @@ public class blocks {
 
         }
 
-        System.out.println(" count: "+count);
+       // System.out.println(" count: "+count);
 
         int balance = ghost_block_width-count;
 
