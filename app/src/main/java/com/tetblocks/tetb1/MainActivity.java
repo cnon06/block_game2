@@ -236,15 +236,15 @@ public class MainActivity extends AppCompatActivity {
                         try {
 
                            //if(!blcks.ghost_left())
-                          if(!blcks.ghost_left() && !blcks.ghost_left2())
-                          //if(!blcks.ghost_left() && !blcks.ghost_left2() && !blcks.ghost_down())
+                          //if(!blcks.ghost_left() && !blcks.ghost_left2())
+                         if(!blcks.ghost_left() && !blcks.ghost_left2() && !blcks.ghost_down())
                             {
                                 blcks.ghost_max_min2x();
                                 blcks.ghost_max_min2x2();
                                 blcks.ghost_max_min2x3();
 
                                 blcks.ghost_left();
-                                if(!blcks.ghost2() && !blcks.ghost6 )blcks.direction++;
+                                if(!blcks.ghost2() && !blcks.ghost6)blcks.direction++;
                                 if(blcks.direction>blcks.max_direction) blcks.direction=1;
                                 blcks.direction2();
                                 screen_refresh();
@@ -368,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     if(blcks.merge_blocks[y][x]==false )  iv [x] [y].setImageResource(R.drawable.tet7);
-               else   if(blcks.ghost1[y][x]==false)  iv [x] [y].setImageResource(R.drawable.tet1);
+              // else   if(blcks.ghost1[y][x]==false)  iv [x] [y].setImageResource(R.drawable.tet1);
                     else  iv [x] [y].setImageResource(R.drawable.tet6);
 
 

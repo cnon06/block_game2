@@ -24,7 +24,7 @@ public class blocks {
 
 
     boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10],
-            ghost2 [][] = new boolean[20][10], ghost6=false, ghost7=false;
+            ghost2 [][] = new boolean[20][10], ghost6=false, ghost7=false, ghost8=false;
 
     ArrayList  xlist = new ArrayList<>(); ArrayList  xlist2 = new ArrayList<>();
 
@@ -72,26 +72,31 @@ public class blocks {
 
         boolean dontgo2=false;
 
-        for(int y=0;y<ghost1.length;y++) {
+
+
+
+        for(int y=ymin-bbheight;y<=ymin;y++) {
             for (int x = 0; x < ghost1[0].length; x++) {
-                if(x<ghost1[0].length-1)
-                {
+                if(!ghost1[y][x] && !record_blocks[y-bbheight][x]) {
 
-                     if(!ghost1 [y][x] && !record_blocks [ymax+bbheight][x])  {
-                     //   System.out.print(" X print: "+x);
-                        dontgo2=true; }
+                   if(ymax==19) dontgo2=true;
+
                 }
-
-
 
             }
         }
 
 
-        System.out.println("bbheight: "+bbheight+" dontgo2: "+dontgo2+" ymin: "+ ymin+" ymax: "+ymax);
 
 
-        if((ymax+bbheight)<19) dontgo2=false;
+
+
+
+
+      //  System.out.println("bbheight: "+bbheight+" dontgo2: "+dontgo2+" ymin: "+ ymin+" ymax: "+ymax);
+
+
+       // if((ymax+bbheight)<19) dontgo2=false;
 
         //  if(xmin-balance<0 && dontgo2) dontgo=true;
 
@@ -317,9 +322,6 @@ public class blocks {
 
 
         if((xmax+gogox)>9) dont_go = true;
-       // if((xmin-gogox)<0) dont_go = true;
-
-
 
 
 
@@ -447,11 +449,6 @@ public class blocks {
 
 
 
-      //  ghost_horizontal +=gogo_x;
-
-
-         //   ghost_horizontal +=gogo_x;
-
 
 
           horizontal=ghost_horizontal;
@@ -491,8 +488,11 @@ public class blocks {
           if(ymax==19)
 
         {
-            ghost_vertical -=gogo_y2;
-            vertical=ghost_vertical;
+
+                ghost_vertical -=gogo_y2;
+
+                vertical=ghost_vertical;
+
         }
 
 
