@@ -1,24 +1,15 @@
 package com.tetblocks.tetb1;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
-    int speed=1000, lvl=1;
+    int speed=100, lvl=1;
     boolean go_go_go=false;
 
     boolean timer_pause_start=true;
@@ -49,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // blcks.bar_d1();
+
+
+
+
 
         try {
             blcks.calibrate_record_blocks();
@@ -190,12 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
                                   blcks.direction2();
 
-
-
-
                                     screen_refresh();
-
-
                                 }
 
                             }
@@ -239,6 +229,8 @@ public class MainActivity extends AppCompatActivity {
                           //if(!blcks.ghost_left() && !blcks.ghost_left2())
                          if(!blcks.ghost_left() && !blcks.ghost_left2() && !blcks.ghost_down())
                             {
+
+
                                 blcks.ghost_max_min2x();
                                 blcks.ghost_max_min2x2();
                                 blcks.ghost_max_min2x3();
@@ -253,7 +245,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                         catch (Exception e)
                         {
-                            System.out.println(e);
+                            System.out.println("Code-9: "+e);
+                        }
+
+
+
+                        try {
+                            screen_refresh();
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Code-8: "+e);
                         }
 
 
@@ -297,10 +299,6 @@ public class MainActivity extends AppCompatActivity {
 
                         down_arrow.setImageResource(R.drawable.red_down_arrow);
 
-
-                      //  blcks.max_direction_list();
-
-                    //    Toast.makeText(getApplicationContext(),blcks.width()+"",Toast.LENGTH_SHORT).show();
                         return true;
                     case MotionEvent.ACTION_UP:
 
@@ -340,8 +338,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-  timer1();
-    //    timer2();
     }
 
 
@@ -351,15 +347,43 @@ public class MainActivity extends AppCompatActivity {
  public void screen_refresh() throws Exception
     {
 
-  blcks.merge_blocks();
-    //ghst1.direction();
-        //ghst1.bar_d2();
 
+        /*
+        try {
+
+
+            for(int y=0;y<iv.length;y++)
+            {
+
+                for(int x=0;x<iv[0].length;x++) {
+
+
+                    if(iv[y][x]==null) {
+                        iv [x] [y].setImageResource(R.drawable.tet6);
+                        System.out.println("There's a null value in graph.");
+                    }
+
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("Code-8: "+e);
+        }
+         */
+
+
+
+
+  blcks.merge_blocks();
 
 
         try {
 
-            for(int y=0;y<blcks.merge_blocks.length;y++)
+
+
+               for(int y=0;y<blcks.merge_blocks.length;y++)
             {
 
                 for(int x=0;x<blcks.merge_blocks[0].length;x++)
@@ -367,20 +391,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                    if(blcks.merge_blocks[y][x]==false )  iv [x] [y].setImageResource(R.drawable.tet7);
+
+
+                    if(blcks.merge_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
               // else   if(blcks.ghost1[y][x]==false)  iv [x] [y].setImageResource(R.drawable.tet1);
-                    else  iv [x] [y].setImageResource(R.drawable.tet6);
+                    else  iv [y] [x].setImageResource(R.drawable.tet6);
 
-
-                    /*
-                      if(blcks.merge_blocks[y][x]==true )  iv [x] [y].setImageResource(R.drawable.tet6);
-
-
-
-                 if(ghst1.ghost_blocks1[y][x]==false)  iv [x] [y].setImageResource(R.drawable.tet1);
-
-                    else  iv [x] [y].setImageResource(R.drawable.tet7);
-                     */
+                    //if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
 
 
 
@@ -393,8 +410,13 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            System.out.println("Code-7: "+e);
         }
+
+
+
+
+
 
 
 
@@ -404,15 +426,55 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
     public void timer1()
     {
 
 
+        new Thread(){
+            @Override
+            public void run() {
+                try
+                {
+
+                    while (timer_pause_start)
+                    {
 
 
-        Thread thread = new Thread(){
+                        blcks.vertical++;
+                        blcks.ghost_vertical = blcks.vertical;
+                        blcks.direction2();
+
+                        screen_refresh();
+
+
+                        sleep(600);
+                        blcks.restart_blocks();
+                        if(!blcks.dont_go_down()) blcks.first_horizontal_position();
+
+
+
+
+
+
+
+                      //  screen_refresh();
+
+
+                    }
+
+
+
+                }
+                catch (Exception ed)
+                {
+                    System.out.println(ed);
+                }
+            }
+        }.start();
+
+
+        /*
+           Thread thread = new Thread(){
             public void run(){
               //  System.out.println("Thread Running");
 
@@ -423,17 +485,15 @@ public class MainActivity extends AppCompatActivity {
                     {
 
 
-
-
                         blcks.vertical++;
                         blcks.ghost_vertical = blcks.vertical;
                        blcks.direction2();
 
 
                         screen_refresh();
-                        sleep(800);
+                        sleep(300);
 
-                        //screen_refresh();
+
                         blcks.restart_blocks();
 
                         if(!blcks.dont_go_down()) blcks.first_horizontal_position();
@@ -453,6 +513,9 @@ public class MainActivity extends AppCompatActivity {
         };
 
         thread.start();
+         */
+
+
 
 
     }
@@ -468,7 +531,7 @@ public class MainActivity extends AppCompatActivity {
 
             lln  = new LinearLayout[20];
             parms = new LinearLayout.LayoutParams(Width,Height);
-            iv  = new ImageView[10] [20];
+            iv  = new ImageView[20] [10];
 
 
 
@@ -498,12 +561,12 @@ public class MainActivity extends AppCompatActivity {
              */
 
 
-                for(int y=0;y<iv.length;y++)
+                for(int y=0;y<iv[0].length;y++)
                 {
-                    iv [y] [i]= new ImageView(this);
-                     iv [y] [i].setImageResource(R.drawable.tet6);
-                    lln[i].addView(iv[y][i], lp1);
-                    iv[y][i].setLayoutParams(parms);
+                    iv [i] [y]= new ImageView(this);
+                     iv [i] [y].setImageResource(R.drawable.tet6);
+                    lln[i].addView(iv[i][y], lp1);
+                    iv[i][y].setLayoutParams(parms);
 
                 }
 
@@ -518,7 +581,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
+        timer1();
 
 
     }

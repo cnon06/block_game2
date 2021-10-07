@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NavigableMap;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -17,14 +18,14 @@ import java.util.TreeMap;
 
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =1 ,direction=1,
+   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =6 ,direction=1,
            block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0,ghost_horizontal = 3, ghost_vertical = -1, gogo_x=0, gogo_y=0, gogo_y2=0;
 
 
 
 
     boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10],
-            ghost2 [][] = new boolean[20][10], ghost6=false, ghost7=false, ghost8=false;
+            ghost2 [][] = new boolean[20][10], ghost6=false, ghost7=false, right1 [][] = new boolean[20][10];
 
     ArrayList  xlist = new ArrayList<>(); ArrayList  xlist2 = new ArrayList<>();
 
@@ -88,18 +89,6 @@ public class blocks {
 
 
 
-
-
-
-
-
-      //  System.out.println("bbheight: "+bbheight+" dontgo2: "+dontgo2+" ymin: "+ ymin+" ymax: "+ymax);
-
-
-       // if((ymax+bbheight)<19) dontgo2=false;
-
-        //  if(xmin-balance<0 && dontgo2) dontgo=true;
-
         return  dontgo2;
 
     }
@@ -143,7 +132,7 @@ public class blocks {
                 // if(x<4) if(!ghost1 [y][x] && !record_blocks [y][xmax+bbwidth])
                   if(x<4) if(!ghost1 [y][x] && !record_blocks [y][x+bbwidth])
                   {
-                      System.out.print(" X print: "+x);
+
                       dontgo2=true; }
               }
 
@@ -155,11 +144,6 @@ public class blocks {
 
 
         if(xmin-bbwidth>-1) dontgo2=false;
-       // System.out.println("xmin-bbwidth: "+(xmin-bbwidth));
-
-      //  System.out.println("bbwidth: "+bbwidth+" dontgo2: "+dontgo2);
-
-      //  if(xmin-balance<0 && dontgo2) dontgo=true;
 
         return  dontgo2;
 
@@ -212,7 +196,7 @@ public class blocks {
 
             if(next2-prv!=2)
             {
-              //  System.out.print(fgr);
+
                 count++;
             }
 
@@ -221,7 +205,6 @@ public class blocks {
 
         }
 
-       // System.out.println(" count: "+count);
 
         int balance = ghost_block_width-count;
 
@@ -297,7 +280,7 @@ public class blocks {
                 }
                 catch (Exception er)
                 {
-                    System.out.println(er);
+                    System.out.println("Code-01: "+er);
                 }
 
             }
@@ -345,7 +328,7 @@ public class blocks {
                 }
                 catch (Exception er)
                 {
-                    System.out.println(er);
+                    System.out.println("Code-02: "+er);
                 }
 
 
@@ -376,7 +359,7 @@ public class blocks {
                     }
                     catch (Exception er)
                     {
-                       System.out.println(er);
+                       System.out.println("Code-03: "+er);
                     }
 
 
@@ -802,6 +785,30 @@ public class blocks {
           ghost_vertical=vertical;
 
 
+       // block_type=5;
+
+        Random random = new Random();
+
+        int x = random.nextInt(7);
+        block_type=x+1;
+       // System.out.println("Random: "+x);
+
+        setMax_direction();
+
+
+
+        /*
+          Random random = new Random();
+
+        int x = random.nextInt(6);
+        block_type=x+1;
+        System.out.println("Random: "+x);
+         */
+
+
+
+
+
     }
 
 
@@ -884,7 +891,7 @@ public class blocks {
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            System.out.println("Code-04: "+e);
         }
 
 
@@ -898,14 +905,61 @@ public class blocks {
 
          boolean thr=true;
 
+         /*
+          try {
+            for(int y=0;y<right1.length;y++) {
+
+
+                for (int x = 0; x < right1[0].length; x++) {
+
+
+                    right1[y][x]=true;
+
+
+                }
+
+            }
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("Code-10: "+ e);
+        }
+
+
+
+        try {
+            for(int y=0;y<right1.length;y++) {
+
+
+                for (int x = 0; x < right1[0].length; x++) {
+
+
+                    right1[y][x]=coords[y][x];
+
+
+                }
+
+            }
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("Code-11: "+ e);
+        }
+          */
+
+
+
+
          try {
              for(int y=0;y<coords.length;y++) {
 
 
                  for (int x = 0; x < coords[0].length; x++) {
 
-
-                     if(!record_blocks[y][x] && !coords[y][x-1])
+                     if(!coords[y][x] && !record_blocks[y][x+1])
+                     //if(!right1[y][x] && !record_blocks[y][x+1])
                      {
                          thr = false;
 
@@ -920,7 +974,7 @@ public class blocks {
          }
             catch (Exception e)
             {
-                System.out.println(e);
+                System.out.println("Code-05: "+ e);
             }
 
 
@@ -1007,7 +1061,7 @@ public class blocks {
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            System.out.println("Code-06: "+e);
         }
 
         }
