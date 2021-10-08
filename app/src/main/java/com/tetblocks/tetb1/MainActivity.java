@@ -3,13 +3,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,8 +30,26 @@ public class MainActivity extends AppCompatActivity {
     blocks blcks = new blocks();
   //  ghost1 ghst1 = new ghost1();
 
+    protected void onRestart() {
+        timer_pause_start=false;
+        finish();
+        System.out.println("App is closing.");
+        super.onRestart();
+    }
+
+    protected void onDestroy () {
+        timer_pause_start=false;
+        finish();
+        System.out.println("App is closing.");
+        super.onDestroy();
+    }
 
 
+    protected void onStop() {
+
+       // finish();
+        super.onStop();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +64,17 @@ public class MainActivity extends AppCompatActivity {
         // blcks.bar_d1();
 
 
+        try {
+            Random random = new Random();
 
+            int x = random.nextInt(7);
+            blcks.block_type=x+1;
+
+        }
+        catch (Exception e)
+        {
+
+        }
 
 
         try {
@@ -50,10 +82,11 @@ public class MainActivity extends AppCompatActivity {
             blcks.max_direction_list();
             blcks.setMax_direction();
             blcks.first_horizontal_position_list();
+
         }
         catch (Exception e)
         {
-
+            System.out.println("Code-13: "+e);
         }
 
 
@@ -106,35 +139,17 @@ public class MainActivity extends AppCompatActivity {
 
                             try {
 
-
-                                if(blcks.vertical==-1) blcks.vertical=0;
-                             blcks.ghost_vertical=blcks.vertical;
-
-
-
-                                    if(blcks.dont_go_right())
-                                    {
-
-
-                                        if(blcks.dont_go_right2())
-                                        {
-
-                                            blcks.horizontal++;
                                             blcks.ghost_horizontal=blcks.horizontal;
-                                         blcks.direction2();
+                                            blcks.ghost_horizontal++;
+                                            blcks.ghost_direction();
+                                            if(!blcks.left_right_control())
 
-
+                                            {
+                                                blcks.horizontal++;
+                                                blcks.direction();
+                                            }
 
                                             screen_refresh();
-
-
-                                        }
-
-
-
-
-                                    }
-
 
                             }
                             catch (Exception e)
@@ -171,24 +186,31 @@ public class MainActivity extends AppCompatActivity {
 
 
                         try {
-                            if(blcks.vertical==-1) blcks.vertical=0;
-                          blcks.ghost_vertical=blcks.vertical;
-                            if(blcks.dont_go_left())
+
+                            blcks.ghost_horizontal=blcks.horizontal;
+                            blcks.ghost_horizontal--;
+                            blcks.ghost_direction();
+                            if(!blcks.left_right_control())
                             {
+                                blcks.horizontal--;
+                                blcks.direction();
+                            }
 
 
-                                if(blcks.dont_go_left2())
-                                {
+                            screen_refresh();
 
+
+
+                            /*
+                                blcks.ghost_horizontal--;
                                     blcks.horizontal--;
-                                 blcks.ghost_horizontal=blcks.horizontal;
-
-                                  blcks.direction2();
+                                  blcks.direction();
+                                    blcks.ghost_direction();
 
                                     screen_refresh();
-                                }
+                             */
 
-                            }
+
 
                         }
                         catch (Exception e)
@@ -225,22 +247,41 @@ public class MainActivity extends AppCompatActivity {
 
                         try {
 
-                           //if(!blcks.ghost_left())
-                          //if(!blcks.ghost_left() && !blcks.ghost_left2())
-                         if(!blcks.ghost_left() && !blcks.ghost_left2() && !blcks.ghost_down())
-                            {
+
+                            blcks.ghost_direction++;
+                            if(blcks.ghost_direction>blcks.max_direction) blcks.ghost_direction=1;
 
 
-                                blcks.ghost_max_min2x();
+                            blcks.direction++;
+                            if(blcks.direction>blcks.max_direction) blcks.direction=1;
+                            screen_refresh();
+
+                            //if(!blcks.ghost_left())
+                            //if(!blcks.ghost_left() && !blcks.ghost_left2())
+                         //   if(!blcks.ghost_left() && !blcks.ghost_left2() && !blcks.ghost_down() ) {
+
+
+
+
+                                /*
+                                  blcks.ghost_max_min2x();
                                 blcks.ghost_max_min2x2();
                                 blcks.ghost_max_min2x3();
+                                blcks.to_vertical_horizontal();
+                                 */
 
-                                blcks.ghost_left();
-                                if(!blcks.ghost2() && !blcks.ghost6)blcks.direction++;
-                                if(blcks.direction>blcks.max_direction) blcks.direction=1;
-                                blcks.direction2();
-                                screen_refresh();
-                            }
+
+
+                               //blcks.ghost_left();
+                              //  if(!blcks.ghost2() && !blcks.ghost6  )
+
+                                    // blcks.direction++;
+
+
+                             //   blcks.direction2();
+
+                           // }
+
 
                         }
                         catch (Exception e)
@@ -249,14 +290,16 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 
-
-                        try {
+                        /*
+                         try {
                             screen_refresh();
                         }
                         catch (Exception e)
                         {
                             System.out.println("Code-8: "+e);
                         }
+
+                         */
 
 
 
@@ -269,7 +312,8 @@ public class MainActivity extends AppCompatActivity {
                         direction_arrow.setImageResource(R.drawable.repeat);
 
                             try {
-                                blcks.direction2();
+                                blcks.direction();
+                                blcks.ghost_direction();
                                 screen_refresh();
                             }
                             catch (Exception e)
@@ -393,8 +437,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                    if(blcks.merge_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
-              // else   if(blcks.ghost1[y][x]==false)  iv [x] [y].setImageResource(R.drawable.tet1);
+                  //if(blcks.merge_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7); else
+                    if(blcks.coords[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
+                       else if(blcks.ghost1[y][x]==false)  iv [y] [x].setImageResource(R.drawable.tet1);
+                   else if(blcks.record_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
+
                     else  iv [y] [x].setImageResource(R.drawable.tet6);
 
                     //if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
@@ -430,7 +477,9 @@ public class MainActivity extends AppCompatActivity {
     {
 
 
-        new Thread(){
+        /*
+        new Thread()
+       {
             @Override
             public void run() {
                 try
@@ -439,30 +488,16 @@ public class MainActivity extends AppCompatActivity {
                     while (timer_pause_start)
                     {
 
-
                         blcks.vertical++;
                         blcks.ghost_vertical = blcks.vertical;
                         blcks.direction2();
 
                         screen_refresh();
 
-
                         sleep(600);
                         blcks.restart_blocks();
                         if(!blcks.dont_go_down()) blcks.first_horizontal_position();
-
-
-
-
-
-
-
-                      //  screen_refresh();
-
-
                     }
-
-
 
                 }
                 catch (Exception ed)
@@ -471,13 +506,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }.start();
+         */
 
 
-        /*
+
+
            Thread thread = new Thread(){
             public void run(){
-              //  System.out.println("Thread Running");
 
+                boolean jump=false, jump2=false;
                 try
                 {
 
@@ -485,35 +522,92 @@ public class MainActivity extends AppCompatActivity {
                     {
 
 
-                        blcks.vertical++;
-                        blcks.ghost_vertical = blcks.vertical;
-                       blcks.direction2();
+                       blcks.ghost_vertical=blcks.vertical;
+                      blcks.ghost_vertical++;
+                        blcks.ghost_direction();
 
 
                         screen_refresh();
-                        sleep(300);
 
 
-                        blcks.restart_blocks();
+                        if(!blcks.down_control() )
+                        {
+                            blcks.vertical++;
+                            blcks.direction();
 
-                        if(!blcks.dont_go_down()) blcks.first_horizontal_position();
+                        } else
+                        {
+                            //sleep(100);
+                            blcks.first_horizontal_position();
+                            jump =true;
+                          //  blcks.ghost_vertical=blcks.vertical;
+                           // blcks.ghost_direction();
+                        }
 
-                        screen_refresh();
 
 
+
+
+
+
+
+                        /*
+                         if(jump)
+
+                        {
+                            blcks.first_horizontal_position();
+                            jump=false;
+                        }
+                         */
+
+                           // blcks.first_horizontal_position();
+                           // jump=false;
+
+
+
+
+
+
+                       // blcks.ghost_vertical = blcks.vertical;
+
+
+
+                        sleep(600);
+
+                       blcks.restart_blocks();
+
+
+                        /*
+                        if(jump)
+
+                       {
+                           blcks.first_horizontal_position();
+                           jump=false;
+                       }
+                         */
+
+                    //  blcks.restart_blocks();
+
+                      //  blcks.restart_blocks();
+
+
+
+                        // if(!blcks.dont_go_down()) blcks.first_horizontal_position();
                     }
 
                 }
                 catch (Exception ed)
                 {
-                    System.out.println("Error code 10:"+ed);
+                    System.out.println("Code-11"+ed);
                 }
+
+
 
             }
         };
 
         thread.start();
-         */
+
 
 
 

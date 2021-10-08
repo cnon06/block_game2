@@ -18,14 +18,14 @@ import java.util.TreeMap;
 
 public class blocks {
 
-   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =6 ,direction=1,
+   protected int horizontal = 3, vertical = -1, max_direction = 5, block_type =1 ,direction=1, ghost_direction=1,
            block_width=0, block_height=0, ghost_block_width=0, ghost_block_height=0,ghost_horizontal = 3, ghost_vertical = -1, gogo_x=0, gogo_y=0, gogo_y2=0;
 
 
 
 
     boolean coords[][] = new boolean[20][10], record_blocks [][] = new boolean[20][10], merge_blocks [][] = new boolean[20][10], ghost1 [][] = new boolean[20][10],
-            ghost2 [][] = new boolean[20][10], ghost6=false, ghost7=false, right1 [][] = new boolean[20][10];
+            ghost6=false, ghost7=false, ghost8=false;
 
     ArrayList  xlist = new ArrayList<>(); ArrayList  xlist2 = new ArrayList<>();
 
@@ -46,6 +46,111 @@ public class blocks {
 
 
 
+    public boolean down_control()
+    {
+
+        int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+
+        boolean dont_go_down=false;
+
+        for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x]) {
+                    if(x>xmax)xmax=x;
+                    if(x<xmin)xmin=x;
+                    if(y>ymax)ymax=y;
+                    if(y<ymin)ymin=y;
+                }
+
+            }
+        }
+
+        int bbheight = (ymax-ymin+1);
+
+        if(ghost_block_height != bbheight) dont_go_down=true;
+
+
+
+        /*
+           for(int y=0;y<ghost1.length;y++) {
+            for (int x = 0; x < ghost1[0].length; x++) {
+                if(!ghost1[y][x] && !record_blocks[y][x]) {
+                    dont_go_down=true;
+                }
+
+            }
+        }
+         */
+
+
+      //  boolean rty=false;
+
+
+
+
+
+       // System.out.println("ymax: "+ymax);
+
+        if(dont_go_down) ghost_vertical=vertical;
+
+        return dont_go_down;
+
+
+    }
+
+
+
+    public boolean left_right_control()
+   {
+
+       int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
+
+       boolean dont_go_right_left=false;
+
+       for(int y=0;y<ghost1.length;y++) {
+           for (int x = 0; x < ghost1[0].length; x++) {
+               if(!ghost1[y][x]) {
+                   if(x>xmax)xmax=x;
+                   if(x<xmin)xmin=x;
+                   if(y>ymax)ymax=y;
+                   if(y<ymin)ymin=y;
+               }
+
+           }
+       }
+
+       int bbwidth = (xmax-xmin+1);
+
+
+     //  System.out.println("bbwidth: "+bbwidth +" ghost_block_width: "+ghost_block_width);
+
+       if(ghost_block_width != bbwidth) dont_go_right_left=true;
+
+
+       for(int y=0;y<ghost1.length;y++) {
+           for (int x = 0; x < ghost1[0].length; x++) {
+               if(!ghost1[y][x] && !record_blocks[y][x]) {
+                   dont_go_right_left=true;
+               }
+
+           }
+       }
+
+
+       if(dont_go_right_left) ghost_horizontal=horizontal;
+
+
+
+       return dont_go_right_left;
+
+
+
+
+
+   }
+
+
+    /*
     public boolean ghost_down() throws Exception {
 
 
@@ -133,7 +238,8 @@ public class blocks {
                   if(x<4) if(!ghost1 [y][x] && !record_blocks [y][x+bbwidth])
                   {
 
-                      dontgo2=true; }
+                     dontgo2=true;
+                  }
               }
 
 
@@ -311,6 +417,8 @@ public class blocks {
         return dont_go;
     }
 
+     */
+
 
     protected void merge_blocks() throws Exception
     {
@@ -338,13 +446,12 @@ public class blocks {
     }
 
 
-    public void restart_blocks() throws Exception
+    public boolean restart_blocks() throws Exception
     {
 
         boolean rty=false;
 
             for(int y=0;y<coords.length;y++) {
-
 
 
                 for (int x = 0; x < coords[0].length; x++) {
@@ -367,7 +474,8 @@ public class blocks {
 
             }
 
-            if(rty)
+
+             if(rty)
             {
                 first_horizontal_position();
 
@@ -376,14 +484,15 @@ public class blocks {
 
 
 
+     return rty;
+
     }
 
 
 
 
-
-
-    public void ghost_max_min2x2() throws Exception
+/*
+ public void ghost_max_min2x2() throws Exception
     {
 
         int xmax=0, xmin=50, width=0, ymin=50, ymax=0;
@@ -434,7 +543,7 @@ public class blocks {
 
 
 
-          horizontal=ghost_horizontal;
+        //  horizontal=ghost_horizontal;
 
 
     }
@@ -474,7 +583,7 @@ public class blocks {
 
                 ghost_vertical -=gogo_y2;
 
-                vertical=ghost_vertical;
+              //  vertical=ghost_vertical;
 
         }
 
@@ -627,7 +736,7 @@ public class blocks {
                  else ghost_vertical += gogo_y;
 
 
-                 vertical=ghost_vertical;
+               //  vertical=ghost_vertical;
 
 
              }
@@ -635,6 +744,9 @@ public class blocks {
 
 
     }
+
+ */
+
 
 
 
@@ -744,45 +856,58 @@ public class blocks {
 
 
 
-      record_blocks();
+     record_blocks();
 
         switch (block_type)
         {
             case 1:
                 horizontal = first_horizontal_position.get("bar");
+                ghost_horizontal = first_horizontal_position.get("bar");
                 break;
 
             case 2:
                 horizontal = first_horizontal_position.get("regular_z");
+                ghost_horizontal = first_horizontal_position.get("regular_z");
                 break;
 
             case 3:
                 horizontal = first_horizontal_position.get("reverse_z");
+                ghost_horizontal = first_horizontal_position.get("reverse_z");
                 break;
 
             case 4:
                 horizontal = first_horizontal_position.get("regular_L");
+                ghost_horizontal = first_horizontal_position.get("regular_L");
+
                 break;
 
             case 5:
                 horizontal = first_horizontal_position.get("reverse_L");
+                ghost_horizontal = first_horizontal_position.get("reverse_L");
                 break;
             case 6:
                 horizontal = first_horizontal_position.get("T");
+                ghost_horizontal = first_horizontal_position.get("T");
                 break;
 
             case 7:
                 horizontal = first_horizontal_position.get("square");
+                ghost_horizontal = first_horizontal_position.get("square");
+
                 break;
 
         }
 
 
           vertical=-1;  direction=1;
+        ghost_vertical=vertical+1;  ghost_direction=1;
 
 
-          ghost_horizontal=horizontal;
+          /*
+            ghost_horizontal=horizontal;
           ghost_vertical=vertical;
+           */
+
 
 
        // block_type=5;
@@ -1016,14 +1141,7 @@ public class blocks {
 
 
 
-    public void direction2() throws Exception
-    {
 
-        direction();
-
-
-
-    }
 
         public void direction() throws Exception
         {
@@ -1034,29 +1152,31 @@ public class blocks {
                 case 1:
                     block_type_d1();
                     //horizontal
-                    //      is_vertical_horizontal="horizontal";
+
                     break;
 
                 case 2:
                     block_type_d2();
                     //vertical
-                    //      is_vertical_horizontal="vertical";
+
                     break;
 
                 case 3:
                     block_type_d3();
                     //horizontal
-                    //      is_vertical_horizontal="horizontal";
+
                     break;
 
                 case 4:
                     block_type_d4();
                     //vertical
-                    //     is_vertical_horizontal="horizontal";
+
                     break;
 
 
             }
+
+
 
         }
         catch (Exception e)
@@ -1067,6 +1187,174 @@ public class blocks {
         }
 
 
+    public void ghost_direction() throws Exception
+    {
+
+        try {
+            switch (ghost_direction)
+            {
+                case 1:
+                    ghost_block_type_d1();
+                    //horizontal
+
+                    break;
+
+                case 2:
+                    ghost_block_type_d2();
+                    //vertical
+
+                    break;
+
+                case 3:
+                    ghost_block_type_d3();
+                    //horizontal
+
+                    break;
+
+                case 4:
+                    ghost_block_type_d4();
+                    //vertical
+
+                    break;
+
+
+            }
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("Code-14: "+e);
+        }
+
+    }
+
+
+    public void ghost_block_type_d1() throws Exception
+    {
+        switch (block_type)
+        {
+            case 1:
+                ghost_bar_d1();
+
+                break;
+
+            case 2:
+                ghost_regular_z_d1();
+
+                break;
+
+            case 3:
+                ghost_reverse_z_d1();
+
+                break;
+
+            case 4:
+                ghost_regular_L_d1();
+
+                break;
+
+            case 5:
+                ghost_reverse_L_d1();
+
+                break;
+
+            case 6:
+                ghost_T_d1();
+
+                break;
+
+            case 7:
+                ghost_square();
+
+                break;
+
+        }
+    }
+
+
+    public void ghost_block_type_d2() throws Exception
+    {
+        switch (block_type)
+        {
+            case 1:
+                ghost_bar_d2();
+
+                break;
+
+            case 2:
+                ghost_regular_z_d2();
+
+                break;
+
+            case 3:
+                ghost_reverse_z_d2();
+
+                break;
+
+            case 4:
+                ghost_regular_L_d2();
+
+                break;
+
+
+            case 5:
+                ghost_reverse_L_d2();
+
+                break;
+
+            case 6:
+                ghost_T_d2();
+
+                break;
+
+        }
+    }
+
+
+    public void ghost_block_type_d3() throws Exception
+    {
+        switch (block_type)
+        {
+
+            case 4:
+                ghost_regular_L_d3();
+
+                break;
+
+            case 5:
+                ghost_reverse_L_d3();
+
+                break;
+
+            case 6:
+                ghost_T_d3();
+
+                break;
+        }
+    }
+
+    public void ghost_block_type_d4() throws Exception
+    {
+        switch (block_type)
+        {
+
+            case 4:
+                ghost_regular_L_d4();
+
+                break;
+
+            case 5:
+                ghost_reverse_L_d4();
+
+                break;
+
+            case 6:
+                ghost_T_d4();
+
+                break;
+
+        }
+    }
 
 
     public void block_type_d1() throws Exception
@@ -1075,37 +1363,37 @@ public class blocks {
         {
             case 1:
                 bar_d1();
-                ghost_bar_d2();
+
                 break;
 
             case 2:
                 regular_z_d1();
-                ghost_regular_z_d2();
+
                 break;
 
             case 3:
                 reverse_z_d1();
-                ghost_reverse_z_d2();
+
                 break;
 
             case 4:
                 regular_L_d1();
-                ghost_regular_L_d2();
+
                 break;
 
             case 5:
                 reverse_L_d1();
-                ghost_reverse_L_d2();
+
                 break;
 
             case 6:
-               T_d1();
-               ghost_T_d2();
+                T_d1();
+
                 break;
 
             case 7:
                 square();
-                ghost_square();
+
                 break;
 
         }
@@ -1118,33 +1406,33 @@ public class blocks {
         {
             case 1:
                 bar_d2();
-                ghost_bar_d1();
+
                 break;
 
             case 2:
                 regular_z_d2();
-                ghost_regular_z_d1();
+
                 break;
 
             case 3:
                 reverse_z_d2();
-                ghost_reverse_z_d1();
+
                 break;
 
             case 4:
                 regular_L_d2();
-                ghost_regular_L_d3();
+
                 break;
 
 
             case 5:
                 reverse_L_d2();
-                ghost_reverse_L_d3();
+
                 break;
 
             case 6:
-               T_d2();
-               ghost_T_d3();
+                T_d2();
+
                 break;
 
         }
@@ -1158,17 +1446,17 @@ public class blocks {
 
             case 4:
                 regular_L_d3();
-                ghost_regular_L_d4();
+
                 break;
 
             case 5:
                 reverse_L_d3();
-                ghost_reverse_L_d4();
+
                 break;
 
             case 6:
-               T_d3();
-               ghost_T_d4();
+                T_d3();
+
                 break;
         }
     }
@@ -1180,17 +1468,17 @@ public class blocks {
 
             case 4:
                 regular_L_d4();
-                ghost_regular_L_d1();
+
                 break;
 
             case 5:
                 reverse_L_d4();
-                ghost_reverse_L_d1();
+
                 break;
 
             case 6:
-               T_d4();
-               ghost_T_d1();
+                T_d4();
+
                 break;
 
         }
