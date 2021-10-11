@@ -224,14 +224,22 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                           blcks.direction++;
-                            if(blcks.direction>blcks.max_direction) blcks.direction=1;
-                            blcks.direction();
+                          blcks.direction++;
+                          if(blcks.direction>blcks.max_direction) blcks.direction=1;
+                          blcks.direction();
+                            //blcks.direction();
+
                             blcks.direction_left_right_border_control();
-                            blcks.direction();
                             blcks.direction_up_down_control();
 
-                            blcks.direction();
+                            //   blcks.direction_up_down_control();
+
+                           // blcks.direction();
+                           // blcks.direction_left_right_control();
+
+
+
+
 
                             screen_refresh();
 
@@ -373,10 +381,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                  //if(blcks.merge_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7); else
-                    if(blcks.coords[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
+                  if(blcks.merge_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
+              //      if(blcks.coords[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
                       // else if(blcks.ghost1[y][x]==false)  iv [y] [x].setImageResource(R.drawable.tet1);
-              else if(blcks.record_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
+            //  else if(blcks.record_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
 
                     else  iv [y] [x].setImageResource(R.drawable.tet6);
 
