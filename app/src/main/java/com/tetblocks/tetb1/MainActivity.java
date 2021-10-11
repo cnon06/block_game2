@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         // blcks.bar_d1();
 
 
-        try {
+         try {
             Random random = new Random();
 
             int x = random.nextInt(7);
@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
         {
 
         }
+
+
 
 
         try {
@@ -138,18 +140,9 @@ public class MainActivity extends AppCompatActivity {
                             right_arrow.setImageResource(R.drawable.red_right_arrow);
 
                             try {
-
-                                            blcks.ghost_horizontal=blcks.horizontal;
-                                            blcks.ghost_horizontal++;
-                                            blcks.ghost_direction();
-                                            if(!blcks.left_right_control())
-
-                                            {
-                                                blcks.horizontal++;
+                                                blcks.right_control();
                                                 blcks.direction();
-                                            }
-
-                                            screen_refresh();
+                                                screen_refresh();
 
                             }
                             catch (Exception e)
@@ -187,35 +180,16 @@ public class MainActivity extends AppCompatActivity {
 
                         try {
 
-                            blcks.ghost_horizontal=blcks.horizontal;
-                            blcks.ghost_horizontal--;
-                            blcks.ghost_direction();
-                            if(!blcks.left_right_control())
-                            {
-                                blcks.horizontal--;
-                                blcks.direction();
-                            }
 
-
-                            screen_refresh();
-
-
-
-                            /*
-                                blcks.ghost_horizontal--;
-                                    blcks.horizontal--;
-                                  blcks.direction();
-                                    blcks.ghost_direction();
-
-                                    screen_refresh();
-                             */
-
+                                 blcks.left_control();
+                                 blcks.direction();
+                                 screen_refresh();
 
 
                         }
                         catch (Exception e)
                         {
-
+                            System.out.println("Code-423d: "+e);
                         }
 
                         return true;
@@ -248,39 +222,18 @@ public class MainActivity extends AppCompatActivity {
                         try {
 
 
-                            blcks.ghost_direction++;
-                            if(blcks.ghost_direction>blcks.max_direction) blcks.ghost_direction=1;
 
 
-                            blcks.direction++;
+                           blcks.direction++;
                             if(blcks.direction>blcks.max_direction) blcks.direction=1;
+                            blcks.direction();
+                            blcks.direction_left_right_border_control();
+                            blcks.direction();
+                            blcks.direction_up_down_control();
+
+                            blcks.direction();
+
                             screen_refresh();
-
-                            //if(!blcks.ghost_left())
-                            //if(!blcks.ghost_left() && !blcks.ghost_left2())
-                         //   if(!blcks.ghost_left() && !blcks.ghost_left2() && !blcks.ghost_down() ) {
-
-
-
-
-                                /*
-                                  blcks.ghost_max_min2x();
-                                blcks.ghost_max_min2x2();
-                                blcks.ghost_max_min2x3();
-                                blcks.to_vertical_horizontal();
-                                 */
-
-
-
-                               //blcks.ghost_left();
-                              //  if(!blcks.ghost2() && !blcks.ghost6  )
-
-                                    // blcks.direction++;
-
-
-                             //   blcks.direction2();
-
-                           // }
 
 
                         }
@@ -290,16 +243,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 
-                        /*
-                         try {
-                            screen_refresh();
-                        }
-                        catch (Exception e)
-                        {
-                            System.out.println("Code-8: "+e);
-                        }
 
-                         */
 
 
 
@@ -311,15 +255,7 @@ public class MainActivity extends AppCompatActivity {
 
                         direction_arrow.setImageResource(R.drawable.repeat);
 
-                            try {
-                                blcks.direction();
-                                blcks.ghost_direction();
-                                screen_refresh();
-                            }
-                            catch (Exception e)
-                            {
 
-                            }
 
 
                         return true;
@@ -439,8 +375,8 @@ public class MainActivity extends AppCompatActivity {
 
                   //if(blcks.merge_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7); else
                     if(blcks.coords[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
-                       else if(blcks.ghost1[y][x]==false)  iv [y] [x].setImageResource(R.drawable.tet1);
-                   else if(blcks.record_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
+                      // else if(blcks.ghost1[y][x]==false)  iv [y] [x].setImageResource(R.drawable.tet1);
+              else if(blcks.record_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
 
                     else  iv [y] [x].setImageResource(R.drawable.tet6);
 
@@ -522,77 +458,34 @@ public class MainActivity extends AppCompatActivity {
                     {
 
 
-                       blcks.ghost_vertical=blcks.vertical;
-                      blcks.ghost_vertical++;
-                        blcks.ghost_direction();
+                           // blcks.vertical++;
 
 
+                         // blcks.bottom_control();
+
+                          // blcks.bottom_control();
+                    //    blcks.direction();
+                        blcks.vertical++;
+                        blcks.direction();
+                        //if(blcks.bottom_control())jump=true;
                         screen_refresh();
 
+                        sleep(500);
 
-                        if(!blcks.down_control() )
-                        {
-                            blcks.vertical++;
-                            blcks.direction();
 
-                        } else
-                        {
-                            //sleep(100);
-                            blcks.first_horizontal_position();
-                            jump =true;
-                          //  blcks.ghost_vertical=blcks.vertical;
-                           // blcks.ghost_direction();
-                        }
+
+                        if(blcks.bottom_control()) blcks.first_horizontal_position();
+                        blcks.restart_blocks();
+                      //  blcks.record_blocks();
+                      //  blcks.direction();
 
 
 
 
+                       // blcks.restart_blocks();
+                     //  blcks.restart_blocks();
 
 
-
-
-                        /*
-                         if(jump)
-
-                        {
-                            blcks.first_horizontal_position();
-                            jump=false;
-                        }
-                         */
-
-                           // blcks.first_horizontal_position();
-                           // jump=false;
-
-
-
-
-
-
-                       // blcks.ghost_vertical = blcks.vertical;
-
-
-
-                        sleep(600);
-
-                       blcks.restart_blocks();
-
-
-                        /*
-                        if(jump)
-
-                       {
-                           blcks.first_horizontal_position();
-                           jump=false;
-                       }
-                         */
-
-                    //  blcks.restart_blocks();
-
-                      //  blcks.restart_blocks();
-
-
-
-                        // if(!blcks.dont_go_down()) blcks.first_horizontal_position();
                     }
 
                 }
@@ -600,7 +493,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     System.out.println("Code-11"+ed);
                 }
-
 
 
             }
