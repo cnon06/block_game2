@@ -78,6 +78,7 @@ public class blocks {
         }
 
         if(xmin!=0 && xmax!=9) direction_left_right_control();
+        //direction_left_right_control();
 
         return false;
     }
@@ -366,7 +367,7 @@ public class blocks {
         //  if(back_direction() && bbwidth!=0)
         {
             horizontal-=bbwidth;
-            System.out.println("back_direction");
+
             direction--;
             if(direction<1) direction=max_direction;
             dont_go=true;

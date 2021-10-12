@@ -232,11 +232,21 @@ public class MainActivity extends AppCompatActivity {
                            // blcks.direction_left_right_control();
 
 
-                           if(!blcks.direction_left_right_border_control())
-                          {
-                           blcks.direction_up_down_control();
-                        blcks.direction_left_right_control2();
-                          }
+
+                             if(! blcks.direction_up_down_control())
+
+                               if( !blcks.direction_left_right_border_control()) blcks.direction_left_right_control2();
+
+
+
+                          //  blcks.direction_up_down_control();
+
+                            /*
+                             if(!blcks.direction_left_right_border_control())
+                               if(! blcks.direction_up_down_control()) blcks.direction_left_right_control2();
+                             */
+
+
 
 
 
@@ -250,11 +260,6 @@ public class MainActivity extends AppCompatActivity {
                         {
                             System.out.println("Code-9: "+e);
                         }
-
-
-
-
-
 
 
 
