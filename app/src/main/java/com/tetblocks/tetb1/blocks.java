@@ -59,22 +59,33 @@ public class blocks {
 
 
 
+    public boolean direction_left_right_control2()
+    {
+        int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
+
+        boolean dont_go_right_left = false;
+
+        for (int y = 0; y < coords.length; y++) {
+            for (int x = 0; x < coords[0].length; x++) {
+                if (!coords[y][x]) {
+                    if (x > xmax) xmax = x;
+                    if (x < xmin) xmin = x;
+                    if (y > ymax) ymax = y;
+                    if (y < ymin) ymin = y;
+                }
+
+            }
+        }
+
+        if(xmin!=0 && xmax!=9) direction_left_right_control();
+
+        return false;
+    }
+
+
     public boolean direction_left_right_control()
     {
 
-        /*
-           direction++;
-        if(direction>max_direction) direction=1;
-
-        try
-        {
-            direction();
-        }
-        catch (Exception e)
-        {
-            System.out.println("Code-43d3: "+e);
-        }
-         */
 
 
         int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
@@ -109,6 +120,8 @@ public class blocks {
         //int bbheight2=ymax-ymin+1;
 
 
+        boolean dont_go=false;
+
         if(x_intersection==xmin && block_width>block_height)
 
         {
@@ -123,16 +136,57 @@ public class blocks {
                 System.out.println("Code-43d3: "+e);
             }
 
-            /*
+
               if(back_direction() && block_width>block_height )
             {
 
                 horizontal-=bbwidth;
                 direction--;
                 if(direction<1) direction=max_direction;
+                dont_go=true;
 
             }
-             */
+
+
+        }
+
+        try
+        {
+            direction();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Code-43d3: "+e);
+        }
+
+
+
+        bbwidth=(xmax-x_intersection+1);
+
+        if((x_intersection==xmax || (x_intersection==xmax-1 && block_type==1)) && block_width>block_height)
+
+        {
+            horizontal-=bbwidth;
+
+            try
+            {
+                direction();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Code-43d3: "+e);
+            }
+
+
+            if(back_direction() && block_width>block_height )
+            {
+
+                horizontal+=bbwidth;
+                direction--;
+                if(direction<1) direction=max_direction;
+                dont_go=true;
+
+            }
 
 
         }
@@ -148,10 +202,13 @@ public class blocks {
         {
             System.out.println("Code-43d3: "+e);
         }
+
+
+
         // System.out.println("y_intersection: "+y_intersection+" ymax: "+ymax);
 
 
-        return false;
+        return dont_go;
 
     }
 
@@ -216,13 +273,16 @@ public class blocks {
         }
 
 
+        boolean dont_go=false;
+
          if(back_direction() && block_width<block_height )
         {
 
             vertical+=bbheight;
             direction--;
             if(direction<1) direction=max_direction;
-
+            dont_go=true;
+            System.out.println("dontgo up down");
         }
 
 
@@ -238,7 +298,7 @@ public class blocks {
        // System.out.println("y_intersection: "+y_intersection+" ymax: "+ymax);
 
 
-        return false;
+        return dont_go;
 
     }
 
@@ -296,12 +356,37 @@ public class blocks {
 
 
 
-        if(back_direction() && bbwidth!=0)
+
+          boolean dont_go=false;
+
+
+
+             if(xmin==0 && back_direction())
+
+        //  if(back_direction() && bbwidth!=0)
         {
-            if(xmin==0) horizontal-=bbwidth;
-            if(xmax==9) horizontal+=bbwidth;
+            horizontal-=bbwidth;
+            System.out.println("back_direction");
             direction--;
             if(direction<1) direction=max_direction;
+            dont_go=true;
+
+
+        }
+
+
+
+
+
+
+        if (xmax==9 && back_direction())
+      //  if(back_direction() && bbwidth!=0)
+        {
+
+             horizontal+=bbwidth;
+            direction--;
+            if(direction<1) direction=max_direction;
+            dont_go=true;
 
 
         }
@@ -315,6 +400,7 @@ public class blocks {
         {
             System.out.println("Code-43d3: "+e);
         }
+
 
 
 
@@ -335,15 +421,17 @@ public class blocks {
 
 
 
-        if(back_direction() && bbheight!=0)
+        if(back_direction() && ymax==19)
         {
            // if(xmin==0) horizontal-=bbwidth;
             if(ymax==19) vertical+=bbheight;
             direction--;
             if(direction<1) direction=max_direction;
+            dont_go=true;
 
 
         }
+
 
 
         try
@@ -356,7 +444,9 @@ public class blocks {
         }
 
 
-        return false;
+
+
+        return dont_go;
 
     }
 
