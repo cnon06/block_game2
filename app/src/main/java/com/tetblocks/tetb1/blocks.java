@@ -216,24 +216,10 @@ public class blocks {
     public boolean direction_up_down_control()
     {
 
-        /*
-         direction++;
-        if(direction>max_direction) direction=1;
 
-        try
-        {
-            direction();
-        }
-        catch (Exception e)
-        {
-            System.out.println("Code-43d3: "+e);
-        }
-         */
+        int xmax = 0, xmin = 50,  ymin = 50, ymax = 0;
 
 
-        int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
-
-        boolean dont_go_right_left = false;
 
         for (int y = 0; y < coords.length; y++) {
             for (int x = 0; x < coords[0].length; x++) {
@@ -258,10 +244,11 @@ public class blocks {
             }
         }
 
-        int bbheight=y_intersection-ymin-1;
-        //int bbheight2=ymax-ymin+1;
+       // int bbheight=y_intersection-ymin-1;
+        int bbheight= ymax-y_intersection+1;
 
 
+        int vertical2 = vertical;
         if(y_intersection!=0 && block_width<block_height) vertical-=bbheight;
 
         try
@@ -276,10 +263,34 @@ public class blocks {
 
         boolean dont_go=false;
 
-         if(back_direction() && block_width<block_height )
+
+        for (int y = 0; y < coords.length; y++) {
+            for (int x = 0; x < coords[0].length; x++) {
+                if (!coords[y][x]) {
+                    if (x > xmax) xmax = x;
+                    if (x < xmin) xmin = x;
+                    if (y > ymax) ymax = y;
+                    if (y < ymin) ymin = y;
+                }
+
+            }
+        }
+
+
+        for (int y = 0; y < coords.length; y++) {
+            for (int x = 0; x < coords[0].length; x++) {
+                if (!coords[y][x] && !record_blocks[y][x]) {
+                    y_intersection=y;
+                }
+
+            }
+        }
+
+
+         if((ymin == y_intersection) && (ymin!=0) && block_width<block_height )
         {
 
-            vertical+=bbheight;
+            vertical=vertical2;
             direction--;
             if(direction<1) direction=max_direction;
             dont_go=true;
