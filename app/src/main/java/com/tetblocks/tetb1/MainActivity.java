@@ -342,31 +342,6 @@ public class MainActivity extends AppCompatActivity {
     {
 
 
-        /*
-        try {
-
-
-            for(int y=0;y<iv.length;y++)
-            {
-
-                for(int x=0;x<iv[0].length;x++) {
-
-
-                    if(iv[y][x]==null) {
-                        iv [x] [y].setImageResource(R.drawable.tet6);
-                        System.out.println("There's a null value in graph.");
-                    }
-
-                }
-            }
-
-        }
-        catch (Exception e)
-        {
-            System.out.println("Code-8: "+e);
-        }
-         */
-
 
 
 

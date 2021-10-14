@@ -18,15 +18,12 @@ import java.util.TreeMap;
 
 public class blocks {
 
-    protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, direction = 1, ghost_direction = 1,
-            block_width = 0, block_height = 0, ghost_block_width = 0, ghost_block_height = 0, ghost_horizontal = 3, ghost_vertical = -1, gogo_x = 0, gogo_y = 0, gogo_y2 = 0;
+    protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, direction = 1,
+            block_width = 0, block_height = 0, ghost_horizontal = 3;
 
 
-    boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10], ghost1[][] = new boolean[20][10],
-            ghost6 = false, ghost7 = false, ghost8 = false;
+    boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10], ghost1[][] = new boolean[20][10];
 
-    ArrayList xlist = new ArrayList<>();
-    ArrayList xlist2 = new ArrayList<>();
 
 
     NavigableMap<String, Integer> max_direction2 = new TreeMap();
@@ -63,7 +60,7 @@ public class blocks {
     {
         int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
 
-        boolean dont_go_right_left = false;
+
 
         for (int y = 0; y < coords.length; y++) {
             for (int x = 0; x < coords[0].length; x++) {
@@ -78,7 +75,7 @@ public class blocks {
         }
 
         if(xmin!=0 && xmax!=9) direction_left_right_control();
-        //direction_left_right_control();
+
 
         return false;
     }
@@ -91,7 +88,7 @@ public class blocks {
 
         int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
 
-        boolean dont_go_right_left = false;
+
 
         for (int y = 0; y < coords.length; y++) {
             for (int x = 0; x < coords[0].length; x++) {
@@ -116,9 +113,9 @@ public class blocks {
             }
         }
 
-        //int bbwidth=x_intersection-xmin-1;
+
         int bbwidth=(x_intersection-xmin+1);
-        //int bbheight2=ymax-ymin+1;
+
 
 
         boolean dont_go=false;
@@ -206,9 +203,6 @@ public class blocks {
 
 
 
-        // System.out.println("y_intersection: "+y_intersection+" ymax: "+ymax);
-
-
         return dont_go;
 
     }
@@ -233,11 +227,13 @@ public class blocks {
             }
         }
 
-        int y_intersection=0;
+        int y_intersection=0; int count=0;
 
         for (int y = 0; y < coords.length; y++) {
             for (int x = 0; x < coords[0].length; x++) {
                 if (!coords[y][x] && !record_blocks[y][x]) {
+
+                  if(y_intersection!=y ) count++;
                     y_intersection=y;
                 }
 
@@ -249,7 +245,8 @@ public class blocks {
 
 
         int vertical2 = vertical;
-        if(y_intersection!=0 && block_width<block_height) vertical-=bbheight;
+       // if(y_intersection!=0 && block_width<block_height) vertical-=bbheight;
+        if(y_intersection!=0 && block_width<block_height && y_intersection==ymax) vertical-=count;
 
         try
         {
@@ -287,7 +284,7 @@ public class blocks {
         }
 
 
-         if((ymin == y_intersection) && (ymin!=0) && block_width<block_height )
+         if((ymin == y_intersection)  && (ymin!=0) && block_width<block_height )
         {
 
             vertical=vertical2;
@@ -415,8 +412,6 @@ public class blocks {
 
 
 
-
-
         if(ymax==19) vertical-=bbheight;
 
         try
@@ -428,9 +423,6 @@ public class blocks {
             System.out.println("Code-43d3: "+e);
         }
 
-       // System.out.println("ymax: "+ymax);
-
-
 
 
         if(back_direction() && ymax==19)
@@ -441,9 +433,7 @@ public class blocks {
             if(direction<1) direction=max_direction;
             dont_go=true;
 
-
         }
-
 
 
         try
@@ -482,8 +472,6 @@ public class blocks {
             }
         }
 
-           // vertical++;
-    // vertical++;
 
         try {
             direction();
@@ -496,12 +484,6 @@ public class blocks {
 
         if(ymax==19) return true;
         else return false;
-
-
-         //   return dont_go_right_left;
-
-
-
 
 
     }
@@ -527,7 +509,7 @@ public class blocks {
         }
 
 
-      //  if (xmin>=1) horizontal --;
+
 
 
         if (xmin>=1)
