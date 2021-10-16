@@ -19,7 +19,7 @@ import java.util.TreeMap;
 public class blocks {
 
     protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, direction = 1,
-            block_width = 0, block_height = 0, ghost_horizontal = 3;
+            block_width = 0, block_height = 0, ghost_horizontal = 3, speed=600;
 
 
     boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10], ghost1[][] = new boolean[20][10];
@@ -75,6 +75,7 @@ public class blocks {
         }
 
         if(xmin!=0 && xmax!=9) direction_left_right_control();
+    //    direction_left_right_control();
 
 
         return false;
@@ -247,8 +248,10 @@ public class blocks {
         int vertical2 = vertical;
        // if(y_intersection!=0 && block_width<block_height) vertical-=bbheight;
         if(y_intersection!=0 && block_width<block_height && y_intersection==ymax) vertical-=count;
+        if(y_intersection!=0 && block_width<block_height && y_intersection==ymax-1 && block_type==1) vertical-=2;
 
-        try
+
+            try
         {
             direction();
         }

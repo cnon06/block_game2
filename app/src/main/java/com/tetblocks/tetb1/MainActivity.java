@@ -22,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
-    int speed=100, lvl=1;
-    boolean go_go_go=false;
 
-    boolean timer_pause_start=true;
+    boolean go_right=false, go_left=false;
+
+    boolean timer_pause_start=true, timer_pause_start2=true;
+
+    int speed = 600, speed2=0;
 
     blocks blcks = new blocks();
   //  ghost1 ghst1 = new ghost1();
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         // blcks.bar_d1();
 
 
+        timer2();
+
          try {
             Random random = new Random();
 
@@ -75,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         {
 
         }
-
 
 
 
@@ -139,21 +142,28 @@ public class MainActivity extends AppCompatActivity {
 
                             right_arrow.setImageResource(R.drawable.red_right_arrow);
 
-                            try {
+                            go_right=true;
+
+
+                            /*
+                               try {
                                                 blcks.right_control();
                                                 blcks.direction();
                                                 screen_refresh();
-
                             }
                             catch (Exception e)
                             {
-
+                                System.out.println("Code-45r3e: "+e);
                             }
+
+                             */
+
 
                             return true;
                         case MotionEvent.ACTION_UP:
 
                             right_arrow.setImageResource(R.drawable.right_arrow);
+                            go_right=false;
 
                             return true;
                     }
@@ -177,8 +187,8 @@ public class MainActivity extends AppCompatActivity {
 
                         left_arrow.setImageResource(R.drawable.red_left_arrow);
 
-
-                        try {
+                        /*
+                         try {
 
 
                                  blcks.left_control();
@@ -191,11 +201,15 @@ public class MainActivity extends AppCompatActivity {
                         {
                             System.out.println("Code-423d: "+e);
                         }
+                         */
+
+                        go_left=true;
 
                         return true;
                     case MotionEvent.ACTION_UP:
 
                         left_arrow.setImageResource(R.drawable.left_arrow);
+                        go_left=false;
 
                         return true;
                 }
@@ -248,10 +262,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
                             screen_refresh();
 
 
@@ -292,12 +302,14 @@ public class MainActivity extends AppCompatActivity {
                         vibe.vibrate(100);
 
                         down_arrow.setImageResource(R.drawable.red_down_arrow);
+                        speed2=speed;
+                        speed=60;
 
                         return true;
                     case MotionEvent.ACTION_UP:
 
-
                         down_arrow.setImageResource(R.drawable.down_arrow);
+                        speed=speed2;
 
                         return true;
                 }
@@ -383,17 +395,92 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Code-7: "+e);
         }
 
+    }
+
+
+
+    public void timer2()
+    {
+
+
+        /*
+        new Thread()
+       {
+            @Override
+            public void run() {
+                try
+                {
+
+                    while (timer_pause_start)
+                    {
+
+                        blcks.vertical++;
+                        blcks.ghost_vertical = blcks.vertical;
+                        blcks.direction2();
+
+                        screen_refresh();
+
+                        sleep(600);
+                        blcks.restart_blocks();
+                        if(!blcks.dont_go_down()) blcks.first_horizontal_position();
+                    }
+
+                }
+                catch (Exception ed)
+                {
+                    System.out.println(ed);
+                }
+            }
+        }.start();
+         */
 
 
 
 
+        Thread thread = new Thread(){
+            public void run(){
+
+                boolean jump=false, jump2=false;
+                try
+                {
+
+                    while (timer_pause_start2)
+                    {
+
+                        if(go_left)
+                        {
+                            blcks.left_control();
+                            blcks.direction();
+                            screen_refresh();
+                        }
 
 
 
+                        if(go_right)
+                        {
+                            blcks.right_control();
+                            blcks.direction();
+                            screen_refresh();
+                        }
+
+
+                        sleep(100);
+
+                    }
+
+                }
+                catch (Exception ed)
+                {
+                    System.out.println("Code-554ds"+ed);
+                }
+
+            }
+        };
+
+        thread.start();
 
 
     }
-
 
 
     public void timer1()
@@ -443,36 +530,12 @@ public class MainActivity extends AppCompatActivity {
 
                     while (timer_pause_start)
                     {
-
-
-                           // blcks.vertical++;
-
-
-                         // blcks.bottom_control();
-
-                          // blcks.bottom_control();
-                    //    blcks.direction();
                         blcks.vertical++;
                         blcks.direction();
-                        //if(blcks.bottom_control())jump=true;
                         screen_refresh();
-
-                        sleep(500);
-
-
-
+                        sleep(speed);
                         if(blcks.bottom_control()) blcks.first_horizontal_position();
                         blcks.restart_blocks();
-                      //  blcks.record_blocks();
-                      //  blcks.direction();
-
-
-
-
-                       // blcks.restart_blocks();
-                     //  blcks.restart_blocks();
-
-
                     }
 
                 }
@@ -481,14 +544,10 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("Code-11"+ed);
                 }
 
-
             }
         };
 
         thread.start();
-
-
-
 
 
     }
