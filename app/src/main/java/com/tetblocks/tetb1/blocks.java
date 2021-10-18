@@ -186,12 +186,7 @@ public class blocks {
                 dont_go=true;
 
             }
-
-
         }
-
-
-
 
         try
         {
@@ -201,8 +196,6 @@ public class blocks {
         {
             System.out.println("Code-43d3: "+e);
         }
-
-
 
         return dont_go;
 
@@ -382,16 +375,9 @@ public class blocks {
             direction--;
             if(direction<1) direction=max_direction;
             dont_go=true;
-
-
         }
 
-
-
-
-
-
-        if (xmax==9 && back_direction())
+             if (xmax==9 && back_direction())
       //  if(back_direction() && bbwidth!=0)
         {
 
@@ -400,9 +386,7 @@ public class blocks {
             if(direction<1) direction=max_direction;
             dont_go=true;
 
-
         }
-
 
         try
         {
@@ -459,6 +443,7 @@ public class blocks {
 
     public boolean bottom_control() {
 
+
         int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
 
         boolean dont_go_right_left = false;
@@ -485,8 +470,47 @@ public class blocks {
         }
 
 
-        if(ymax==19) return true;
+        if(ymax>18) return true;
         else return false;
+
+
+
+
+/*
+   boolean rty = false;
+
+        for (int y = 0; y < coords.length; y++) {
+
+
+            for (int x = 0; x < coords[0].length; x++) {
+
+                try {
+                    if (!coords[y][x] && !record_blocks[y + 1][x]) {
+
+                        rty = true;
+
+
+                    }
+                } catch (Exception er) {
+                    System.out.println("Code-03: " + er);
+                }
+
+
+            }
+
+        }
+
+
+        if (rty) {
+            first_horizontal_position();
+
+
+        }
+
+
+        return rty;
+ */
+
 
 
     }
@@ -513,8 +537,6 @@ public class blocks {
 
 
 
-
-
         if (xmin>=1)
         {
             boolean dont_go=false;
@@ -533,8 +555,6 @@ public class blocks {
             if(!dont_go) horizontal --;
 
         }
-
-
 
 
         return dont_go_right_left;

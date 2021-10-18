@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     boolean go_right=false, go_left=false;
 
-    boolean timer_pause_start=true, timer_pause_start2=true;
+    boolean timer_pause_start=true, timer_pause_start2=true, timer_pause_start3=true;
 
     int speed = 600, speed2=0;
 
@@ -124,11 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
             right_arrow.setOnTouchListener(new View.OnTouchListener() {
                 @SuppressLint("ClickableViewAccessibility")
                 @Override
@@ -145,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                             go_right=true;
 
 
-                            /*
+
                                try {
                                                 blcks.right_control();
                                                 blcks.direction();
@@ -156,7 +151,8 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("Code-45r3e: "+e);
                             }
 
-                             */
+
+
 
 
                             return true;
@@ -164,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
                             right_arrow.setImageResource(R.drawable.right_arrow);
                             go_right=false;
+
 
                             return true;
                     }
@@ -187,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
                         left_arrow.setImageResource(R.drawable.red_left_arrow);
 
-                        /*
+
                          try {
 
 
@@ -201,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                         {
                             System.out.println("Code-423d: "+e);
                         }
-                         */
+
 
                         go_left=true;
 
@@ -303,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
 
                         down_arrow.setImageResource(R.drawable.red_down_arrow);
                         speed2=speed;
-                        speed=60;
+                        speed=100;
 
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -331,6 +328,30 @@ public class MainActivity extends AppCompatActivity {
                         vibe.vibrate(100);
 
                         double_down_arrow.setImageResource(R.drawable.red_doublearrow);
+
+
+                        try
+                        {
+
+                            while (timer_pause_start3)
+                            {
+                                if(blcks.bottom_control()) {blcks.first_horizontal_position(); timer_pause_start3=false;}
+                                if(blcks.restart_blocks()) timer_pause_start3=false;
+                                blcks.vertical++;
+                                blcks.direction();
+
+
+                                screen_refresh();
+                            }
+
+                        }
+                        catch (Exception ed)
+                        {
+                            System.out.println("Code-1fe1: "+ed);
+                        }
+
+
+                        timer_pause_start3=true;
                         return true;
                     case MotionEvent.ACTION_UP:
 
@@ -436,7 +457,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         Thread thread = new Thread(){
             public void run(){
 
@@ -447,24 +467,29 @@ public class MainActivity extends AppCompatActivity {
                     while (timer_pause_start2)
                     {
 
-                        if(go_left)
+                        if(go_left || go_right)
                         {
-                            blcks.left_control();
-                            blcks.direction();
-                            screen_refresh();
+                            sleep(150);
+
+                            if(go_left)
+                            {
+
+                                blcks.left_control();
+                                blcks.direction();
+                                screen_refresh();
+                            }
+
+
+
+                            if(go_right)
+                            {
+
+                                blcks.right_control();
+                                blcks.direction();
+                                screen_refresh();
+                            }
                         }
 
-
-
-                        if(go_right)
-                        {
-                            blcks.right_control();
-                            blcks.direction();
-                            screen_refresh();
-                        }
-
-
-                        sleep(100);
 
                     }
 
