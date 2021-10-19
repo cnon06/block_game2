@@ -22,7 +22,7 @@ public class blocks {
             block_width = 0, block_height = 0, ghost_horizontal = 3, speed=600;
 
 
-    boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10], ghost1[][] = new boolean[20][10];
+    boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10], ghost1[][] = new boolean[20][10] ,record_blocks2[][] = new boolean[20][10];
 
 
 
@@ -30,11 +30,143 @@ public class blocks {
     NavigableMap<String, Integer> first_horizontal_position = new TreeMap();
 
 
+
     blocks() {
 
 
     }
 
+
+
+    public void remove_rows_blocks()
+    {
+
+
+        ArrayList <Integer> delete_row = new ArrayList();
+        ArrayList <Integer> delete_row2 = new ArrayList();
+
+
+        for(int i=0;i<=19;i++)
+        {
+            delete_row2.add(i);
+        }
+
+
+
+
+
+        for (int y = 0; y < record_blocks2.length; y++) {
+            for (int x = 0; x < record_blocks2[0].length; x++) {
+                record_blocks2[y][x]=true;
+            }
+        }
+
+        boolean cont = false;
+        int count =0;
+
+        for (int y = 0; y < record_blocks.length; y++) {
+
+            cont=false;
+
+            for (int x = 0; x < record_blocks[0].length; x++) {
+
+                if(record_blocks[y][x]) cont=true;
+
+            }
+
+            if(!cont)
+            {
+                count++;
+                delete_row.add(y);
+            }
+
+
+
+
+        }
+
+
+
+
+        System.out.print("rows: ");
+
+        ListIterator ig = delete_row.listIterator();
+
+        while (ig.hasNext())
+        {
+            System.out.print(ig.next()+", ");
+        }
+
+        System.out.println("full rows: "+count);
+
+        System.out.println("");
+
+        int eew2=0;
+
+        for (int y = 0; y < record_blocks.length; y++) {
+
+
+            ListIterator ig2 = delete_row.listIterator();
+
+            boolean dse2=false;
+
+            while (ig2.hasNext())
+            {
+
+             //if((int)ig2.next()==y) dse2=true;
+
+                if((int)ig2.next()==y)
+                {
+                    dse2=true;
+                    eew2++;
+                }
+
+
+               // System.out.print(ig2.next()+", ");
+            }
+
+
+
+             if(!dse2)  {
+                    //eew2--;
+                 for (int x = 0; x < record_blocks[0].length; x++) {
+                     record_blocks2[y][x]=record_blocks[y][x];
+                 }
+             }
+
+
+        }
+
+
+
+        for (int y = 0; y < record_blocks.length; y++) {
+
+
+
+                    for (int x = 0; x < record_blocks[0].length; x++) {
+                        record_blocks[y][x]=record_blocks2[y][x];
+                    }
+
+
+
+        }
+
+
+        delete_row.clear();
+        delete_row2.clear();
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 
 
     public boolean back_direction()
@@ -776,6 +908,7 @@ public class blocks {
 
         record_blocks();
 
+
         switch (block_type) {
             case 1:
                 horizontal = first_horizontal_position.get("bar");
@@ -834,7 +967,16 @@ public class blocks {
 
         setMax_direction();
 
+        try {
+            direction();
+        }
+        catch (Exception rt)
+        {
+            System.out.println("code-23w: "+rt);
+        }
 
+
+        remove_rows_blocks();
 
 
 
