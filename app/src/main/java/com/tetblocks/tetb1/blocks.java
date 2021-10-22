@@ -19,16 +19,15 @@ import java.util.TreeMap;
 public class blocks {
 
     protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, direction = 1,
-            block_width = 0, block_height = 0, ghost_horizontal = 3, speed=600;
+            block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 600;
 
 
-    boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10], ghost1[][] = new boolean[20][10] ,record_blocks2[][] = new boolean[20][10];
-
+    boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10],
+            record_blocks2[][] = new boolean[20][10], record_blocks3[][] = new boolean[20][10];
 
 
     NavigableMap<String, Integer> max_direction2 = new TreeMap();
     NavigableMap<String, Integer> first_horizontal_position = new TreeMap();
-
 
 
     blocks() {
@@ -37,125 +36,109 @@ public class blocks {
     }
 
 
-
-    public void remove_rows_blocks()
-    {
-
-
-        ArrayList <Integer> delete_row = new ArrayList();
-        ArrayList <Integer> delete_row2 = new ArrayList();
-
-
-        for(int i=0;i<=19;i++)
-        {
-            delete_row2.add(i);
-        }
-
-
-
+    public void remove_rows_blocks() {
 
 
         for (int y = 0; y < record_blocks2.length; y++) {
             for (int x = 0; x < record_blocks2[0].length; x++) {
+
                 record_blocks2[y][x]=true;
+
             }
         }
 
-        boolean cont = false;
-        int count =0;
 
-        for (int y = 0; y < record_blocks.length; y++) {
+        for (int y = 0; y < record_blocks.length; y++)
 
-            cont=false;
+        {
+
+          boolean tee= false;
 
             for (int x = 0; x < record_blocks[0].length; x++) {
 
-                if(record_blocks[y][x]) cont=true;
+              if(record_blocks[y][x]) tee=true;
 
             }
 
-            if(!cont)
+
+            if(!tee)
             {
-                count++;
-                delete_row.add(y);
+                for (int x = 0; x < record_blocks[0].length; x++) {
+
+                    record_blocks[y][x]=true;
+
+                }
             }
-
-
 
 
         }
 
 
+      int ygf=19;
 
 
-        System.out.print("rows: ");
 
-        ListIterator ig = delete_row.listIterator();
+        for (int y = record_blocks.length-1 ; y >=0 ; y--) {
 
-        while (ig.hasNext())
-        {
-            System.out.print(ig.next()+", ");
-        }
-
-        System.out.println("full rows: "+count);
-
-        System.out.println("");
-
-        int eew2=0;
-
-        for (int y = 0; y < record_blocks.length; y++) {
+        boolean gff=false;
 
 
-            ListIterator ig2 = delete_row.listIterator();
+         for (int x = 0; x < record_blocks[0].length; x++) {
 
-            boolean dse2=false;
+                if(!record_blocks[y][x]) gff=true;
 
-            while (ig2.hasNext())
+            }
+
+
+
+            if(gff)
             {
+                for (int x = 0; x < record_blocks[0].length; x++) {
 
-             //if((int)ig2.next()==y) dse2=true;
+                  try {
+                      record_blocks2[ygf][x] = record_blocks[y][x];
+                  }
+                  catch (Exception re)
+                  {
 
-                if((int)ig2.next()==y)
-                {
-                    dse2=true;
-                    eew2++;
+                  }
+
+
+
                 }
 
-
-               // System.out.print(ig2.next()+", ");
+                ygf--;
             }
 
-
-
-             if(!dse2)  {
-                    //eew2--;
-                 for (int x = 0; x < record_blocks[0].length; x++) {
-                     record_blocks2[y][x]=record_blocks[y][x];
-                 }
-             }
-
-
         }
-
 
 
         for (int y = 0; y < record_blocks.length; y++) {
+            for (int x = 0; x < record_blocks[0].length; x++) {
 
+                record_blocks[y][x] = record_blocks2[y][x];
 
-
-                    for (int x = 0; x < record_blocks[0].length; x++) {
-                        record_blocks[y][x]=record_blocks2[y][x];
-                    }
-
-
-
+            }
         }
 
 
-        delete_row.clear();
-        delete_row2.clear();
+        int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
 
 
+
+        /*
+          for (int y = 0; y < coords.length; y++) {
+            for (int x = 0; x < coords[0].length; x++) {
+                if (!coords[y][x]) {
+                    if (x > xmax) xmax = x;
+                    if (x < xmin) xmin = x;
+                    if (y > ymax) ymax = y;
+                    if (y < ymin) ymin = y;
+                }
+
+            }
+        }
+         */
 
 
 
@@ -974,6 +957,8 @@ public class blocks {
         {
             System.out.println("code-23w: "+rt);
         }
+
+
 
 
         remove_rows_blocks();
