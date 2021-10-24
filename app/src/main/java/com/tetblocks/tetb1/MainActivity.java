@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,17 +34,29 @@ public class MainActivity extends AppCompatActivity {
     blocks blcks = new blocks();
   //  ghost1 ghst1 = new ghost1();
 
+
+    Timer timer1;
+    TimerTask task1;
+
     protected void onRestart() {
-        timer_pause_start=false;
+
+       /*
+          timer_pause_start=false;
         finish();
         System.out.println("App is closing.");
+        */
+
         super.onRestart();
     }
 
     protected void onDestroy () {
+
+       /*
         timer_pause_start=false;
         finish();
         System.out.println("App is closing.");
+        */
+
         super.onDestroy();
     }
 
@@ -64,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // blcks.bar_d1();
+
+
+
 
 
         timer2();
@@ -122,6 +139,9 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(e);
         }
 
+
+
+        timer1();
 
 
             right_arrow.setOnTouchListener(new View.OnTouchListener() {
@@ -228,12 +248,7 @@ public class MainActivity extends AppCompatActivity {
 
                         direction_arrow.setImageResource(R.drawable.red_repeat);
 
-
-
                         try {
-
-
-
 
                           blcks.direction++;
                           if(blcks.direction>blcks.max_direction) blcks.direction=1;
@@ -299,14 +314,25 @@ public class MainActivity extends AppCompatActivity {
                         vibe.vibrate(100);
 
                         down_arrow.setImageResource(R.drawable.red_down_arrow);
+
+
                         speed2=speed;
                         speed=100;
+                        timer1.cancel();
+
+                        timer1();
+
+                  //   timer1.schedule(task1, 0,speed);
 
                         return true;
                     case MotionEvent.ACTION_UP:
 
                         down_arrow.setImageResource(R.drawable.down_arrow);
+
                         speed=speed2;
+                        timer1.cancel();
+                        timer1();
+                     //   timer1.schedule(task1, 0,speed);
 
                         return true;
                 }
@@ -381,40 +407,71 @@ public class MainActivity extends AppCompatActivity {
   blcks.merge_blocks();
 
 
-        try {
+
+  /*
+   for(int y=0;y< iv.length;y++) {
+
+            for (int x = 0; x < iv[0].length; x++) {
+
+                iv [y] [x].setImageResource(R.drawable.tet6);
+
+            }
+        }
+
+   */
 
 
 
-               for(int y=0;y<blcks.merge_blocks.length;y++)
+
+        /*
+           for(int y=0;y<blcks.merge_blocks.length;y++)
             {
 
                 for(int x=0;x<blcks.merge_blocks[0].length;x++)
                 {
+         */
+
+        for(int y=0;y< blcks.merge_blocks.length;y++) {
+
+            for (int x = 0; x < blcks.merge_blocks[0].length; x++) {
 
 
+                    try {
+                        if(blcks.merge_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
+                        else  iv [y] [x].setImageResource(R.drawable.tet6);
+                        if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
+                    }
 
-                  if(blcks.merge_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
+                    catch (Exception eew)
+                        {
+                            System.out.println("Code-7: "+eew);
+                        }
               //      if(blcks.coords[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
                       // else if(blcks.ghost1[y][x]==false)  iv [y] [x].setImageResource(R.drawable.tet1);
             //  else if(blcks.record_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
 
-                  else  iv [y] [x].setImageResource(R.drawable.tet6);
 
-                    if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
-
-
-
-
-                }
+            }
 
             }
 
 
+
+
+  for(int y=0;y< iv.length;y++) {
+
+            for (int x = 0; x < iv[0].length; x++) {
+
+
+                if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
+               // iv [y] [x].setImageResource(R.drawable.tet6);
+
+            }
         }
-        catch (Exception e)
-        {
-            System.out.println("Code-7: "+e);
-        }
+
+
+
+
 
     }
 
@@ -457,8 +514,66 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Thread thread = new Thread(){
-            public void run(){
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+
+            // run() method to carry out the action of the task
+
+
+
+            public void run() {
+
+
+                try
+                {
+
+
+
+                    if(go_left || go_right)
+                    {
+
+
+                        if(go_left)
+                        {
+
+                            blcks.left_control();
+                            blcks.direction();
+                            screen_refresh();
+                        }
+
+
+
+                        if(go_right)
+                        {
+
+                            blcks.right_control();
+                            blcks.direction();
+                            screen_refresh();
+                        }
+                    }
+
+
+                }
+                catch (Exception ed)
+                {
+                    System.out.println("Code-11"+ed);
+                }
+
+
+
+            };
+        };
+
+
+
+        timer.schedule(task, 0,150);
+
+
+
+        /*
+         Thread thread = new Thread(){
+            synchronized public void run(){
 
                 boolean jump=false, jump2=false;
                 try
@@ -469,7 +584,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if(go_left || go_right)
                         {
-                            sleep(150);
+                            sleep(100);
 
                             if(go_left)
                             {
@@ -503,6 +618,8 @@ public class MainActivity extends AppCompatActivity {
         };
 
         thread.start();
+
+         */
 
 
     }
@@ -546,10 +663,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-           Thread thread = new Thread(){
-            public void run(){
 
-                boolean jump=false, jump2=false;
+        /*
+  Thread thread = new Thread(){
+               synchronized public void run(){
+
                 try
                 {
 
@@ -573,6 +691,57 @@ public class MainActivity extends AppCompatActivity {
         };
 
         thread.start();
+         */
+
+
+
+
+
+
+         timer1 = new Timer();
+      task1 = new TimerTask() {
+
+            // run() method to carry out the action of the task
+
+
+
+            public void run() {
+
+
+                try
+                {
+                        blcks.restart_blocks();
+                    if(blcks.bottom_control() && blcks.vertical>15) blcks.first_horizontal_position();
+
+                   // blcks.direction();
+                        blcks.vertical++;
+                        blcks.direction();
+
+
+                        screen_refresh();
+                      //  sleep(speed);
+
+
+
+                }
+                catch (Exception ed)
+                {
+                    System.out.println("Code-11"+ed);
+                }
+
+
+
+            };
+        };
+
+
+
+
+
+        timer1.schedule(task1, 0,speed);
+
+
+
 
 
     }
@@ -592,14 +761,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            for(int i=0;i<lln.length;i++)
+            for(int y=0;y<lln.length;y++)
             {
 
-                lln [i] = new LinearLayout(this);
-                ln1.addView(lln[i],lp1);
+                lln [y] = new LinearLayout(this);
+                ln1.addView(lln[y],lp1);
 
-                lln [i].setOrientation(LinearLayout.HORIZONTAL);
-                lln[i].setGravity(Gravity.CENTER);
+                lln [y].setOrientation(LinearLayout.HORIZONTAL);
+                lln[y].setGravity(Gravity.CENTER);
 
 
             /* game boardı merkeze almak için lln[i].setGravity(Gravity.CENTER); kullanılıyor
@@ -618,12 +787,12 @@ public class MainActivity extends AppCompatActivity {
              */
 
 
-                for(int y=0;y<iv[0].length;y++)
+                for(int x=0;x<iv[0].length;x++)
                 {
-                    iv [i] [y]= new ImageView(this);
-                     iv [i] [y].setImageResource(R.drawable.tet6);
-                    lln[i].addView(iv[i][y], lp1);
-                    iv[i][y].setLayoutParams(parms);
+                    iv [y] [x]= new ImageView(this);
+                     iv [y] [x].setImageResource(R.drawable.tet6);
+                    lln[y].addView(iv[y][x], lp1);
+                    iv[y][x].setLayoutParams(parms);
 
                 }
 
@@ -638,7 +807,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        timer1();
+      //  timer1();
 
 
     }
