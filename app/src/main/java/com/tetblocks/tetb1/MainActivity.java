@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
     boolean timer_pause_start=true, timer_pause_start2=true, timer_pause_start3=true;
 
-    int speed = 600, speed2=0;
+    int speed = 600, speed2=0,  go_left_right_control=0;
 
-    blocks blcks = new blocks();
+   // blocks blcks = new blocks();
   //  ghost1 ghst1 = new ghost1();
 
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             Random random = new Random();
 
             int x = random.nextInt(7);
-            blcks.block_type=x+1;
+            gameb1.block_type=x+1;
 
         }
         catch (Exception e)
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        timer1();
+        
 
 
             right_arrow.setOnTouchListener(new View.OnTouchListener() {
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
                             right_arrow.setImageResource(R.drawable.right_arrow);
                             go_right=false;
-
+                            go_left_right_control=0;
 
                             return true;
                     }
@@ -232,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
                         left_arrow.setImageResource(R.drawable.left_arrow);
                         go_left=false;
+                        go_left_right_control=0;
 
                         return true;
                 }
@@ -458,66 +459,18 @@ public class MainActivity extends AppCompatActivity {
                     {
 
 
-                        if(go_left)
+                        go_left_right_control++;
+
+
+                        if(go_left_right_control>=2)
                         {
-
-                            gameb1.left_control();
-                            gameb1.direction();
-                            gameb1.invalidate();
-
-
-                        }
-
-
-
-                        if(go_right)
-                        {
-
-                            gameb1.right_control();
-                            gameb1.direction();
-                            gameb1.invalidate();
-
-                        }
-                    }
-
-
-                }
-                catch (Exception ed)
-                {
-                    System.out.println("Code-11"+ed);
-                }
-
-
-
-            };
-        };
-
-
-
-        timer.schedule(task, 0,150);
-
-
-
-        /*
-         Thread thread = new Thread(){
-            synchronized public void run(){
-
-                boolean jump=false, jump2=false;
-                try
-                {
-
-                    while (timer_pause_start2)
-                    {
-
-                        if(go_left || go_right)
-                        {
-                            sleep(100);
-
                             if(go_left)
                             {
 
-                                blcks.left_control();
-                                blcks.direction();
+                                gameb1.left_control();
+                                gameb1.direction();
+                                gameb1.invalidate();
+
 
                             }
 
@@ -526,131 +479,14 @@ public class MainActivity extends AppCompatActivity {
                             if(go_right)
                             {
 
-                                blcks.right_control();
-                                blcks.direction();
+                                gameb1.right_control();
+                                gameb1.direction();
+                                gameb1.invalidate();
 
                             }
                         }
 
-
                     }
-
-                }
-                catch (Exception ed)
-                {
-                    System.out.println("Code-554ds"+ed);
-                }
-
-            }
-        };
-
-        thread.start();
-
-         */
-
-
-    }
-
-
-    public void timer1()
-    {
-
-
-        /*
-        new Thread()
-       {
-            @Override
-            public void run() {
-                try
-                {
-
-                    while (timer_pause_start)
-                    {
-
-                        blcks.vertical++;
-                        blcks.ghost_vertical = blcks.vertical;
-                        blcks.direction2();
-
-
-
-                        sleep(600);
-                        blcks.restart_blocks();
-                        if(!blcks.dont_go_down()) blcks.first_horizontal_position();
-                    }
-
-                }
-                catch (Exception ed)
-                {
-                    System.out.println(ed);
-                }
-            }
-        }.start();
-         */
-
-
-
-
-
-        /*
-  Thread thread = new Thread(){
-               synchronized public void run(){
-
-                try
-                {
-
-                    while (timer_pause_start)
-                    {
-                        blcks.vertical++;
-                        blcks.direction();
-
-                        sleep(speed);
-                        if(blcks.bottom_control()) blcks.first_horizontal_position();
-                        blcks.restart_blocks();
-                    }
-
-                }
-                catch (Exception ed)
-                {
-                    System.out.println("Code-11"+ed);
-                }
-
-            }
-        };
-
-        thread.start();
-         */
-
-
-
-
-        /*
-          timer1 = new Timer();
-      task1 = new TimerTask() {
-
-
-
-
-
-            public void run() {
-
-
-                try
-                {
-
-
-                     blcks.restart_blocks();
-                    if(blcks.bottom_control() && blcks.vertical>15) blcks.first_horizontal_position();
-
-
-                        blcks.vertical++;
-                        blcks.direction();
-
-
-
-                       // gameb1.invalidate();
-
-                      //  sleep(speed);
-
 
 
                 }
@@ -666,18 +502,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-        timer1.schedule(task1, 0,speed);
-         */
-
-
-
-
+        timer.schedule(task, 0,100);
 
 
 
     }
+
 
 
 
@@ -691,7 +521,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         gameb1 = new gameboard1(this);
-        controller_parms = new LinearLayout.LayoutParams(715,1415);
+        controller_parms = new LinearLayout.LayoutParams(715,1420);
         gameb1.setLayoutParams(controller_parms);
 
         ln1.setGravity(Gravity.CENTER);
@@ -758,10 +588,11 @@ public class MainActivity extends AppCompatActivity {
         controller.setGravity(Gravity.CENTER);
 
         left_arrow();
-        between_arrows(200,200);
-        direction_arrow();
-        between_arrows(200,200);
+        between_arrows(100,100);
         right_arrow();
+        between_arrows(100,100);
+        direction_arrow();
+
 
     }
 
@@ -773,7 +604,7 @@ public class MainActivity extends AppCompatActivity {
         controller.setGravity(Gravity.CENTER);
 
         down_arrow();
-        between_arrows(200,200);
+        between_arrows(100,100);
         double_down_arrow();
 
 
@@ -808,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
         left_arrow= new ImageView(this);
         left_arrow.setImageResource(R.drawable.left_arrow);
         controller.addView(left_arrow, lp1);
-        controller_parms = new LinearLayout.LayoutParams(200,200);
+        controller_parms = new LinearLayout.LayoutParams(150,150);
         left_arrow.setLayoutParams(controller_parms);
     }
 
@@ -817,7 +648,7 @@ public class MainActivity extends AppCompatActivity {
         direction_arrow= new ImageView(this);
         direction_arrow.setImageResource(R.drawable.repeat);
         controller.addView(direction_arrow, lp1);
-        controller_parms = new LinearLayout.LayoutParams(200,200);
+        controller_parms = new LinearLayout.LayoutParams(150,150);
         direction_arrow.setLayoutParams(controller_parms);
     }
 
@@ -826,7 +657,7 @@ public class MainActivity extends AppCompatActivity {
         right_arrow= new ImageView(this);
         right_arrow.setImageResource(R.drawable.right_arrow);
         controller.addView(right_arrow, lp1);
-        controller_parms = new LinearLayout.LayoutParams(200,200);
+        controller_parms = new LinearLayout.LayoutParams(150,150);
         right_arrow.setLayoutParams(controller_parms);
     }
 
@@ -837,7 +668,7 @@ public class MainActivity extends AppCompatActivity {
         down_arrow= new ImageView(this);
         down_arrow.setImageResource(R.drawable.down_arrow);
         controller.addView(down_arrow, lp1);
-        controller_parms = new LinearLayout.LayoutParams(200,200);
+        controller_parms = new LinearLayout.LayoutParams(150,150);
         down_arrow.setLayoutParams(controller_parms);
     }
 
@@ -846,7 +677,7 @@ public class MainActivity extends AppCompatActivity {
         double_down_arrow= new ImageView(this);
         double_down_arrow.setImageResource(R.drawable.doublearrow);
         controller.addView(double_down_arrow, lp1);
-        controller_parms = new LinearLayout.LayoutParams(200,200);
+        controller_parms = new LinearLayout.LayoutParams(150,150);
         double_down_arrow.setLayoutParams(controller_parms);
     }
 

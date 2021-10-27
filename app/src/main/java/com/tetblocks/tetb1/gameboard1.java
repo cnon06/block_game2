@@ -31,7 +31,7 @@ public class gameboard1 extends View
     NavigableMap<String, Integer> max_direction2 = new TreeMap();
     NavigableMap<String, Integer> first_horizontal_position = new TreeMap();
 
- blocks blcks = new blocks();
+ //blocks blcks = new blocks();
     Bitmap ic_launcher = BitmapFactory.decodeResource(this.getResources(),R.drawable.tet6);
     Bitmap ic_launcher2 = BitmapFactory.decodeResource(this.getResources(),R.drawable.tet7);
     Bitmap ic_launcher3=Bitmap.createScaledBitmap(ic_launcher,65,65,false);
