@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, double_down_arrow ;
     LinearLayout.LayoutParams lp1;
+    gameboard1 gameb1;
 
     boolean go_right=false, go_left=false;
 
@@ -98,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-        try {
+         /*
+             try {
             blcks.calibrate_record_blocks();
             blcks.max_direction_list();
             blcks.setMax_direction();
@@ -110,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
         {
             System.out.println("Code-13: "+e);
         }
+          */
+
+
 
 
 
@@ -162,9 +166,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                                try {
-                                                blcks.right_control();
-                                                blcks.direction();
-                                                screen_refresh();
+                                                gameb1.right_control();
+                                                gameb1.direction();
+                                                gameb1.invalidate();
+
                             }
                             catch (Exception e)
                             {
@@ -208,9 +213,9 @@ public class MainActivity extends AppCompatActivity {
                          try {
 
 
-                                 blcks.left_control();
-                                 blcks.direction();
-                                 screen_refresh();
+                                 gameb1.left_control();
+                                 gameb1.direction();
+                                 gameb1.invalidate();
 
 
                         }
@@ -250,18 +255,18 @@ public class MainActivity extends AppCompatActivity {
 
                         try {
 
-                          blcks.direction++;
-                          if(blcks.direction>blcks.max_direction) blcks.direction=1;
-                          blcks.direction();
+                          gameb1.direction++;
+                          if(gameb1.direction>gameb1.max_direction) gameb1.direction=1;
+                          gameb1.direction();
 
 
                            // blcks.direction_left_right_control();
 
 
 
-                             if(! blcks.direction_up_down_control())
+                             if(! gameb1.direction_up_down_control())
 
-                               if( !blcks.direction_left_right_border_control()) blcks.direction_left_right_control2();
+                               if( !gameb1.direction_left_right_border_control()) gameb1.direction_left_right_control2();
 
 
 
@@ -272,9 +277,9 @@ public class MainActivity extends AppCompatActivity {
                                if(! blcks.direction_up_down_control()) blcks.direction_left_right_control2();
                              */
 
+                            gameb1.invalidate();
 
 
-                            screen_refresh();
 
 
                         }
@@ -316,11 +321,11 @@ public class MainActivity extends AppCompatActivity {
                         down_arrow.setImageResource(R.drawable.red_down_arrow);
 
 
-                        speed2=speed;
-                        speed=100;
-                        timer1.cancel();
+                        speed2=gameb1.speed;
+                        gameb1.speed=100;
+                        gameb1.timer1.cancel();
 
-                        timer1();
+                        gameb1.Timer1();
 
                   //   timer1.schedule(task1, 0,speed);
 
@@ -329,9 +334,9 @@ public class MainActivity extends AppCompatActivity {
 
                         down_arrow.setImageResource(R.drawable.down_arrow);
 
-                        speed=speed2;
-                        timer1.cancel();
-                        timer1();
+                        gameb1.speed=speed2;
+                        gameb1.timer1.cancel();
+                        gameb1.Timer1();
                      //   timer1.schedule(task1, 0,speed);
 
                         return true;
@@ -361,13 +366,13 @@ public class MainActivity extends AppCompatActivity {
 
                             while (timer_pause_start3)
                             {
-                                if(blcks.bottom_control()) {blcks.first_horizontal_position(); timer_pause_start3=false;}
-                                if(blcks.restart_blocks()) timer_pause_start3=false;
-                                blcks.vertical++;
-                                blcks.direction();
+                                if(gameb1.bottom_control()) {gameb1.first_horizontal_position(); timer_pause_start3=false;}
+                                if(gameb1.restart_blocks()) timer_pause_start3=false;
+                                gameb1.vertical++;
+                                gameb1.direction();
 
+                                gameb1.invalidate();
 
-                                screen_refresh();
                             }
 
                         }
@@ -396,87 +401,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
- public void screen_refresh() throws Exception
-    {
-
-
-
-
-
-  blcks.merge_blocks();
-
-
-
-  /*
-   for(int y=0;y< iv.length;y++) {
-
-            for (int x = 0; x < iv[0].length; x++) {
-
-                iv [y] [x].setImageResource(R.drawable.tet6);
-
-            }
-        }
-
-   */
-
-
-
-
-        /*
-           for(int y=0;y<blcks.merge_blocks.length;y++)
-            {
-
-                for(int x=0;x<blcks.merge_blocks[0].length;x++)
-                {
-         */
-
-        for(int y=0;y< blcks.merge_blocks.length;y++) {
-
-            for (int x = 0; x < blcks.merge_blocks[0].length; x++) {
-
-
-                    try {
-                        if(blcks.merge_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
-                        else  iv [y] [x].setImageResource(R.drawable.tet6);
-                        if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
-                    }
-
-                    catch (Exception eew)
-                        {
-                            System.out.println("Code-7: "+eew);
-                        }
-              //      if(blcks.coords[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
-                      // else if(blcks.ghost1[y][x]==false)  iv [y] [x].setImageResource(R.drawable.tet1);
-            //  else if(blcks.record_blocks[y][x]==false )  iv [y] [x].setImageResource(R.drawable.tet7);
-
-
-            }
-
-            }
-
-
-
-
-  for(int y=0;y< iv.length;y++) {
-
-            for (int x = 0; x < iv[0].length; x++) {
-
-
-                if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
-               // iv [y] [x].setImageResource(R.drawable.tet6);
-
-            }
-        }
-
-
-
-
-
-    }
-
-
-
     public void timer2()
     {
 
@@ -496,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
                         blcks.ghost_vertical = blcks.vertical;
                         blcks.direction2();
 
-                        screen_refresh();
+
 
                         sleep(600);
                         blcks.restart_blocks();
@@ -537,9 +461,11 @@ public class MainActivity extends AppCompatActivity {
                         if(go_left)
                         {
 
-                            blcks.left_control();
-                            blcks.direction();
-                            screen_refresh();
+                            gameb1.left_control();
+                            gameb1.direction();
+                            gameb1.invalidate();
+
+
                         }
 
 
@@ -547,9 +473,10 @@ public class MainActivity extends AppCompatActivity {
                         if(go_right)
                         {
 
-                            blcks.right_control();
-                            blcks.direction();
-                            screen_refresh();
+                            gameb1.right_control();
+                            gameb1.direction();
+                            gameb1.invalidate();
+
                         }
                     }
 
@@ -591,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 blcks.left_control();
                                 blcks.direction();
-                                screen_refresh();
+
                             }
 
 
@@ -601,7 +528,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 blcks.right_control();
                                 blcks.direction();
-                                screen_refresh();
+
                             }
                         }
 
@@ -644,7 +571,7 @@ public class MainActivity extends AppCompatActivity {
                         blcks.ghost_vertical = blcks.vertical;
                         blcks.direction2();
 
-                        screen_refresh();
+
 
                         sleep(600);
                         blcks.restart_blocks();
@@ -675,7 +602,7 @@ public class MainActivity extends AppCompatActivity {
                     {
                         blcks.vertical++;
                         blcks.direction();
-                        screen_refresh();
+
                         sleep(speed);
                         if(blcks.bottom_control()) blcks.first_horizontal_position();
                         blcks.restart_blocks();
@@ -696,12 +623,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-         timer1 = new Timer();
+        /*
+          timer1 = new Timer();
       task1 = new TimerTask() {
 
-            // run() method to carry out the action of the task
+
 
 
 
@@ -710,15 +636,19 @@ public class MainActivity extends AppCompatActivity {
 
                 try
                 {
-                        blcks.restart_blocks();
+
+
+                     blcks.restart_blocks();
                     if(blcks.bottom_control() && blcks.vertical>15) blcks.first_horizontal_position();
 
-                   // blcks.direction();
+
                         blcks.vertical++;
                         blcks.direction();
 
 
-                        screen_refresh();
+
+                       // gameb1.invalidate();
+
                       //  sleep(speed);
 
 
@@ -739,6 +669,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         timer1.schedule(task1, 0,speed);
+         */
+
+
 
 
 
@@ -749,10 +682,26 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void game_board(int Width, int Height) throws Exception
+    public void game_board(int Width, int Height)
     {
 
-        try {
+
+       LinearLayout gb1 = new LinearLayout(this);
+
+
+
+        gameb1 = new gameboard1(this);
+        controller_parms = new LinearLayout.LayoutParams(715,1415);
+        gameb1.setLayoutParams(controller_parms);
+
+        ln1.setGravity(Gravity.CENTER);
+
+        ln1.addView(gameb1);
+
+
+
+            /*
+            try {
 
 
             lln  = new LinearLayout[20];
@@ -771,20 +720,6 @@ public class MainActivity extends AppCompatActivity {
                 lln[y].setGravity(Gravity.CENTER);
 
 
-            /* game boardı merkeze almak için lln[i].setGravity(Gravity.CENTER); kullanılıyor
-
-            lp1 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
-            );
-
-            olmalı
-
-             lp1 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-
-            değil.
-             */
 
 
                 for(int x=0;x<iv[0].length;x++)
@@ -805,6 +740,8 @@ public class MainActivity extends AppCompatActivity {
         {
             System.out.println(e);
         }
+
+             */
 
 
       //  timer1();

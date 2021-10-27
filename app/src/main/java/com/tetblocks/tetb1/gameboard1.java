@@ -1,22 +1,24 @@
 package com.tetblocks.tetb1;
 
-import android.util.Log;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.view.View;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.NavigableMap;
 import java.util.Random;
-import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeMap;
 
+public class gameboard1 extends View
+{
+    boolean dsw =false;
+    int fdf=0;
 
-
-public class blocks {
 
     protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, direction = 1,
             block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 600;
@@ -29,11 +31,190 @@ public class blocks {
     NavigableMap<String, Integer> max_direction2 = new TreeMap();
     NavigableMap<String, Integer> first_horizontal_position = new TreeMap();
 
+ blocks blcks = new blocks();
+    Bitmap ic_launcher = BitmapFactory.decodeResource(this.getResources(),R.drawable.tet6);
+    Bitmap ic_launcher2 = BitmapFactory.decodeResource(this.getResources(),R.drawable.tet7);
+    Bitmap ic_launcher3=Bitmap.createScaledBitmap(ic_launcher,65,65,false);
+    Bitmap ic_launcher4=Bitmap.createScaledBitmap(ic_launcher2,65,65,false);
 
-    blocks() {
+    Timer timer1;
+    TimerTask task1;
+
+
+
+    public void Timer1()
+    {
+        timer1 = new Timer();
+        task1 = new TimerTask() {
+
+            // run() method to carry out the action of the task
+
+
+
+            public void run() {
+
+
+                try
+                {
+
+
+                    restart_blocks();
+
+
+
+
+                    if(bottom_control() && vertical>15) first_horizontal_position();
+
+
+                    vertical++;
+                    direction();
+
+
+
+
+                    invalidate();
+                    // screen_refresh();
+                    //  sleep(speed);
+
+
+
+                }
+                catch (Exception ed)
+                {
+                    System.out.println("Code-11"+ed);
+                }
+
+
+
+            };
+        };
+
+
+
+
+
+        timer1.schedule(task1, 0,speed);
+    }
+
+
+
+    public gameboard1(Context context) {
+        super(context);
+
+
+
+        try {
+            calibrate_record_blocks();
+            max_direction_list();
+            setMax_direction();
+            first_horizontal_position_list();
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("Code-13: "+e);
+        }
+
+        Timer1();
 
 
     }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        Paint paint = new Paint();
+
+
+        /*
+         int x = getWidth();
+        int y = getHeight();
+        int radius=100;
+         */
+
+
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
+        canvas.drawPaint(paint);
+
+        /*
+        if(dsw)
+        {
+            canvas.drawBitmap(ic_launcher3,100,100,null);
+
+            //  canvas.drawBitmap(tet2, 300, 300, null);
+            dsw=false;
+
+        }
+        else
+        {
+            canvas.drawBitmap(ic_launcher4,100,100,null);
+            // canvas.drawBitmap(tet4, 300, 300, null);
+            dsw=true;
+        }
+         */
+
+
+
+
+        try {
+
+
+
+
+
+            merge_blocks();
+
+            direction();
+
+
+            for(int y=0; y<merge_blocks.length; y++)
+            {
+                for(int x=0; x<merge_blocks[0].length; x++)
+                {
+
+
+                    if(merge_blocks[y][x]==false ) canvas.drawBitmap(ic_launcher4,10+(x*70),10+(y*70),null); // iv [y] [x].setImageResource(R.drawable.tet7);
+                    else  canvas.drawBitmap(ic_launcher3,10+(x*70),10+(y*70),null);   //iv [y] [x].setImageResource(R.drawable.tet6);
+                  //  if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
+
+
+                }
+            }
+
+
+         //   System.out.println("vertical: "+vertical);
+
+        }
+        catch (Exception er)
+        {
+            System.out.println("Code-5543: "+er);
+        }
+
+
+
+
+        /*
+          fdf++;
+        System.out.println("game.board: "+fdf);
+         */
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
 
 
     public void remove_rows_blocks() {
@@ -52,11 +233,11 @@ public class blocks {
 
         {
 
-          boolean tee= false;
+            boolean tee= false;
 
             for (int x = 0; x < record_blocks[0].length; x++) {
 
-              if(record_blocks[y][x]) tee=true;
+                if(record_blocks[y][x]) tee=true;
 
             }
 
@@ -74,16 +255,16 @@ public class blocks {
         }
 
 
-      int ygf=19;
+        int ygf=19;
 
 
 
         for (int y = record_blocks.length-1 ; y >=0 ; y--) {
 
-        boolean gff=false;
+            boolean gff=false;
 
 
-         for (int x = 0; x < record_blocks[0].length; x++) {
+            for (int x = 0; x < record_blocks[0].length; x++) {
 
                 if(!record_blocks[y][x]) gff=true;
 
@@ -95,13 +276,13 @@ public class blocks {
             {
                 for (int x = 0; x < record_blocks[0].length; x++) {
 
-                  try {
-                      record_blocks2[ygf][x] = record_blocks[y][x];
-                  }
-                  catch (Exception re)
-                  {
+                    try {
+                        record_blocks2[ygf][x] = record_blocks[y][x];
+                    }
+                    catch (Exception re)
+                    {
 
-                  }
+                    }
 
 
 
@@ -190,7 +371,7 @@ public class blocks {
         }
 
         if(xmin!=0 && xmax!=9) direction_left_right_control();
-    //    direction_left_right_control();
+        //    direction_left_right_control();
 
 
         return false;
@@ -251,7 +432,7 @@ public class blocks {
             }
 
 
-              if(back_direction() && block_width>block_height )
+            if(back_direction() && block_width>block_height )
             {
 
                 horizontal-=bbwidth;
@@ -342,24 +523,24 @@ public class blocks {
             for (int x = 0; x < coords[0].length; x++) {
                 if (!coords[y][x] && !record_blocks[y][x]) {
 
-                  if(y_intersection!=y ) count++;
+                    if(y_intersection!=y ) count++;
                     y_intersection=y;
                 }
 
             }
         }
 
-       // int bbheight=y_intersection-ymin-1;
+        // int bbheight=y_intersection-ymin-1;
         int bbheight= ymax-y_intersection+1;
 
 
         int vertical2 = vertical;
-       // if(y_intersection!=0 && block_width<block_height) vertical-=bbheight;
+        // if(y_intersection!=0 && block_width<block_height) vertical-=bbheight;
         if(y_intersection!=0 && block_width<block_height && y_intersection==ymax) vertical-=count;
         if(y_intersection!=0 && block_width<block_height && y_intersection==ymax-1 && block_type==1) vertical-=2;
 
 
-            try
+        try
         {
             direction();
         }
@@ -395,7 +576,7 @@ public class blocks {
         }
 
 
-         if((ymin == y_intersection)  && (ymin!=0) && block_width<block_height )
+        if((ymin == y_intersection)  && (ymin!=0) && block_width<block_height )
         {
 
             vertical=vertical2;
@@ -415,7 +596,7 @@ public class blocks {
         {
             System.out.println("Code-43d3: "+e);
         }
-       // System.out.println("y_intersection: "+y_intersection+" ymax: "+ymax);
+        // System.out.println("y_intersection: "+y_intersection+" ymax: "+ymax);
 
 
         return dont_go;
@@ -458,7 +639,7 @@ public class blocks {
             }
         }
 
-      int  bbwidth=block_width-(xmax-xmin+1);
+        int  bbwidth=block_width-(xmax-xmin+1);
         int bbheight= block_height-(ymax-ymin+1);
 
 
@@ -477,11 +658,11 @@ public class blocks {
 
 
 
-          boolean dont_go=false;
+        boolean dont_go=false;
 
 
 
-             if(xmin==0 && back_direction())
+        if(xmin==0 && back_direction())
 
         //  if(back_direction() && bbwidth!=0)
         {
@@ -492,11 +673,11 @@ public class blocks {
             dont_go=true;
         }
 
-             if (xmax==9 && back_direction())
-      //  if(back_direction() && bbwidth!=0)
+        if (xmax==9 && back_direction())
+        //  if(back_direction() && bbwidth!=0)
         {
 
-             horizontal+=bbwidth;
+            horizontal+=bbwidth;
             direction--;
             if(direction<1) direction=max_direction;
             dont_go=true;
@@ -529,7 +710,7 @@ public class blocks {
 
         if(back_direction() && ymax==19)
         {
-           // if(xmin==0) horizontal-=bbwidth;
+            // if(xmin==0) horizontal-=bbwidth;
             if(ymax==19) vertical+=bbheight;
             direction--;
             if(direction<1) direction=max_direction;
@@ -712,7 +893,7 @@ public class blocks {
             }
 
 
-           if(!dont_go) horizontal ++;
+            if(!dont_go) horizontal ++;
 
         }
 
@@ -720,7 +901,7 @@ public class blocks {
 
 
 
-    //    System.out.println("xmax : "+xmax);
+        //    System.out.println("xmax : "+xmax);
 
         return dont_go_right_left;
 
@@ -741,7 +922,7 @@ public class blocks {
 
                     merge_blocks[y][x] = coords[y][x];
 
-                    if (!record_blocks[y][x]) merge_blocks[y][x] = record_blocks[y][x];
+                  if (!record_blocks[y][x]) merge_blocks[y][x] = record_blocks[y][x];
                 } catch (Exception er) {
                     System.out.println("Code-02: " + er);
                 }
@@ -1542,5 +1723,10 @@ public class blocks {
         }
 
     }
+
+
+
+
+
 
 }
