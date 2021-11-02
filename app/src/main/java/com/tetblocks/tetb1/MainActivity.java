@@ -41,12 +41,15 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onRestart() {
 
+        gameb1.Timer1();
+
        /*
           timer_pause_start=false;
         finish();
         System.out.println("App is closing.");
         */
 
+        System.out.println("onRestart 12");
         super.onRestart();
     }
 
@@ -64,7 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onStop() {
 
-       // finish();
+        gameb1.timer1.cancel();
+
+
+
+
+        // finish();
+        System.out.println("on stop 1");
         super.onStop();
     }
 
@@ -132,9 +141,9 @@ public class MainActivity extends AppCompatActivity {
             // Butonların ve gameboardın yerleri aşağıdaki methodlar ile yapılmıştır
 
             game_board(70,70);
-            space_between_game_board_and_controller(100);
+            space_between_game_board_and_controller(50);
             controller();
-            space_between_game_board_and_controller(100);
+            space_between_game_board_and_controller(10);
             controller2();
 
         }
@@ -516,7 +525,29 @@ public class MainActivity extends AppCompatActivity {
     {
 
 
-       LinearLayout gb1 = new LinearLayout(this);
+      LinearLayout gb1 = new LinearLayout(this);
+      gb1  = new LinearLayout(this);
+      ln1.addView(gb1,lp1);
+      gb1.setOrientation(LinearLayout.HORIZONTAL);
+      gb1.setGravity(Gravity.CENTER);
+
+
+      /*
+       ImageView play_pause1= new ImageView(this);
+        play_pause1.setImageResource(R.drawable.play2);
+
+        gb1.addView(play_pause1);
+
+        controller_parms = new LinearLayout.LayoutParams(150,150);
+        play_pause1.setLayoutParams(controller_parms);
+       */
+
+
+
+        LinearLayout between_arrows  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms = new LinearLayout.LayoutParams(150,Height);
+        gb1.addView(between_arrows,between_arrows_parms);
+        between_arrows.setOrientation(LinearLayout.HORIZONTAL);
 
 
 
@@ -526,8 +557,17 @@ public class MainActivity extends AppCompatActivity {
 
         ln1.setGravity(Gravity.CENTER);
 
-        ln1.addView(gameb1);
+        gb1.addView(gameb1);
 
+
+
+       ImageView play_pause= new ImageView(this);
+        play_pause.setImageResource(R.drawable.play2);
+
+        gb1.addView(play_pause);
+        // play_pause.addView(down_arrow, lp1);
+        controller_parms = new LinearLayout.LayoutParams(150,150);
+        play_pause.setLayoutParams(controller_parms);
 
 
             /*
@@ -588,9 +628,9 @@ public class MainActivity extends AppCompatActivity {
         controller.setGravity(Gravity.CENTER);
 
         left_arrow();
-        between_arrows(100,100);
+        between_arrows(50,100);
         right_arrow();
-        between_arrows(100,100);
+        between_arrows(300,100);
         direction_arrow();
 
 
@@ -604,7 +644,7 @@ public class MainActivity extends AppCompatActivity {
         controller.setGravity(Gravity.CENTER);
 
         down_arrow();
-        between_arrows(100,100);
+        between_arrows(300,100);
         double_down_arrow();
 
 
