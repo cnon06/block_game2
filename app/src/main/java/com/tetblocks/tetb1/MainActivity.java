@@ -22,13 +22,14 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout ln1, lln [],controller, space_between_game_board_and_controller;
     LinearLayout.LayoutParams parms, controller_parms;
-    ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, double_down_arrow ;
+    ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, double_down_arrow, play_pause;
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
 
+
     boolean go_right=false, go_left=false;
 
-    boolean timer_pause_start=true, timer_pause_start2=true, timer_pause_start3=true;
+    boolean  timer_pause_start3=true, play_pause2=false;
 
     int speed = 600, speed2=0,  go_left_right_control=0;
 
@@ -36,12 +37,17 @@ public class MainActivity extends AppCompatActivity {
   //  ghost1 ghst1 = new ghost1();
 
 
-    Timer timer1;
+    Timer timer2;
     TimerTask task1;
 
     protected void onRestart() {
 
-        gameb1.Timer1();
+        if(!play_pause2)
+        {
+            play();
+        }
+
+        //gameb1.Timer1();
 
        /*
           timer_pause_start=false;
@@ -55,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onDestroy () {
 
+
+
        /*
         timer_pause_start=false;
         finish();
@@ -67,8 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onStop() {
 
-        gameb1.timer1.cancel();
+        //gameb1.timer1.cancel();
 
+        if(!play_pause2)
+        {
+            pause();
+        }
 
 
 
@@ -124,10 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
         try {
             ln1 = findViewById(R.id.ln1);
 
@@ -154,6 +162,79 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+        play_pause.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event)  {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        vibe.vibrate(20);
+
+
+
+
+                        if(play_pause2)
+                        {
+
+                            play();
+
+
+                        }
+                        else
+                        {
+
+                            pause();
+
+                        }
+
+
+
+
+                        /*
+                            go_right=true;
+
+
+
+                        try {
+                            gameb1.right_control();
+                            gameb1.direction();
+                            gameb1.invalidate();
+
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println("Code-45r3e: "+e);
+                        }
+
+                         */
+
+
+
+
+
+                        return true;
+                    case MotionEvent.ACTION_UP:
+
+
+                      //  play_pause.setImageResource(R.drawable.play2);
+
+                        /*
+                         right_arrow.setImageResource(R.drawable.right_arrow);
+                        go_right=false;
+                        go_left_right_control=0;
+                         */
+
+
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
         
 
 
@@ -164,37 +245,43 @@ public class MainActivity extends AppCompatActivity {
                     switch(event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
 
-                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibe.vibrate(100);
 
-
-                            right_arrow.setImageResource(R.drawable.red_right_arrow);
-
-                            go_right=true;
-
-
-
-                               try {
-                                                gameb1.right_control();
-                                                gameb1.direction();
-                                                gameb1.invalidate();
-
-                            }
-                            catch (Exception e)
+                            if(!play_pause2)
                             {
-                                System.out.println("Code-45r3e: "+e);
+                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                vibe.vibrate(20);
+
+
+                                right_arrow.setImageResource(R.drawable.red_right_arrow);
+
+                                go_right=true;
+
+
+
+                                try {
+                                    gameb1.right_control();
+                                    gameb1.direction();
+                                    gameb1.invalidate();
+
+                                }
+                                catch (Exception e)
+                                {
+                                    System.out.println("Code-45r3e: "+e);
+                                }
                             }
-
-
 
 
 
                             return true;
                         case MotionEvent.ACTION_UP:
 
-                            right_arrow.setImageResource(R.drawable.right_arrow);
-                            go_right=false;
-                            go_left_right_control=0;
+                            if(!play_pause2)
+                            {
+                                right_arrow.setImageResource(R.drawable.right_arrow);
+                                go_right=false;
+                                go_left_right_control=0;
+
+                            }
 
                             return true;
                     }
@@ -213,35 +300,49 @@ public class MainActivity extends AppCompatActivity {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        vibe.vibrate(100);
 
-                        left_arrow.setImageResource(R.drawable.red_left_arrow);
-
-
-                         try {
-
-
-                                 gameb1.left_control();
-                                 gameb1.direction();
-                                 gameb1.invalidate();
-
-
-                        }
-                        catch (Exception e)
+                        if(!play_pause2)
                         {
-                            System.out.println("Code-423d: "+e);
+                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                            vibe.vibrate(20);
+
+                            left_arrow.setImageResource(R.drawable.red_left_arrow);
+
+
+                            try {
+
+
+                                gameb1.left_control();
+                                gameb1.direction();
+                                gameb1.invalidate();
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                System.out.println("Code-423d: "+e);
+                            }
+
+
+                            go_left=true;
+
                         }
 
 
-                        go_left=true;
 
                         return true;
                     case MotionEvent.ACTION_UP:
 
-                        left_arrow.setImageResource(R.drawable.left_arrow);
-                        go_left=false;
-                        go_left_right_control=0;
+
+                        if(!play_pause2)
+                        {
+                            left_arrow.setImageResource(R.drawable.left_arrow);
+                            go_left=false;
+                            go_left_right_control=0;
+
+                        }
+
+
 
                         return true;
                 }
@@ -258,44 +359,54 @@ public class MainActivity extends AppCompatActivity {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        vibe.vibrate(100);
-
-                        direction_arrow.setImageResource(R.drawable.red_repeat);
-
-                        try {
-
-                          gameb1.direction++;
-                          if(gameb1.direction>gameb1.max_direction) gameb1.direction=1;
-                          gameb1.direction();
 
 
-                           // blcks.direction_left_right_control();
+                        if(!play_pause2)
+                        {
+
+                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                            vibe.vibrate(20);
+
+                            direction_arrow.setImageResource(R.drawable.red_repeat);
+
+                            try {
+
+                                gameb1.direction++;
+                                if(gameb1.direction>gameb1.max_direction) gameb1.direction=1;
+                                gameb1.direction();
+
+
+                                // blcks.direction_left_right_control();
 
 
 
-                             if(! gameb1.direction_up_down_control())
+                                if(! gameb1.direction_up_down_control())
 
-                               if( !gameb1.direction_left_right_border_control()) gameb1.direction_left_right_control2();
+                                    if( !gameb1.direction_left_right_border_control()) gameb1.direction_left_right_control2();
 
 
 
-                          //  blcks.direction_up_down_control();
+                                //  blcks.direction_up_down_control();
 
                             /*
                              if(!blcks.direction_left_right_border_control())
                                if(! blcks.direction_up_down_control()) blcks.direction_left_right_control2();
                              */
 
-                            gameb1.invalidate();
+                                gameb1.invalidate();
 
 
 
 
-                        }
-                        catch (Exception e)
-                        {
-                            System.out.println("Code-9: "+e);
+                            }
+                            catch (Exception e)
+                            {
+                                System.out.println("Code-9: "+e);
+                            }
+
+
+
+
                         }
 
 
@@ -304,7 +415,13 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case MotionEvent.ACTION_UP:
 
-                        direction_arrow.setImageResource(R.drawable.repeat);
+
+                        if(!play_pause2)
+                        {
+                            direction_arrow.setImageResource(R.drawable.repeat);
+                        }
+
+
 
 
 
@@ -325,29 +442,37 @@ public class MainActivity extends AppCompatActivity {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        vibe.vibrate(100);
 
-                        down_arrow.setImageResource(R.drawable.red_down_arrow);
+                        if(!play_pause2) {
+
+                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                            vibe.vibrate(20);
+
+                            down_arrow.setImageResource(R.drawable.red_down_arrow);
 
 
-                        speed2=gameb1.speed;
-                        gameb1.speed=100;
-                        gameb1.timer1.cancel();
+                            speed2 = gameb1.speed;
+                            gameb1.speed = 100;
+                            gameb1.timer1.cancel();
 
-                        gameb1.Timer1();
+                            gameb1.Timer1();
 
-                  //   timer1.schedule(task1, 0,speed);
+                            //   timer1.schedule(task1, 0,speed);
+                        }
 
-                        return true;
-                    case MotionEvent.ACTION_UP:
+                            return true;
+                            case MotionEvent.ACTION_UP:
 
-                        down_arrow.setImageResource(R.drawable.down_arrow);
 
-                        gameb1.speed=speed2;
-                        gameb1.timer1.cancel();
-                        gameb1.Timer1();
-                     //   timer1.schedule(task1, 0,speed);
+                                if(!play_pause2) {
+
+                                    down_arrow.setImageResource(R.drawable.down_arrow);
+
+                                    gameb1.speed = speed2;
+                                    gameb1.timer1.cancel();
+                                    gameb1.Timer1();
+                                    //   timer1.schedule(task1, 0,speed);
+                                }
 
                         return true;
                 }
@@ -365,38 +490,46 @@ public class MainActivity extends AppCompatActivity {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        vibe.vibrate(100);
+                        if(!play_pause2) {
 
-                        double_down_arrow.setImageResource(R.drawable.red_doublearrow);
+                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                            vibe.vibrate(20);
+
+                            double_down_arrow.setImageResource(R.drawable.red_doublearrow);
 
 
-                        try
-                        {
-
-                            while (timer_pause_start3)
+                            try
                             {
-                                if(gameb1.bottom_control()) {gameb1.first_horizontal_position(); timer_pause_start3=false;}
-                                if(gameb1.restart_blocks()) timer_pause_start3=false;
-                                gameb1.vertical++;
-                                gameb1.direction();
 
-                                gameb1.invalidate();
+                                while (timer_pause_start3)
+                                {
+                                    if(gameb1.bottom_control()) {gameb1.first_horizontal_position(); timer_pause_start3=false;}
+                                    if(gameb1.restart_blocks()) timer_pause_start3=false;
+                                    gameb1.vertical++;
+                                    gameb1.direction();
+
+                                    gameb1.invalidate();
+
+                                }
 
                             }
+                            catch (Exception ed)
+                            {
+                                System.out.println("Code-1fe1: "+ed);
+                            }
+
+
+                            timer_pause_start3=true;
 
                         }
-                        catch (Exception ed)
-                        {
-                            System.out.println("Code-1fe1: "+ed);
-                        }
 
 
-                        timer_pause_start3=true;
                         return true;
                     case MotionEvent.ACTION_UP:
+                        if(!play_pause2) {
+                            double_down_arrow.setImageResource(R.drawable.doublearrow);
+                        }
 
-                        double_down_arrow.setImageResource(R.drawable.doublearrow);
 
                         return true;
                 }
@@ -449,7 +582,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Timer timer = new Timer();
+        timer2 = new Timer();
         TimerTask task = new TimerTask() {
 
             // run() method to carry out the action of the task
@@ -462,14 +595,10 @@ public class MainActivity extends AppCompatActivity {
                 try
                 {
 
-
-
                     if(go_left || go_right)
                     {
 
-
                         go_left_right_control++;
-
 
                         if(go_left_right_control>=2)
                         {
@@ -480,10 +609,7 @@ public class MainActivity extends AppCompatActivity {
                                 gameb1.direction();
                                 gameb1.invalidate();
 
-
                             }
-
-
 
                             if(go_right)
                             {
@@ -511,7 +637,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        timer.schedule(task, 0,100);
+        timer2.schedule(task, 0,100);
 
 
 
@@ -532,15 +658,6 @@ public class MainActivity extends AppCompatActivity {
       gb1.setGravity(Gravity.CENTER);
 
 
-      /*
-       ImageView play_pause1= new ImageView(this);
-        play_pause1.setImageResource(R.drawable.play2);
-
-        gb1.addView(play_pause1);
-
-        controller_parms = new LinearLayout.LayoutParams(150,150);
-        play_pause1.setLayoutParams(controller_parms);
-       */
 
 
 
@@ -561,8 +678,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-       ImageView play_pause= new ImageView(this);
-        play_pause.setImageResource(R.drawable.play2);
+        play_pause= new ImageView(this);
+        play_pause.setImageResource(R.drawable.pause2);
 
         gb1.addView(play_pause);
         // play_pause.addView(down_arrow, lp1);
@@ -721,9 +838,21 @@ public class MainActivity extends AppCompatActivity {
         double_down_arrow.setLayoutParams(controller_parms);
     }
 
+    public void play()
+    {
+        play_pause.setImageResource(R.drawable.pause2);
+        play_pause2=false;
+        gameb1.Timer1();
+        timer2();
+    }
 
-
-
+    public void pause()
+    {
+        play_pause.setImageResource(R.drawable.play2);
+        play_pause2=true;
+        gameb1.timer1.cancel();
+        timer2.cancel();
+    }
 
 }
 
