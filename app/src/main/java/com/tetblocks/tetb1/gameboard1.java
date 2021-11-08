@@ -16,12 +16,12 @@ import java.util.TreeMap;
 
 public class gameboard1 extends View
 {
-    boolean dsw =false;
+    boolean down_arrow_cont=false;
     int fdf=0;
 
 
     protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, direction = 1,
-            block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 600;
+            block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 600, down_arrow_count=0, speed2=0;
 
 
     boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10],
@@ -42,6 +42,14 @@ public class gameboard1 extends View
 
 
 
+    public void speed_up_down ()
+    {
+        speed = speed2;
+        timer1.cancel();
+        Timer1();
+    }
+
+
     public void Timer1()
     {
         timer1 = new Timer();
@@ -58,12 +66,33 @@ public class gameboard1 extends View
                 {
 
 
+
+                  //  if(vertical==0 && speed2!=0) speed_up_down();
+
                     restart_blocks();
 
 
 
 
                     if(bottom_control() && vertical>15) first_horizontal_position();
+
+
+                    if(down_arrow_cont)
+                    {
+                        down_arrow_count++;
+                    }
+
+
+                    if(down_arrow_count>3)
+                    {
+                        down_arrow_cont=false;
+                        speed = 20;
+                       timer1.cancel();
+                       down_arrow_count=0;
+
+
+                        Timer1();
+                    }
 
 
                     vertical++;
@@ -964,6 +993,7 @@ public class gameboard1 extends View
             first_horizontal_position();
 
 
+
         }
 
 
@@ -1144,6 +1174,15 @@ public class gameboard1 extends View
 
 
         remove_rows_blocks();
+
+
+        if(speed2!=0)
+        {
+            speed_up_down();
+            vertical=-2;
+        }
+
+
 
 
 

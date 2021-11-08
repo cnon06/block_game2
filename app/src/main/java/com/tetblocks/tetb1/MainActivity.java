@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     gameboard1 gameb1;
 
 
-    boolean go_right=false, go_left=false;
+
+    boolean go_right=false, go_left=false, button_cont=false;
 
     boolean  timer_pause_start3=true, play_pause2=false;
 
@@ -246,6 +247,9 @@ public class MainActivity extends AppCompatActivity {
                         case MotionEvent.ACTION_DOWN:
 
 
+
+
+
                             if(!play_pause2)
                             {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -272,6 +276,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
                             return true;
                         case MotionEvent.ACTION_UP:
 
@@ -282,6 +288,9 @@ public class MainActivity extends AppCompatActivity {
                                 go_left_right_control=0;
 
                             }
+
+
+
 
                             return true;
                     }
@@ -435,6 +444,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         down_arrow.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -450,8 +460,8 @@ public class MainActivity extends AppCompatActivity {
 
                             down_arrow.setImageResource(R.drawable.red_down_arrow);
 
-
-                            speed2 = gameb1.speed;
+                            gameb1.down_arrow_cont=true;
+                           gameb1.speed2 = gameb1.speed;
                             gameb1.speed = 100;
                             gameb1.timer1.cancel();
 
@@ -460,19 +470,25 @@ public class MainActivity extends AppCompatActivity {
                             //   timer1.schedule(task1, 0,speed);
                         }
 
+
                             return true;
                             case MotionEvent.ACTION_UP:
 
-
+                                gameb1.down_arrow_cont=false;
+                                gameb1.down_arrow_count=0;
                                 if(!play_pause2) {
 
                                     down_arrow.setImageResource(R.drawable.down_arrow);
 
-                                    gameb1.speed = speed2;
-                                    gameb1.timer1.cancel();
-                                    gameb1.Timer1();
+
+                                    gameb1.speed_up_down();
+
+
+
                                     //   timer1.schedule(task1, 0,speed);
                                 }
+
+
 
                         return true;
                 }
@@ -482,15 +498,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-        double_down_arrow.setOnTouchListener(new View.OnTouchListener() {
+        /*
+           double_down_arrow.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        if(!play_pause2) {
+
+                        if(!play_pause2 ) {
 
                             Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             vibe.vibrate(20);
@@ -498,29 +515,13 @@ public class MainActivity extends AppCompatActivity {
                             double_down_arrow.setImageResource(R.drawable.red_doublearrow);
 
 
-                            try
-                            {
+                            speed2 = gameb1.speed;
+                            gameb1.speed = 20;
+                            gameb1.timer1.cancel();
 
-                                while (timer_pause_start3)
-                                {
-                                    if(gameb1.bottom_control()) {gameb1.first_horizontal_position(); timer_pause_start3=false;}
-                                    if(gameb1.restart_blocks()) timer_pause_start3=false;
-                                    gameb1.vertical++;
-                                    gameb1.direction();
+                            gameb1.Timer1();
 
-                                    gameb1.invalidate();
-
-                                }
-
-                            }
-                            catch (Exception ed)
-                            {
-                                System.out.println("Code-1fe1: "+ed);
-                            }
-
-
-                            timer_pause_start3=true;
-
+                            //   timer1.schedule(task1, 0,speed);
                         }
 
 
@@ -528,6 +529,9 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         if(!play_pause2) {
                             double_down_arrow.setImageResource(R.drawable.doublearrow);
+                            gameb1.speed = speed2;
+                            gameb1.timer1.cancel();
+                            gameb1.Timer1();
                         }
 
 
@@ -536,6 +540,11 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+         */
+
+
+
 
 
 
@@ -831,11 +840,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void double_down_arrow() throws Exception
     {
-        double_down_arrow= new ImageView(this);
+
+        /*
+         double_down_arrow= new ImageView(this);
         double_down_arrow.setImageResource(R.drawable.doublearrow);
         controller.addView(double_down_arrow, lp1);
         controller_parms = new LinearLayout.LayoutParams(150,150);
         double_down_arrow.setLayoutParams(controller_parms);
+         */
+
+
+
+        LinearLayout between_arrows  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms = new LinearLayout.LayoutParams(150,100);
+         controller.addView(between_arrows,between_arrows_parms);
+        between_arrows.setOrientation(LinearLayout.HORIZONTAL);
+
     }
 
     public void play()
