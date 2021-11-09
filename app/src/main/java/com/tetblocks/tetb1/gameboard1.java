@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.NavigableMap;
 import java.util.Random;
 import java.util.Timer;
@@ -17,15 +19,16 @@ import java.util.TreeMap;
 public class gameboard1 extends View
 {
     boolean down_arrow_cont=false;
-    int fdf=0;
+    boolean cont2=false;
 
 
     protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, direction = 1,
-            block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 600, down_arrow_count=0, speed2=0;
+            block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 600, down_arrow_count=0, speed2=0, first_column_count=0, score1=0;
 
 
     boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10],
-            record_blocks2[][] = new boolean[20][10], record_blocks3[][] = new boolean[20][10];
+            record_blocks2[][] = new boolean[20][10], record_blocks3[][] = new boolean[20][10],  record_blocks4[][] = new boolean[20][10], record_blocks5[][] = new boolean[20][10]
+            ,first_colomn=false;
 
 
     NavigableMap<String, Integer> max_direction2 = new TreeMap();
@@ -37,23 +40,227 @@ public class gameboard1 extends View
     Bitmap ic_launcher3=Bitmap.createScaledBitmap(ic_launcher,65,65,false);
     Bitmap ic_launcher4=Bitmap.createScaledBitmap(ic_launcher2,65,65,false);
 
-    Timer timer1;
+    Timer timer1, timer3;
     TimerTask task1;
+
+
+
+
+
+
+    public void remove_blocks_flicker()
+    {
+
+
+
+
+
+
+        for(int y=0; y<record_blocks3.length; y++) {
+
+            for (int x = 0; x < record_blocks3[0].length; x++) {
+
+                record_blocks3[y][x]=true;
+            }
+        }
+
+
+        boolean eew=false;
+
+        for(int y=0; y<record_blocks.length; y++) {
+
+            for (int x = 0; x < record_blocks[0].length; x++) {
+
+                if(record_blocks[y][x]) eew=true;
+            }
+
+
+            if(eew)
+            {
+                for (int x = 0; x < record_blocks[0].length; x++) {
+
+                   record_blocks3[y][x] = record_blocks[y][x];
+                }
+            }
+            else
+            {
+                for (int x = 0; x < record_blocks[0].length; x++) {
+
+                    record_blocks3[y][x] = true;
+                }
+            }
+
+
+        }
+
+    }
 
 
 
     public void speed_up_down ()
     {
-        speed = speed2;
-        timer1.cancel();
-        Timer1();
+        try {
+            speed = speed2;
+            timer1.cancel();
+            Timer1();
+        } catch (Exception rt)
+        {
+            timer1.cancel();
+            Timer1();
+        }
+
     }
 
 
-    public void Timer1()
+    public boolean Timer1()
     {
+        cont2= false;
+
         timer1 = new Timer();
+
         task1 = new TimerTask() {
+
+            // run() method to carry out the action of the task
+
+
+
+            public void run() {
+
+
+       cont2= true;
+
+
+                    if(first_colomn)
+                    {
+
+                        if(first_column_count==0)
+                        {
+                            speed = 1000;
+                            timer1.cancel();
+                            Timer1();
+                            first_column_count++;
+                        }
+                        else
+                        {
+                            first_column_count=0;
+                            first_colomn=false;
+                            speed_up_down();
+                        }
+
+                    }
+
+                    else
+                    {
+
+                        try {
+                            restart_blocks();
+                        } catch (Exception ety)
+                        {
+                            System.out.println("Code-57mb: "+ety);
+                        }
+
+
+
+
+                        if(bottom_control() && vertical>15) first_horizontal_position();
+
+
+                        if(down_arrow_cont)
+                        {
+                            down_arrow_count++;
+                        }
+
+
+                        if(down_arrow_count>3)
+                        {
+                            down_arrow_cont=false;
+                            speed = 20;
+                            down_arrow_count=0;
+
+                          try {
+                              timer1.cancel();
+                              Timer1();
+                          }
+                          catch (Exception yu)
+                          {
+                              timer1.cancel();
+                              Timer1();
+                          }
+
+
+                        }
+
+                        vertical++;
+
+                       try
+                       {
+
+                           direction();
+                       }
+                       catch (Exception ghr)
+                       {
+                           System.out.println("Code: 56hyt "+ghr);
+                       }
+
+                        invalidate();
+                    }
+
+
+                  //  if(vertical==0 && speed2!=0) speed_up_down();
+
+
+                    // screen_refresh();
+                    //  sleep(speed);
+
+
+
+
+
+
+
+            };
+        };
+
+
+
+
+        boolean timerstate=false;
+         Timer t1;
+
+
+// some code goes here to do whatever you want
+
+
+
+
+
+
+     timer1.schedule(task1, 0,speed);
+
+
+
+        if(cont2)
+     {
+         timer1.cancel();
+         timer1.purge();
+         Timer1();
+     }
+
+
+
+
+        return false;
+    }
+
+
+
+
+    public void Timer3()
+    {
+
+
+        timer3 = new Timer();
+        TimerTask task3 = new TimerTask() {
 
             // run() method to carry out the action of the task
 
@@ -65,45 +272,75 @@ public class gameboard1 extends View
                 try
                 {
 
+                    score1++;
 
-
-                  //  if(vertical==0 && speed2!=0) speed_up_down();
-
-                    restart_blocks();
-
-
-
-
-                    if(bottom_control() && vertical>15) first_horizontal_position();
-
-
-                    if(down_arrow_cont)
+                    if(score1==1)
                     {
-                        down_arrow_count++;
+
+                        for(int y=0; y<record_blocks4.length; y++) {
+
+                            for (int x = 0; x < record_blocks4[0].length; x++) {
+
+                                record_blocks[y][x]=record_blocks3[y][x];
+                            }
+                        }
+                    }
+
+                    if(score1==2)
+                    {
+
+
+                         for(int y=0; y<record_blocks4.length; y++) {
+
+                            for (int x = 0; x < record_blocks4[0].length; x++) {
+
+                                record_blocks[y][x]=record_blocks4[y][x];
+                            }
+                        }
+
+
+                    }
+
+                    if(score1==3)
+                    {
+
+                        for(int y=0; y<record_blocks4.length; y++) {
+
+                            for (int x = 0; x < record_blocks4[0].length; x++) {
+
+                                record_blocks[y][x]=record_blocks3[y][x];
+                            }
+                        }
+                    }
+
+                    if(score1==4)
+                    {
+
+                        for(int y=0; y<record_blocks4.length; y++) {
+
+                            for (int x = 0; x < record_blocks4[0].length; x++) {
+
+                                record_blocks[y][x]=record_blocks4[y][x];
+                            }
+                        }
                     }
 
 
-                    if(down_arrow_count>3)
+
+
+                    if(score1>=5)
                     {
-                        down_arrow_cont=false;
-                        speed = 20;
-                       timer1.cancel();
-                       down_arrow_count=0;
+                        for (int y = 0; y < record_blocks.length; y++) {
+                            for (int x = 0; x < record_blocks[0].length; x++) {
 
-
-                        Timer1();
+                                record_blocks[y][x] = record_blocks2[y][x];
+                            }}
+                        score1=0;
+                        timer3.cancel();
                     }
 
 
-                    vertical++;
-                    direction();
-
-
-
-
-                    invalidate();
-                    // screen_refresh();
-                    //  sleep(speed);
+                        invalidate();
 
 
 
@@ -122,10 +359,8 @@ public class gameboard1 extends View
 
 
 
-        timer1.schedule(task1, 0,speed);
+        timer3.schedule(task3, 0,50);
     }
-
-
 
     public gameboard1(Context context) {
         super(context);
@@ -246,7 +481,18 @@ public class gameboard1 extends View
 
 
 
-    public void remove_rows_blocks() {
+    public void remove_rows_blocks()
+
+    {
+
+
+        for(int y=0; y<record_blocks4.length; y++) {
+
+            for (int x = 0; x < record_blocks4[0].length; x++) {
+
+                record_blocks4[y][x]=record_blocks[y][x];
+            }
+        }
 
 
         for (int y = 0; y < record_blocks2.length; y++) {
@@ -323,23 +569,33 @@ public class gameboard1 extends View
         }
 
 
+
+
+
+
+
+
         for (int y = 0; y < record_blocks.length; y++) {
             for (int x = 0; x < record_blocks[0].length; x++) {
 
-                record_blocks[y][x] = record_blocks2[y][x];
+                record_blocks5[y][x] = record_blocks2[y][x];
 
             }
         }
+
+
+
+        remove_blocks_flicker();
 
 
         int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
 
 
 
-        /*
-          for (int y = 0; y < coords.length; y++) {
-            for (int x = 0; x < coords[0].length; x++) {
-                if (!coords[y][x]) {
+
+          for (int y = 0; y < record_blocks4.length; y++) {
+            for (int x = 0; x < record_blocks4[0].length; x++) {
+                if (!record_blocks4[y][x]) {
                     if (x > xmax) xmax = x;
                     if (x < xmin) xmin = x;
                     if (y > ymax) ymax = y;
@@ -348,9 +604,43 @@ public class gameboard1 extends View
 
             }
         }
-         */
 
 
+
+        int xmax2 = 0, xmin2 = 50, ymin2 = 50, ymax2 = 0;
+
+
+
+
+        for (int y = 0; y < record_blocks5.length; y++) {
+            for (int x = 0; x < record_blocks5[0].length; x++) {
+                if (!record_blocks5[y][x]) {
+                    if (x > xmax2) xmax2 = x;
+                    if (x < xmin2) xmin2 = x;
+                    if (y > ymax2) ymax2 = y;
+                    if (y < ymin2) ymin2 = y;
+                }
+
+            }
+        }
+
+
+        if(ymin!=ymin2)
+        {
+
+            Timer3();
+
+            /*
+             for (int y = 0; y < record_blocks.length; y++) {
+                for (int x = 0; x < record_blocks[0].length; x++) {
+
+                    record_blocks[y][x] = record_blocks2[y][x];
+
+                }
+            }
+             */
+
+        }
 
 
 
@@ -1161,6 +1451,10 @@ public class gameboard1 extends View
 
         setMax_direction();
 
+
+
+
+
         try {
             direction();
         }
@@ -1171,16 +1465,20 @@ public class gameboard1 extends View
 
 
 
-
-
         remove_rows_blocks();
 
 
         if(speed2!=0)
         {
+
+
             speed_up_down();
             vertical=-2;
         }
+
+
+
+        first_colomn=true;
 
 
 

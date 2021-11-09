@@ -20,7 +20,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    LinearLayout ln1, lln [],controller, space_between_game_board_and_controller;
+    LinearLayout ln1, lln [],controller, space_between_game_board_and_controller, controller2;
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, double_down_arrow, play_pause;
     LinearLayout.LayoutParams lp1;
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             game_board(70,70);
             space_between_game_board_and_controller(50);
             controller();
-            space_between_game_board_and_controller(10);
+            space_between_game_board_and_controller(50);
             controller2();
 
         }
@@ -461,11 +461,25 @@ public class MainActivity extends AppCompatActivity {
                             down_arrow.setImageResource(R.drawable.red_down_arrow);
 
                             gameb1.down_arrow_cont=true;
-                           gameb1.speed2 = gameb1.speed;
+                            gameb1.speed2 = gameb1.speed;
                             gameb1.speed = 100;
-                            gameb1.timer1.cancel();
+                            try {
 
-                            gameb1.Timer1();
+                            //  gameb1.timer1.setTimer
+                                gameb1.timer1.cancel();
+                                gameb1.timer1.purge();
+                                gameb1.Timer1();
+                                gameb1.timer1.cancel();
+                                gameb1.timer1.purge();
+                                gameb1.Timer1();
+                            }
+                            catch (Exception we)
+                            {
+                                gameb1.timer1.cancel();
+                                gameb1.Timer1();
+                            }
+
+
 
                             //   timer1.schedule(task1, 0,speed);
                         }
@@ -754,7 +768,7 @@ public class MainActivity extends AppCompatActivity {
         controller.setGravity(Gravity.CENTER);
 
         left_arrow();
-        between_arrows(50,100);
+        between_arrows(75,100);
         right_arrow();
         between_arrows(300,100);
         direction_arrow();
@@ -831,6 +845,24 @@ public class MainActivity extends AppCompatActivity {
 
       public void down_arrow() throws Exception
     {
+        /*
+         controller2  = new LinearLayout(this);
+        controller.addView(controller2,lp1);
+        controller2.setOrientation(LinearLayout.VERTICAL);
+        controller2.setGravity(Gravity.CENTER);
+         */
+
+
+        /*
+          LinearLayout between_arrows  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms = new LinearLayout.LayoutParams(150,10);
+        controller2.addView(between_arrows,between_arrows_parms);
+        between_arrows.setOrientation(LinearLayout.HORIZONTAL);
+
+         */
+
+
+
         down_arrow= new ImageView(this);
         down_arrow.setImageResource(R.drawable.down_arrow);
         controller.addView(down_arrow, lp1);
