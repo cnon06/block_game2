@@ -43,10 +43,17 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onRestart() {
 
-        if(!play_pause2)
+
+       // play();
+
+        /*
+         if(!play_pause2)
         {
             play();
         }
+         */
+
+
 
         //gameb1.Timer1();
 
@@ -78,10 +85,18 @@ public class MainActivity extends AppCompatActivity {
 
         //gameb1.timer1.cancel();
 
-        if(!play_pause2)
+       pause();
+
+
+       /*
+           if(!play_pause2)
         {
             pause();
         }
+        */
+
+
+
 
 
 
@@ -103,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         // blcks.bar_d1();
 
 
+       //gameb1.Timer4();
 
 
 
@@ -465,18 +481,44 @@ public class MainActivity extends AppCompatActivity {
                             gameb1.speed = 100;
                             try {
 
+
+                                gameb1.timer1.cancel();
+                                gameb1.timer1.purge();
+                                gameb1.Timer1();
+                              //  gameb1.timer1.schedule(gameb1.task1, 0,gameb1.speed);
+
+                                /*
+                                 for(int i=0;i<5;i++)
+                                {
+                                   gameb1.timer1.cancel();
+                                    gameb1.timer1.purge();
+                                    gameb1.timer1.schedule(gameb1.task1, 0,gameb1.speed);
+                                   // gameb1.Timer1();
+                                }
+                                 */
+
+
                             //  gameb1.timer1.setTimer
+
+                                /*
+                                  gameb1.timer1.cancel();
+                                gameb1.timer1.purge();
+                                gameb1.Timer1();
+
                                 gameb1.timer1.cancel();
                                 gameb1.timer1.purge();
                                 gameb1.Timer1();
-                                gameb1.timer1.cancel();
-                                gameb1.timer1.purge();
-                                gameb1.Timer1();
+                                 */
+
                             }
                             catch (Exception we)
                             {
-                                gameb1.timer1.cancel();
-                                gameb1.Timer1();
+                                /*
+                                  gameb1.timer1.cancel();
+                                gameb1.timer1.purge();
+                                gameb1.timer1.schedule(gameb1.task1, 0,gameb1.speed);
+                                 */
+
                             }
 
 

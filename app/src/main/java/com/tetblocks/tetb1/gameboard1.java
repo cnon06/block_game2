@@ -23,7 +23,7 @@ public class gameboard1 extends View
 
 
     protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, direction = 1,
-            block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 600, down_arrow_count=0, speed2=0, first_column_count=0, score1=0;
+            block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500, down_arrow_count=0, speed2=0, first_column_count=0, score1=0;
 
 
     boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10],
@@ -40,8 +40,8 @@ public class gameboard1 extends View
     Bitmap ic_launcher3=Bitmap.createScaledBitmap(ic_launcher,65,65,false);
     Bitmap ic_launcher4=Bitmap.createScaledBitmap(ic_launcher2,65,65,false);
 
-    Timer timer1, timer3;
-    TimerTask task1;
+    Timer timer1, timer3,timer4;
+    TimerTask task1,task4;
 
 
 
@@ -50,7 +50,6 @@ public class gameboard1 extends View
 
     public void remove_blocks_flicker()
     {
-
 
 
 
@@ -108,6 +107,56 @@ public class gameboard1 extends View
             timer1.cancel();
             Timer1();
         }
+
+    }
+
+
+
+    public void Timer4()
+    {
+
+
+        timer4 = new Timer();
+
+        task4 = new TimerTask() {
+
+            // run() method to carry out the action of the task
+
+
+
+            public void run() {
+
+
+
+
+                    try {
+                        direction();
+                    }
+                    catch (Exception ty)
+                    {
+                        System.out.println("Code 563er: "+ty);
+                    }
+
+
+
+                    invalidate();
+
+                }
+
+
+
+
+
+            };
+
+
+
+
+        timer4.schedule(task4, 0,1);
+
+
+
+
 
     }
 
@@ -192,17 +241,19 @@ public class gameboard1 extends View
 
                         vertical++;
 
-                       try
-                       {
 
-                           direction();
-                       }
-                       catch (Exception ghr)
-                       {
-                           System.out.println("Code: 56hyt "+ghr);
-                       }
+                        try {
+                            direction();
+                        }
+                        catch (Exception ty)
+                        {
+                            System.out.println("Code 563er: "+ty);
+                        }
+
+
 
                         invalidate();
+
                     }
 
 
@@ -380,6 +431,7 @@ public class gameboard1 extends View
         }
 
         Timer1();
+        Timer4();
 
 
     }
