@@ -386,8 +386,9 @@ public class gameboard1 extends View
 
                                 record_blocks[y][x] = record_blocks2[y][x];
                             }}
-                        score1=0;
+
                         timer3.cancel();
+                       // score1=0;
                     }
 
 
@@ -631,9 +632,12 @@ public class gameboard1 extends View
             for (int x = 0; x < record_blocks[0].length; x++) {
 
                 record_blocks5[y][x] = record_blocks2[y][x];
+               // record_blocks5[y][x] = record_blocks2[y][x];
 
             }
         }
+
+
 
 
 
@@ -679,7 +683,7 @@ public class gameboard1 extends View
 
         if(ymin!=ymin2)
         {
-
+            score1=0;
             Timer3();
 
             /*

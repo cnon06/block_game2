@@ -938,6 +938,8 @@ public class MainActivity extends AppCompatActivity {
         play_pause2=false;
         gameb1.Timer1();
         timer2();
+        gameb1.Timer4();
+
     }
 
     public void pause()
@@ -946,6 +948,7 @@ public class MainActivity extends AppCompatActivity {
         play_pause2=true;
         gameb1.timer1.cancel();
         timer2.cancel();
+        gameb1.timer4.cancel();
     }
 
 }
