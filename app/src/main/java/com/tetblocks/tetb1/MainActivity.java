@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.Random;
 import java.util.Timer;
@@ -193,19 +194,24 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                        if(play_pause2)
-                        {
 
-                            play();
+                            if(play_pause2)
+                            {
+
+                                play();
 
 
-                        }
-                        else
-                        {
+                            }
+                            else
+                            {
 
-                            pause();
+                                pause();
 
-                        }
+                            }
+
+
+
+
 
 
 
@@ -724,8 +730,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
         LinearLayout between_arrows  = new LinearLayout(this);
         LinearLayout.LayoutParams between_arrows_parms = new LinearLayout.LayoutParams(150,Height);
         gb1.addView(between_arrows,between_arrows_parms);
@@ -743,10 +747,52 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        LinearLayout between_arrows3  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms3 = new LinearLayout.LayoutParams(150,750);
+        gb1.addView(between_arrows3,between_arrows_parms3);
+        between_arrows3.setOrientation(LinearLayout.VERTICAL);
+
+
+        LinearLayout between_arrows4  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms4 = new LinearLayout.LayoutParams(150,500);
+        between_arrows3.addView(between_arrows4,between_arrows_parms4);
+        between_arrows4.setOrientation(LinearLayout.VERTICAL);
+        between_arrows4.setGravity(Gravity.CENTER);
+
+
+
+        TextView blocks7= new TextView(this);
+        blocks7.setText("Next");
+
+        between_arrows4.addView(blocks7);
+        // play_pause.addView(down_arrow, lp1);
+        controller_parms = new LinearLayout.LayoutParams(150,50);
+        blocks7.setLayoutParams(controller_parms);
+        blocks7.setGravity(Gravity.CENTER);
+
+
+        gameb1.blocks2= new ImageView(this);
+        gameb1.blocks2.setImageResource(R.drawable.block_bar);
+
+        between_arrows4.addView(gameb1.blocks2);
+        // play_pause.addView(down_arrow, lp1);
+        controller_parms = new LinearLayout.LayoutParams(300,340);
+        gameb1.blocks2.setLayoutParams(controller_parms);
+        gameb1.blocks2.setRotation(90);
+
+
+
+        LinearLayout between_arrows2  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms2 = new LinearLayout.LayoutParams(150,150);
+        between_arrows3.addView(between_arrows2,between_arrows_parms2);
+        between_arrows2.setOrientation(LinearLayout.HORIZONTAL);
+
+
+
         play_pause= new ImageView(this);
         play_pause.setImageResource(R.drawable.pause2);
 
-        gb1.addView(play_pause);
+        between_arrows2.addView(play_pause);
         // play_pause.addView(down_arrow, lp1);
         controller_parms = new LinearLayout.LayoutParams(150,150);
         play_pause.setLayoutParams(controller_parms);

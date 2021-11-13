@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,9 +21,9 @@ public class gameboard1 extends View
 {
     boolean down_arrow_cont=false;
     boolean cont2=false;
+    ImageView blocks2;
 
-
-    protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, direction = 1,
+    protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, block_type_2=0, direction = 1,
             block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500, down_arrow_count=0, speed2=0, first_column_count=0, score1=0;
 
 
@@ -104,8 +105,11 @@ public class gameboard1 extends View
             Timer1();
         } catch (Exception rt)
         {
-            timer1.cancel();
+            /*
+             timer1.cancel();
             Timer1();
+             */
+           System.out.println("Code-456ty: "+rt);
         }
 
     }
@@ -417,7 +421,8 @@ public class gameboard1 extends View
     public gameboard1(Context context) {
         super(context);
 
-
+        //blocks2= new ImageView(context);
+        //blocks2.setImageResource(R.drawable.block_bar);
 
         try {
             calibrate_record_blocks();
@@ -1492,12 +1497,88 @@ public class gameboard1 extends View
         vertical = -1;
         direction = 1;
 
+        block_type = block_type_2;
 
         try {
             Random random = new Random();
 
             int x = random.nextInt(7);
-            block_type=x+1;
+
+          block_type_2=x+1;
+
+
+
+            switch (block_type_2) {
+                case 1:
+
+                    blocks2.setImageResource(R.drawable.block_bar);
+                    //block_type_d1();
+                    //horizontal
+
+                    break;
+
+                case 2:
+
+                    blocks2.setImageResource(R.drawable.block_z);
+                    //block_type_d2();
+                    //vertical
+
+                    break;
+
+                case 3:
+                    blocks2.setImageResource(R.drawable.block_z2);
+                    // block_type_d3();
+                    //horizontal
+
+                    break;
+
+                case 4:
+
+                    blocks2.setImageResource(R.drawable.block_l2);
+                    // block_type_d4();
+                    //vertical
+
+                    break;
+
+
+
+                case 5:
+
+                    blocks2.setImageResource(R.drawable.block_l);
+                    // block_type_d4();
+                    //vertical
+
+                    break;
+
+
+
+                case 6:
+
+                    blocks2.setImageResource(R.drawable.block_t);
+                    // block_type_d4();
+                    //vertical
+
+                    break;
+
+
+                case 7:
+
+                    blocks2.setImageResource(R.drawable.block_square);
+                    // block_type_d4();
+                    //vertical
+
+                    break;
+
+            }
+
+
+
+            // block_type=x+1;
+
+
+
+
+
 
         }
         catch (Exception e)
