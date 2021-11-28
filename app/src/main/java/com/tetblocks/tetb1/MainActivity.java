@@ -21,48 +21,26 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    LinearLayout ln1, lln [],controller, space_between_game_board_and_controller, controller2;
+    LinearLayout ln1, lln [],controller, space_between_game_board_and_controller;
     LinearLayout.LayoutParams parms, controller_parms;
-    ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, double_down_arrow, play_pause;
+    ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause;
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
 
 
 
-    boolean go_right=false, go_left=false, button_cont=false;
+    boolean go_right=false, go_left=false, timer_pause_start=false,  timer2_play_pause=false, thread1=false;
 
-    boolean  timer_pause_start3=true, play_pause2=false;
+    boolean  play_pause2=false;
 
-    int speed = 600, speed2=0,  go_left_right_control=0;
-
-   // blocks blcks = new blocks();
-  //  ghost1 ghst1 = new ghost1();
+    int  go_left_right_control=0;
 
 
-    Timer timer2;
-    TimerTask task1;
+
+
 
     protected void onRestart() {
 
-
-       // play();
-
-        /*
-         if(!play_pause2)
-        {
-            play();
-        }
-         */
-
-
-
-        //gameb1.Timer1();
-
-       /*
-          timer_pause_start=false;
-        finish();
-        System.out.println("App is closing.");
-        */
 
         System.out.println("onRestart 12");
         super.onRestart();
@@ -84,24 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onStop() {
 
-        //gameb1.timer1.cancel();
 
-       pause();
-
-
-       /*
-           if(!play_pause2)
-        {
-            pause();
-        }
-        */
+            timer2_play_pause=true;
+       //pause();
 
 
-
-
-
-
-        // finish();
         System.out.println("on stop 1");
         super.onStop();
     }
@@ -116,14 +81,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        // blcks.bar_d1();
-
-
-       //gameb1.Timer4();
 
 
 
         timer2();
+        Timer3();
 
          try {
             Random random = new Random();
@@ -137,20 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
-         /*
-             try {
-            blcks.calibrate_record_blocks();
-            blcks.max_direction_list();
-            blcks.setMax_direction();
-            blcks.first_horizontal_position_list();
-
-        }
-        catch (Exception e)
-        {
-            System.out.println("Code-13: "+e);
-        }
-          */
 
 
 
@@ -169,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             game_board(70,70);
             space_between_game_board_and_controller(50);
             controller();
-            space_between_game_board_and_controller(50);
+            space_between_game_board_and_controller(10);
             controller2();
 
         }
@@ -193,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
                             if(play_pause2)
                             {
 
@@ -208,32 +154,6 @@ public class MainActivity extends AppCompatActivity {
                                 pause();
 
                             }
-
-
-
-
-
-
-
-
-                        /*
-                            go_right=true;
-
-
-
-                        try {
-                            gameb1.right_control();
-                            gameb1.direction();
-                            gameb1.invalidate();
-
-                        }
-                        catch (Exception e)
-                        {
-                            System.out.println("Code-45r3e: "+e);
-                        }
-
-                         */
-
 
 
 
@@ -270,24 +190,32 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
                             if(!play_pause2)
                             {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                 vibe.vibrate(20);
 
+                                /*
+                                  gameb1.ghost_vertical(gameb1.vertical);
+                                gameb1.ghost_vertical(gameb1.vertical);
+                                 */
+
+                              //  gameb1.ghost_vertical();
+                               // gameb1.break_loop=false;
 
                                 right_arrow.setImageResource(R.drawable.red_right_arrow);
 
                                 go_right=true;
 
 
-
                                 try {
+
+
+
                                     gameb1.right_control();
                                     gameb1.direction();
                                     gameb1.invalidate();
+                                    gameb1.ghost_vertical();
 
                                 }
                                 catch (Exception e)
@@ -295,9 +223,6 @@ public class MainActivity extends AppCompatActivity {
                                     System.out.println("Code-45r3e: "+e);
                                 }
                             }
-
-
-
 
 
                             return true;
@@ -308,10 +233,9 @@ public class MainActivity extends AppCompatActivity {
                                 right_arrow.setImageResource(R.drawable.right_arrow);
                                 go_right=false;
                                 go_left_right_control=0;
+                                gameb1.fast_press=false;
 
                             }
-
-
 
 
                             return true;
@@ -339,15 +263,17 @@ public class MainActivity extends AppCompatActivity {
 
                             left_arrow.setImageResource(R.drawable.red_left_arrow);
 
+                           // gameb1.break_loop=false;
+
 
                             try {
+
 
 
                                 gameb1.left_control();
                                 gameb1.direction();
                                 gameb1.invalidate();
-
-
+                                gameb1.ghost_vertical();
                             }
                             catch (Exception e)
                             {
@@ -358,8 +284,6 @@ public class MainActivity extends AppCompatActivity {
                             go_left=true;
 
                         }
-
-
 
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -372,8 +296,6 @@ public class MainActivity extends AppCompatActivity {
                             go_left_right_control=0;
 
                         }
-
-
 
                         return true;
                 }
@@ -395,6 +317,9 @@ public class MainActivity extends AppCompatActivity {
                         if(!play_pause2)
                         {
 
+
+
+
                             Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             vibe.vibrate(20);
 
@@ -402,13 +327,19 @@ public class MainActivity extends AppCompatActivity {
 
                             try {
 
+
+
+                                /*
+                                 for (int i=0;i<10;i++) {
+                                    gameb1.ghost_vertical(gameb1.vertical);
+                                }
+                                 */
+
+
+
                                 gameb1.direction++;
                                 if(gameb1.direction>gameb1.max_direction) gameb1.direction=1;
                                 gameb1.direction();
-
-
-                                // blcks.direction_left_right_control();
-
 
 
                                 if(! gameb1.direction_up_down_control())
@@ -416,26 +347,14 @@ public class MainActivity extends AppCompatActivity {
                                     if( !gameb1.direction_left_right_border_control()) gameb1.direction_left_right_control2();
 
 
-
-                                //  blcks.direction_up_down_control();
-
-                            /*
-                             if(!blcks.direction_left_right_border_control())
-                               if(! blcks.direction_up_down_control()) blcks.direction_left_right_control2();
-                             */
-
                                 gameb1.invalidate();
-
-
-
+                                gameb1.ghost_vertical();
 
                             }
                             catch (Exception e)
                             {
                                 System.out.println("Code-9: "+e);
                             }
-
-
 
 
                         }
@@ -451,10 +370,6 @@ public class MainActivity extends AppCompatActivity {
                         {
                             direction_arrow.setImageResource(R.drawable.repeat);
                         }
-
-
-
-
 
 
                         return true;
@@ -475,75 +390,44 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
 
 
-                        if(!play_pause2) {
-
-                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibe.vibrate(20);
-
-                            down_arrow.setImageResource(R.drawable.red_down_arrow);
-
-                            gameb1.down_arrow_cont=true;
-                            gameb1.speed2 = gameb1.speed;
-                            gameb1.speed = 100;
-                            try {
 
 
-                                gameb1.timer1.cancel();
-                                gameb1.timer1.purge();
-                                gameb1.Timer1();
-                              //  gameb1.timer1.schedule(gameb1.task1, 0,gameb1.speed);
-
-                                /*
-                                 for(int i=0;i<5;i++)
-                                {
-                                   gameb1.timer1.cancel();
-                                    gameb1.timer1.purge();
-                                    gameb1.timer1.schedule(gameb1.task1, 0,gameb1.speed);
-                                   // gameb1.Timer1();
-                                }
-                                 */
-
-
-                            //  gameb1.timer1.setTimer
-
-                                /*
-                                  gameb1.timer1.cancel();
-                                gameb1.timer1.purge();
-                                gameb1.Timer1();
-
-                                gameb1.timer1.cancel();
-                                gameb1.timer1.purge();
-                                gameb1.Timer1();
-                                 */
-
-                            }
-                            catch (Exception we)
-                            {
-                                /*
-                                  gameb1.timer1.cancel();
-                                gameb1.timer1.purge();
-                                gameb1.timer1.schedule(gameb1.task1, 0,gameb1.speed);
-                                 */
-
-                            }
+                         if(!play_pause2) {
 
 
 
-                            //   timer1.schedule(task1, 0,speed);
+                             Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                             vibe.vibrate(20);
+
+                             down_arrow.setImageResource(R.drawable.red_down_arrow);
+
+
+                          //   gameb1.break_loop=false;
+
+                            // gameb1.ghost_vertical(gameb1.vertical);
+
+                             gameb1.speed2=gameb1.speed;
+                          //   gameb1.speed=100;
+
+                             gameb1.fast_press=true;
+
+
                         }
+
+
 
 
                             return true;
                             case MotionEvent.ACTION_UP:
 
-                                gameb1.down_arrow_cont=false;
-                                gameb1.down_arrow_count=0;
+
+
                                 if(!play_pause2) {
 
                                     down_arrow.setImageResource(R.drawable.down_arrow);
-
-
-                                    gameb1.speed_up_down();
+                                    gameb1.speed=gameb1.speed2;
+                                    gameb1.fast_press=false;
+                                  //  gameb1.speed_up_down();
 
 
 
@@ -619,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
     {
 
 
-        /*
+
         new Thread()
        {
             @Override
@@ -627,18 +511,48 @@ public class MainActivity extends AppCompatActivity {
                 try
                 {
 
-                    while (timer_pause_start)
+                    while (!timer_pause_start)
                     {
 
-                        blcks.vertical++;
-                        blcks.ghost_vertical = blcks.vertical;
-                        blcks.direction2();
 
 
 
-                        sleep(600);
-                        blcks.restart_blocks();
-                        if(!blcks.dont_go_down()) blcks.first_horizontal_position();
+                            if(go_left || go_right)
+                            {
+
+                                go_left_right_control++;
+
+                                if(go_left_right_control>=2)
+                                {
+                                    if(go_left)
+                                    {
+
+                                        gameb1.left_control();
+                                        gameb1.direction();
+                                        gameb1.ghost_vertical();
+                                        gameb1.invalidate();
+
+
+                                    }
+
+                                    if(go_right)
+                                    {
+
+                                        gameb1.right_control();
+                                        gameb1.direction();
+                                        gameb1.ghost_vertical();
+                                        gameb1.invalidate();
+
+
+                                    }
+                                }
+
+                            }
+
+
+
+                        sleep(100);
+
                     }
 
                 }
@@ -648,67 +562,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }.start();
-         */
 
 
 
-
-        timer2 = new Timer();
-        TimerTask task = new TimerTask() {
-
-            // run() method to carry out the action of the task
-
-
-
-            public void run() {
-
-
-                try
-                {
-
-                    if(go_left || go_right)
-                    {
-
-                        go_left_right_control++;
-
-                        if(go_left_right_control>=2)
-                        {
-                            if(go_left)
-                            {
-
-                                gameb1.left_control();
-                                gameb1.direction();
-                                gameb1.invalidate();
-
-                            }
-
-                            if(go_right)
-                            {
-
-                                gameb1.right_control();
-                                gameb1.direction();
-                                gameb1.invalidate();
-
-                            }
-                        }
-
-                    }
-
-
-                }
-                catch (Exception ed)
-                {
-                    System.out.println("Code-11"+ed);
-                }
-
-
-
-            };
-        };
-
-
-
-        timer2.schedule(task, 0,100);
 
 
 
@@ -798,51 +654,6 @@ public class MainActivity extends AppCompatActivity {
         play_pause.setLayoutParams(controller_parms);
 
 
-            /*
-            try {
-
-
-            lln  = new LinearLayout[20];
-            parms = new LinearLayout.LayoutParams(Width,Height);
-            iv  = new ImageView[20] [10];
-
-
-
-            for(int y=0;y<lln.length;y++)
-            {
-
-                lln [y] = new LinearLayout(this);
-                ln1.addView(lln[y],lp1);
-
-                lln [y].setOrientation(LinearLayout.HORIZONTAL);
-                lln[y].setGravity(Gravity.CENTER);
-
-
-
-
-                for(int x=0;x<iv[0].length;x++)
-                {
-                    iv [y] [x]= new ImageView(this);
-                     iv [y] [x].setImageResource(R.drawable.tet6);
-                    lln[y].addView(iv[y][x], lp1);
-                    iv[y][x].setLayoutParams(parms);
-
-                }
-
-
-            }
-
-
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
-
-             */
-
-
-      //  timer1();
 
 
     }
@@ -933,21 +744,6 @@ public class MainActivity extends AppCompatActivity {
 
       public void down_arrow() throws Exception
     {
-        /*
-         controller2  = new LinearLayout(this);
-        controller.addView(controller2,lp1);
-        controller2.setOrientation(LinearLayout.VERTICAL);
-        controller2.setGravity(Gravity.CENTER);
-         */
-
-
-        /*
-          LinearLayout between_arrows  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms = new LinearLayout.LayoutParams(150,10);
-        controller2.addView(between_arrows,between_arrows_parms);
-        between_arrows.setOrientation(LinearLayout.HORIZONTAL);
-
-         */
 
 
 
@@ -961,13 +757,6 @@ public class MainActivity extends AppCompatActivity {
     public void double_down_arrow() throws Exception
     {
 
-        /*
-         double_down_arrow= new ImageView(this);
-        double_down_arrow.setImageResource(R.drawable.doublearrow);
-        controller.addView(double_down_arrow, lp1);
-        controller_parms = new LinearLayout.LayoutParams(150,150);
-        double_down_arrow.setLayoutParams(controller_parms);
-         */
 
 
 
@@ -982,9 +771,8 @@ public class MainActivity extends AppCompatActivity {
     {
         play_pause.setImageResource(R.drawable.pause2);
         play_pause2=false;
-        gameb1.Timer1();
-        timer2();
-        gameb1.Timer4();
+
+        gameb1.play_pause=false;
 
     }
 
@@ -992,10 +780,61 @@ public class MainActivity extends AppCompatActivity {
     {
         play_pause.setImageResource(R.drawable.play2);
         play_pause2=true;
-        gameb1.timer1.cancel();
-        timer2.cancel();
-        gameb1.timer4.cancel();
+        gameb1.play_pause=true;
+
     }
+
+
+
+    public boolean Timer3()
+    {
+
+        new Thread() {
+
+            // run() method to carry out the action of the task
+
+
+
+            public void run() {
+
+
+
+
+                try {
+                    while (!thread1) {
+
+
+                        if(timer2_play_pause)
+                        {
+                            pause();
+                            timer2_play_pause=false;
+                        }
+
+
+
+
+                        Thread.sleep(0,5);
+
+
+                    }
+                }
+                catch (Exception tyu)
+                {
+                    System.out.println("Code 56-er: "+tyu);
+                }
+
+
+
+
+
+            }
+        }.start();
+
+
+
+        return false;
+    }
+
 
 }
 
