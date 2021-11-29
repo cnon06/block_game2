@@ -24,7 +24,7 @@ public class gameboard1 extends View
 {
 
 
-    boolean   thread1=false, play_pause=false, fast_press=false, timer2_play_pause=false;
+    boolean   thread1=false, play_pause=false, fast_press=false, ghost_true_false=false;
 
     ImageView blocks2;
 
@@ -50,7 +50,7 @@ public class gameboard1 extends View
 
     Bitmap ic_launcher = BitmapFactory.decodeResource(this.getResources(),R.drawable.tet6);
     Bitmap ic_launcher2 = BitmapFactory.decodeResource(this.getResources(),R.drawable.tet7);
-    Bitmap ic_launcher6 = BitmapFactory.decodeResource(this.getResources(),R.drawable.tet4);
+    Bitmap ic_launcher6 = BitmapFactory.decodeResource(this.getResources(),R.drawable.tet5);
     Bitmap ic_launcher3=Bitmap.createScaledBitmap(ic_launcher,65,65,false);
     Bitmap ic_launcher4=Bitmap.createScaledBitmap(ic_launcher2,65,65,false);
     Bitmap ic_launcher5=Bitmap.createScaledBitmap(ic_launcher6,65,65,false);
@@ -418,17 +418,25 @@ public class gameboard1 extends View
                     if(merge_blocks[y][x]==true )  canvas.drawBitmap(ic_launcher3,10+(x*70),10+(y*70),null);
 
 
-                    //if(merge_blocks[y][x]==false ) canvas.drawBitmap(ic_launcher4,10+(x*70),10+(y*70),null); // iv [y] [x].setImageResource(R.drawable.tet7);
-
-                  //  else  canvas.drawBitmap(ic_launcher3,10+(x*70),10+(y*70),null);   //iv [y] [x].setImageResource(R.drawable.tet6);
-                    //  if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
-                    // ghost_coords[y][x]
-                    //   if(ghost_coords[y][x]==false ) canvas.drawBitmap(ic_launcher5,10+(x*70),10+(y*70),null);
-
-
 
                 }
             }
+
+
+            if(!ghost_true_false)
+            {
+                for(int y=0; y<merge_blocks.length; y++)
+                {
+                    for(int x=0; x<merge_blocks[0].length; x++)
+                    {
+
+                        if(ghost_coords[y][x]==false ) canvas.drawBitmap(ic_launcher5,10+(x*70),10+(y*70),null);
+
+                    }
+                }
+
+            }
+
 
 
 
@@ -436,39 +444,8 @@ public class gameboard1 extends View
             {
                 for(int x=0; x<merge_blocks[0].length; x++)
                 {
-                   // if(ghost_coords[y][x]==false ) canvas.drawBitmap(ic_launcher5,10+(x*70),10+(y*70),null);
 
-
-
-                    if(ghost_coords[y][x]==false ) canvas.drawBitmap(ic_launcher5,10+(x*70),10+(y*70),null);
-
-                    //if(merge_blocks[y][x]==false ) canvas.drawBitmap(ic_launcher4,10+(x*70),10+(y*70),null); // iv [y] [x].setImageResource(R.drawable.tet7);
-
-                    //  else  canvas.drawBitmap(ic_launcher3,10+(x*70),10+(y*70),null);   //iv [y] [x].setImageResource(R.drawable.tet6);
-                    //  if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
-                    // ghost_coords[y][x]
-                    //   if(ghost_coords[y][x]==false ) canvas.drawBitmap(ic_launcher5,10+(x*70),10+(y*70),null);
-
-
-
-                }
-            }
-
-
-            for(int y=0; y<merge_blocks.length; y++)
-            {
-                for(int x=0; x<merge_blocks[0].length; x++)
-                {
-
-
-                  //  if(merge_blocks[y][x]==false ) canvas.drawBitmap(ic_launcher4,10+(x*70),10+(y*70),null); // iv [y] [x].setImageResource(R.drawable.tet7);
                     if(merge_blocks[y][x]==false ) canvas.drawBitmap(ic_launcher4,10+(x*70),10+(y*70),null);
-                  //  if(merge_blocks[y][x]==true )  canvas.drawBitmap(ic_launcher3,10+(x*70),10+(y*70),null);   //iv [y] [x].setImageResource(R.drawable.tet6);
-                  //  if(iv[y][x]==null) iv [x] [y].setImageResource(R.drawable.tet6);
-                   // ghost_coords[y][x]
-                 //   if(ghost_coords[y][x]==false ) canvas.drawBitmap(ic_launcher5,10+(x*70),10+(y*70),null);
-
-
 
                 }
             }

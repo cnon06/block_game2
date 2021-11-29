@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout ln1, lln [],controller, space_between_game_board_and_controller;
     LinearLayout.LayoutParams parms, controller_parms;
-    ImageView iv [] [],right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause;
+    ImageView right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause, ghost1;
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
 
@@ -129,6 +129,68 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        ghost1.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event)  {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+
+
+                        if(!play_pause2)
+                        {
+                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                            vibe.vibrate(20);
+
+
+
+                            if(gameb1.ghost_true_false)
+                            {
+
+                                //play();
+                                ghost1.setImageResource(R.drawable.ghost1);
+                                gameb1.ghost_true_false=false;
+
+                            }
+                            else
+                            {
+                                ghost1.setImageResource(R.drawable.ghost2);
+                                gameb1.ghost_true_false=true;
+                              //  pause();
+
+                            }
+
+
+
+
+
+                        }
+
+
+                        return true;
+                    case MotionEvent.ACTION_UP:
+
+
+                        /*
+                          if(!play_pause2)
+                        {
+
+
+
+                        }
+                         */
+
+
+
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
+
         play_pause.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -162,15 +224,6 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
 
 
-                      //  play_pause.setImageResource(R.drawable.play2);
-
-                        /*
-                         right_arrow.setImageResource(R.drawable.right_arrow);
-                        go_right=false;
-                        go_left_right_control=0;
-                         */
-
-
                         return true;
                 }
                 return false;
@@ -194,14 +247,6 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                 vibe.vibrate(20);
-
-                                /*
-                                  gameb1.ghost_vertical(gameb1.vertical);
-                                gameb1.ghost_vertical(gameb1.vertical);
-                                 */
-
-                              //  gameb1.ghost_vertical();
-                               // gameb1.break_loop=false;
 
                                 right_arrow.setImageResource(R.drawable.red_right_arrow);
 
@@ -443,57 +488,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-        /*
-           double_down_arrow.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-
-                        if(!play_pause2 ) {
-
-                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibe.vibrate(20);
-
-                            double_down_arrow.setImageResource(R.drawable.red_doublearrow);
-
-
-                            speed2 = gameb1.speed;
-                            gameb1.speed = 20;
-                            gameb1.timer1.cancel();
-
-                            gameb1.Timer1();
-
-                            //   timer1.schedule(task1, 0,speed);
-                        }
-
-
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        if(!play_pause2) {
-                            double_down_arrow.setImageResource(R.drawable.doublearrow);
-                            gameb1.speed = speed2;
-                            gameb1.timer1.cancel();
-                            gameb1.Timer1();
-                        }
-
-
-                        return true;
-                }
-                return false;
-            }
-        });
-
-         */
-
-
-
-
-
-
     }
 
 
@@ -604,13 +598,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         LinearLayout between_arrows3  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms3 = new LinearLayout.LayoutParams(150,750);
+        LinearLayout.LayoutParams between_arrows_parms3 = new LinearLayout.LayoutParams(150,1000);
         gb1.addView(between_arrows3,between_arrows_parms3);
         between_arrows3.setOrientation(LinearLayout.VERTICAL);
 
 
         LinearLayout between_arrows4  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms4 = new LinearLayout.LayoutParams(150,500);
+        LinearLayout.LayoutParams between_arrows_parms4 = new LinearLayout.LayoutParams(150,400);
         between_arrows3.addView(between_arrows4,between_arrows_parms4);
         between_arrows4.setOrientation(LinearLayout.VERTICAL);
         between_arrows4.setGravity(Gravity.CENTER);
@@ -621,7 +615,6 @@ public class MainActivity extends AppCompatActivity {
         blocks7.setText("Next");
 
         between_arrows4.addView(blocks7);
-        // play_pause.addView(down_arrow, lp1);
         controller_parms = new LinearLayout.LayoutParams(150,50);
         blocks7.setLayoutParams(controller_parms);
         blocks7.setGravity(Gravity.CENTER);
@@ -631,30 +624,40 @@ public class MainActivity extends AppCompatActivity {
         gameb1.blocks2.setImageResource(R.drawable.block_bar);
 
         between_arrows4.addView(gameb1.blocks2);
-        // play_pause.addView(down_arrow, lp1);
-        controller_parms = new LinearLayout.LayoutParams(300,340);
+        controller_parms = new LinearLayout.LayoutParams(300,300);
         gameb1.blocks2.setLayoutParams(controller_parms);
         gameb1.blocks2.setRotation(90);
 
 
 
         LinearLayout between_arrows2  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms2 = new LinearLayout.LayoutParams(150,150);
+        LinearLayout.LayoutParams between_arrows_parms2 = new LinearLayout.LayoutParams(150,450);
         between_arrows3.addView(between_arrows2,between_arrows_parms2);
-        between_arrows2.setOrientation(LinearLayout.HORIZONTAL);
-
+        between_arrows2.setOrientation(LinearLayout.VERTICAL);
 
 
         play_pause= new ImageView(this);
         play_pause.setImageResource(R.drawable.pause2);
-
         between_arrows2.addView(play_pause);
-        // play_pause.addView(down_arrow, lp1);
         controller_parms = new LinearLayout.LayoutParams(150,150);
         play_pause.setLayoutParams(controller_parms);
 
 
 
+
+  LinearLayout between_arrows5  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms5 = new LinearLayout.LayoutParams(150,30);
+        between_arrows2.addView(between_arrows5,between_arrows_parms5);
+        between_arrows5.setOrientation(LinearLayout.HORIZONTAL);
+
+
+
+
+        ghost1= new ImageView(this);
+        ghost1.setImageResource(R.drawable.ghost1);
+        between_arrows2.addView(ghost1);
+        controller_parms = new LinearLayout.LayoutParams(150,150);
+        ghost1.setLayoutParams(controller_parms);
 
     }
 
