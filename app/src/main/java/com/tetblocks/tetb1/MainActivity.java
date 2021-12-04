@@ -2,6 +2,8 @@ package com.tetblocks.tetb1;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Vibrator;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     int  go_left_right_control=0;
 
-
+  MediaPlayer mp, mp2;
 
 
 
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
+       mp = MediaPlayer.create(this,R.raw.tetris);
 
         timer2();
         Timer3();
@@ -206,12 +209,16 @@ public class MainActivity extends AppCompatActivity {
                             if(play_pause2)
                             {
 
+
                                 play();
 
 
                             }
                             else
                             {
+
+
+                                //mp.pause();
 
                                 pause();
 
@@ -451,6 +458,9 @@ public class MainActivity extends AppCompatActivity {
 
                             // gameb1.ghost_vertical(gameb1.vertical);
 
+                            // mp2.start();
+
+
                              gameb1.speed2=gameb1.speed;
                           //   gameb1.speed=100;
 
@@ -507,6 +517,8 @@ public class MainActivity extends AppCompatActivity {
 
                     while (!timer_pause_start)
                     {
+
+
 
 
 
@@ -776,6 +788,7 @@ public class MainActivity extends AppCompatActivity {
         play_pause2=false;
 
         gameb1.play_pause=false;
+        if(!mp.isLooping())   mp.start();
 
     }
 
@@ -784,6 +797,7 @@ public class MainActivity extends AppCompatActivity {
         play_pause.setImageResource(R.drawable.play2);
         play_pause2=true;
         gameb1.play_pause=true;
+        if(mp.isPlaying())  mp.pause();
 
     }
 
@@ -807,8 +821,10 @@ public class MainActivity extends AppCompatActivity {
                     while (!thread1) {
 
 
+
                         if(timer2_play_pause)
                         {
+
                             pause();
                             timer2_play_pause=false;
                         }
@@ -816,7 +832,24 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                        Thread.sleep(0,5);
+                        if(!play_pause2) {
+
+
+                            if(!mp.isLooping())   mp.start();
+
+
+
+
+
+
+                        }
+
+
+
+
+
+
+                        Thread.sleep(1);
 
 
                     }
@@ -837,6 +870,10 @@ public class MainActivity extends AppCompatActivity {
 
         return false;
     }
+
+
+
+
 
 
 }

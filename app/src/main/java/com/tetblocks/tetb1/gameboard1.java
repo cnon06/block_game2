@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -24,7 +25,7 @@ public class gameboard1 extends View
 {
 
 
-    boolean   thread1=false, play_pause=false, fast_press=false, ghost_true_false=false;
+    boolean   thread1=false, play_pause=false, fast_press=false, ghost_true_false=false, remove_sound1=false;
 
     ImageView blocks2;
 
@@ -33,6 +34,7 @@ public class gameboard1 extends View
             , ghost_vertical=0, count_press=0;
 
 
+    MediaPlayer mp;
 
 
     boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10],
@@ -87,7 +89,7 @@ public class gameboard1 extends View
                         if (!ghost_coords[y][x] && !record_blocks[y+1][x])
                         {
                             nt1=false;
-                            System.out.print("y: "+y+" x: "+x+ " ; ");
+                          //  System.out.print("y: "+y+" x: "+x+ " ; ");
                         }
                     }
                     System.out.println("");
@@ -348,9 +350,9 @@ public class gameboard1 extends View
     public gameboard1(Context context) {
         super(context);
 
+        mp = MediaPlayer.create(context,R.raw.removeb1);
 
          speed2 = speed;
-
 
         try {
             calibrate_record_blocks();
@@ -621,17 +623,12 @@ public class gameboard1 extends View
         if(ymin!=ymin2)
         {
             score1=0;
+
+            mp.start();
+
+          //  remove_sound1=true;
+
             Timer3();
-
-            /*
-             for (int y = 0; y < record_blocks.length; y++) {
-                for (int x = 0; x < record_blocks[0].length; x++) {
-
-                    record_blocks[y][x] = record_blocks2[y][x];
-
-                }
-            }
-             */
 
         }
 
