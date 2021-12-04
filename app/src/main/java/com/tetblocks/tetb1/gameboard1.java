@@ -34,7 +34,7 @@ public class gameboard1 extends View
             , ghost_vertical=0, count_press=0;
 
 
-    MediaPlayer mp;
+    MediaPlayer mp, mp2;
 
 
     boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10],
@@ -351,6 +351,7 @@ public class gameboard1 extends View
         super(context);
 
         mp = MediaPlayer.create(context,R.raw.removeb1);
+        mp2 = MediaPlayer.create(context,R.raw.removeb2);
 
          speed2 = speed;
 
@@ -624,7 +625,16 @@ public class gameboard1 extends View
         {
             score1=0;
 
-            mp.start();
+
+           int number_of_removed_blocks=ymin2-ymin;
+
+
+           if(number_of_removed_blocks<4)mp.start(); else mp2.start();
+
+            System.out.println("ymin2-ymin: "+(number_of_removed_blocks));
+
+
+
 
           //  remove_sound1=true;
 

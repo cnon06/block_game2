@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     int  go_left_right_control=0;
 
-  MediaPlayer mp, mp2;
+  MediaPlayer mp;
 
 
 
@@ -454,15 +454,7 @@ public class MainActivity extends AppCompatActivity {
                              down_arrow.setImageResource(R.drawable.red_down_arrow);
 
 
-                          //   gameb1.break_loop=false;
-
-                            // gameb1.ghost_vertical(gameb1.vertical);
-
-                            // mp2.start();
-
-
                              gameb1.speed2=gameb1.speed;
-                          //   gameb1.speed=100;
 
                              gameb1.fast_press=true;
 
@@ -797,7 +789,9 @@ public class MainActivity extends AppCompatActivity {
         play_pause.setImageResource(R.drawable.play2);
         play_pause2=true;
         gameb1.play_pause=true;
-        if(mp.isPlaying())  mp.pause();
+        //if(mp.isPlaying())  mp.pause();
+
+        mp.pause();
 
     }
 
