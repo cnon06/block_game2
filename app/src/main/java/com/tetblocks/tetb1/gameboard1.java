@@ -181,8 +181,6 @@ public class gameboard1 extends View
 
 
 
-
-
                         if(!play_pause)
                         {
 
@@ -211,11 +209,13 @@ public class gameboard1 extends View
                             direction();
 
                             ghost_vertical();
-                            invalidate();
+                           // invalidate();
 
 
 
                         }
+
+                        invalidate();
 
                         Thread.sleep(speed);
 

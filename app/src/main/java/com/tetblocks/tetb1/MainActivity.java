@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    boolean go_right=false, go_left=false, timer_pause_start=false,  timer2_play_pause=false, thread1=false, next_song=false;
+    boolean go_right=false, go_left=false, timer_pause_start=false,  timer2_play_pause=false, thread1=false, pause_control=false;
 
-    boolean  play_pause2=false;
+ boolean  play_pause2=false;
 
     int  go_left_right_control=0, playlist=1;
 
@@ -53,13 +53,16 @@ public class MainActivity extends AppCompatActivity {
                   public void onCompletion(MediaPlayer mediaPlayer) {
 
 
-                      playlist++;
-                      if(playlist>4) playlist=1;
+
 
 
                       System.out.println("on Completed");
 
                       try {
+
+
+                          playlist++;
+                          if(playlist>4) playlist=1;
 
                           switch (playlist) {
                               case 1:
@@ -93,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                       catch (Exception ty)
                       {
                           System.out.println("Code yr86: "+ty);
+                          sound_listener();
                       }
 
 
@@ -424,7 +428,7 @@ sound_listener();
                             {
 
 
-                                //mp.pause();
+
 
                                 pause();
 
@@ -994,7 +998,7 @@ sound_listener();
     public void play()
     {
         play_pause.setImageResource(R.drawable.pause2);
-        play_pause2=false;
+       play_pause2=false;
 
         gameb1.play_pause=false;
         if(!mp.isLooping())   mp.start();
@@ -1003,12 +1007,15 @@ sound_listener();
 
     public void pause()
     {
-        play_pause.setImageResource(R.drawable.play2);
-        play_pause2=true;
-        gameb1.play_pause=true;
-        //if(mp.isPlaying())  mp.pause();
-
         mp.pause();
+        pause_control=true;
+
+
+       play_pause2=true;
+        gameb1.play_pause=true;
+        play_pause.setImageResource(R.drawable.play2);
+
+
 
     }
 
@@ -1044,6 +1051,21 @@ sound_listener();
 
 
 
+                       // pause_control=true;
+
+                        if(pause_control)
+                        {
+                            if(mp.isLooping())
+                            {
+                                mp.pause();
+                            }
+                            else
+                            {
+                                pause_control=false;
+                            }
+                        }
+
+
 
                         /*
                              if(!play_pause2) {
@@ -1053,12 +1075,7 @@ sound_listener();
                         }
                          */
 
-
-
-
-
-
-
+                        
 
 
 
