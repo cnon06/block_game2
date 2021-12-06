@@ -179,41 +179,36 @@ public class gameboard1 extends View
                 try {
                     while (!thread1) {
 
+                        if(fast_press)
+                        {
+                            count_press++;
+                            if(count_press>=3)
+                            {
+                                speed=30;
+                                fast_press=false;
+                                count_press=0;
+                            }
+                            else
+                            {
+                                speed=100;
+                            }
+                        }
 
+
+                        restart_blocks();
+                        if (bottom_control() && vertical > 15) first_horizontal_position();
 
                         if(!play_pause)
                         {
 
-
-
-
-                            if(fast_press)
-                            {
-                                count_press++;
-                                if(count_press>=3)
-                                {
-                                    speed=30;
-                                    fast_press=false;
-                                    count_press=0;
-                                }
-                                else
-                                {
-                                    speed=100;
-                                }
-                            }
-
-
-                            restart_blocks();
-                            if (bottom_control() && vertical > 15) first_horizontal_position();
                             vertical++;
-                            direction();
-
-                            ghost_vertical();
-                           // invalidate();
-
-
+                            // invalidate();
 
                         }
+
+                        direction();
+
+                        ghost_vertical();
 
                         invalidate();
 

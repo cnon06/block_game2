@@ -134,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
 
 
-            timer2_play_pause=true;
+
+      pause();
+           // timer2_play_pause=true;
        //pause();
 
 
@@ -1046,14 +1048,15 @@ sound_listener();
 
 
 
+
+                        /*
                         if(timer2_play_pause)
                         {
 
                             pause();
                             timer2_play_pause=false;
                         }
-
-
+                         */
 
 
 
@@ -1080,9 +1083,6 @@ sound_listener();
 
                         }
                          */
-
-                        
-
 
 
                         Thread.sleep(10);
