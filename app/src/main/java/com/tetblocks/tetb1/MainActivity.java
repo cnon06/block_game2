@@ -296,16 +296,22 @@ sound_listener();
 
 
 
+
+
+
                             if(gameb1.mute_true_false)
                             {
 
                                 //play();
+                                mp.setVolume(1f,1f);
                                 mute1.setImageResource(R.drawable.mute2);
                                 gameb1.mute_true_false=false;
 
                             }
                             else
                             {
+                                mp.setVolume(0,0);
+
                                 mute1.setImageResource(R.drawable.mute1);
                                 gameb1.mute_true_false=true;
                                 //  pause();
