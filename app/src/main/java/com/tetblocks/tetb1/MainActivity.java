@@ -3,6 +3,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Looper;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,19 +27,82 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout ln1, lln [],controller, space_between_game_board_and_controller;
     LinearLayout.LayoutParams parms, controller_parms;
-    ImageView right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause, ghost1;
+    ImageView right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause, ghost1, mute1;
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
 
 
 
-    boolean go_right=false, go_left=false, timer_pause_start=false,  timer2_play_pause=false, thread1=false;
+    boolean go_right=false, go_left=false, timer_pause_start=false,  timer2_play_pause=false, thread1=false, next_song=false;
 
     boolean  play_pause2=false;
 
-    int  go_left_right_control=0;
+    int  go_left_right_control=0, playlist=1;
 
   MediaPlayer mp;
+
+
+
+  public void sound_listener()
+  {
+      mp.start();
+
+
+              mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                  @Override
+                  public void onCompletion(MediaPlayer mediaPlayer) {
+
+
+                      playlist++;
+                      if(playlist>4) playlist=1;
+
+
+                      System.out.println("on Completed");
+
+                      try {
+
+                          switch (playlist) {
+                              case 1:
+                                  mp = MediaPlayer.create(MainActivity.this,R.raw.tetris);
+                                  // mp.start();
+                                  break;
+
+                              case 2:
+                                  mp = MediaPlayer.create(MainActivity.this,R.raw.katyusha);
+                                  //  mp.start();
+                                  break;
+
+                              case 3:
+                                  mp = MediaPlayer.create(MainActivity.this,R.raw.polyushka);
+                                  // mp.start();
+                                  break;
+
+                              case 4:
+                                  mp = MediaPlayer.create(MainActivity.this,R.raw.kalinka);
+                                  // mp.start();
+                                  break;
+
+                              default:
+
+                          }
+
+                          mp.start();
+                          sound_listener();
+
+                      }
+                      catch (Exception ty)
+                      {
+                          System.out.println("Code yr86: "+ty);
+                      }
+
+
+
+
+                  }
+              });
+
+
+  }
 
 
 
@@ -87,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
 
        mp = MediaPlayer.create(this,R.raw.tetris);
 
+
+       // sound_listener();
+
         timer2();
         Timer3();
 
@@ -129,6 +197,144 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(e);
         }
 
+
+
+
+
+
+                //next_song=true;
+
+
+
+               /*
+                mp = MediaPlayer.create(MainActivity.this,R.raw.kalinka);
+
+                */
+
+        // mp.release();
+
+
+
+sound_listener();
+
+/*
+
+
+         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+
+
+        playlist++;
+        if(playlist>4) playlist=1;
+
+
+        System.out.println("on Completed");
+
+        try {
+
+            switch (playlist) {
+                case 1:
+                    mp = MediaPlayer.create(MainActivity.this,R.raw.tetris);
+                    // mp.start();
+                    break;
+
+                case 2:
+                    mp = MediaPlayer.create(MainActivity.this,R.raw.katyusha);
+                    //  mp.start();
+                    break;
+
+                case 3:
+                    mp = MediaPlayer.create(MainActivity.this,R.raw.polyushka);
+                    // mp.start();
+                    break;
+
+                case 4:
+                    mp = MediaPlayer.create(MainActivity.this,R.raw.kalinka);
+                    // mp.start();
+                    break;
+
+                default:
+
+            }
+
+            mp.start();
+
+        }
+        catch (Exception ty)
+        {
+            System.out.println("Code yr86: "+ty);
+        }
+
+
+
+
+    }
+});
+         */
+
+
+
+
+        mute1.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event)  {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+
+
+                        if(!play_pause2)
+                        {
+                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                            vibe.vibrate(20);
+
+
+
+                            if(gameb1.mute_true_false)
+                            {
+
+                                //play();
+                                mute1.setImageResource(R.drawable.mute2);
+                                gameb1.mute_true_false=false;
+
+                            }
+                            else
+                            {
+                                mute1.setImageResource(R.drawable.mute1);
+                                gameb1.mute_true_false=true;
+                                //  pause();
+
+                            }
+
+
+
+
+
+                        }
+
+
+                        return true;
+                    case MotionEvent.ACTION_UP:
+
+
+                        /*
+                          if(!play_pause2)
+                        {
+
+
+
+                        }
+                         */
+
+
+
+                        return true;
+                }
+                return false;
+            }
+        });
 
 
 
@@ -635,7 +841,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         LinearLayout between_arrows2  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms2 = new LinearLayout.LayoutParams(150,450);
+        LinearLayout.LayoutParams between_arrows_parms2 = new LinearLayout.LayoutParams(150,600);
         between_arrows3.addView(between_arrows2,between_arrows_parms2);
         between_arrows2.setOrientation(LinearLayout.VERTICAL);
 
@@ -647,14 +853,10 @@ public class MainActivity extends AppCompatActivity {
         play_pause.setLayoutParams(controller_parms);
 
 
-
-
-  LinearLayout between_arrows5  = new LinearLayout(this);
+        LinearLayout between_arrows5  = new LinearLayout(this);
         LinearLayout.LayoutParams between_arrows_parms5 = new LinearLayout.LayoutParams(150,30);
         between_arrows2.addView(between_arrows5,between_arrows_parms5);
         between_arrows5.setOrientation(LinearLayout.HORIZONTAL);
-
-
 
 
         ghost1= new ImageView(this);
@@ -662,6 +864,21 @@ public class MainActivity extends AppCompatActivity {
         between_arrows2.addView(ghost1);
         controller_parms = new LinearLayout.LayoutParams(150,150);
         ghost1.setLayoutParams(controller_parms);
+
+
+
+        LinearLayout between_arrows6  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms6 = new LinearLayout.LayoutParams(150,30);
+        between_arrows2.addView(between_arrows6,between_arrows_parms5);
+        between_arrows5.setOrientation(LinearLayout.HORIZONTAL);
+
+
+        mute1= new ImageView(this);
+        mute1.setImageResource(R.drawable.mute2);
+        between_arrows2.addView(mute1);
+        controller_parms = new LinearLayout.LayoutParams(150,150);
+        mute1.setLayoutParams(controller_parms);
+
 
     }
 
@@ -826,25 +1043,26 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                        if(!play_pause2) {
 
+
+                        /*
+                             if(!play_pause2) {
 
                             if(!mp.isLooping())   mp.start();
 
-
-
-
-
-
                         }
+                         */
 
 
 
 
 
 
-                        Thread.sleep(1);
 
+
+
+
+                        Thread.sleep(10);
 
                     }
                 }

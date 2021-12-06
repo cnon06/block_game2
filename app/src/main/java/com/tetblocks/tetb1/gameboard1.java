@@ -25,7 +25,7 @@ public class gameboard1 extends View
 {
 
 
-    boolean   thread1=false, play_pause=false, fast_press=false, ghost_true_false=false, remove_sound1=false;
+    boolean   thread1=false, play_pause=false, fast_press=false, ghost_true_false=false, mute_true_false=false;
 
     ImageView blocks2;
 
