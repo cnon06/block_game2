@@ -33,81 +33,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    boolean go_right=false, go_left=false, timer_pause_start=false,  timer2_play_pause=false, thread1=false, pause_control=false;
+    boolean go_right=false, go_left=false, timer_pause_start=false,  timer2_play_pause=false, thread1=false, pause_control=false, on_end_control=false;
 
  boolean  play_pause2=false;
 
-    int  go_left_right_control=0, playlist=1;
+    int  go_left_right_control=0, count_timer_3=0, mute_count=1;
 
   MediaPlayer mp;
-
-
-
-  public void sound_listener()
-  {
-      mp.start();
-
-
-              mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                  @Override
-                  public void onCompletion(MediaPlayer mediaPlayer) {
-
-
-
-
-
-                      System.out.println("on Completed");
-
-                      try {
-
-
-                          playlist++;
-                          if(playlist>4) playlist=1;
-
-                          switch (playlist) {
-                              case 1:
-                                  mp = MediaPlayer.create(MainActivity.this,R.raw.tetris);
-                                  // mp.start();
-                                  break;
-
-                              case 2:
-                                  mp = MediaPlayer.create(MainActivity.this,R.raw.katyusha);
-                                  //  mp.start();
-                                  break;
-
-                              case 3:
-                                  mp = MediaPlayer.create(MainActivity.this,R.raw.polyushka);
-                                  // mp.start();
-                                  break;
-
-                              case 4:
-                                  mp = MediaPlayer.create(MainActivity.this,R.raw.kalinka);
-                                  // mp.start();
-                                  break;
-
-                              default:
-
-                          }
-
-                          mp.start();
-                          sound_listener();
-
-                      }
-                      catch (Exception ty)
-                      {
-                          System.out.println("Code yr86: "+ty);
-                          sound_listener();
-                      }
-
-
-
-
-                  }
-              });
-
-
-  }
-
 
 
     protected void onRestart() {
@@ -131,13 +63,60 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
+    protected void onPause() {
+
+        pause();
+
+        /*
+        try {
+            // mp.pause();
+            pause_control=true;
+        }
+        catch (Exception ret)
+        {
+            System.out.println("Code 56rt: "+ret);
+        }
+         */
+
+
+        // pause();
+        // timer2_play_pause=true;
+        //pause();
+
+
+        System.out.println("on pause 1");
+        super.onPause();
+    }
+
+
+
     protected void onStop() {
 
 
+        pause();
 
-      pause();
+        /*
+         try {
+           // mp.pause();
+            pause_control=true;
+        }
+        catch (Exception ret)
+        {
+            System.out.println("Code 56rt: "+ret);
+        }
+         */
+
+
+
+     // pause();
            // timer2_play_pause=true;
        //pause();
+
+
 
 
         System.out.println("on stop 1");
@@ -156,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-       mp = MediaPlayer.create(this,R.raw.tetris);
+       mp = MediaPlayer.create(this,R.raw.musics);
+        mp.start();
 
-
-       // sound_listener();
+     //   sound_listener();
 
         timer2();
         Timer3();
@@ -221,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-sound_listener();
+//ound_listener();
 
 /*
 
@@ -298,10 +277,42 @@ sound_listener();
 
 
 
+                            mute_count++;
+                            if(mute_count>3) mute_count=1;
+
+
+                            switch (mute_count)
+                            {
+
+                                case 1:
+                                    mp.setVolume(1f,1f);
+                                    mute1.setImageResource(R.drawable.mute3);
+
+                                    break;
+
+
+                                case 2:
+                                    mp.setVolume(0,0);
+                                    mute1.setImageResource(R.drawable.mute2);
+
+                                    break;
+
+                                case 3:
+                                    mp.setVolume(0,0);
+                                    mute1.setImageResource(R.drawable.mute1);
+                                    break;
+
+
+                                default:
+
+                            }
 
 
 
-                            if(gameb1.mute_true_false)
+
+
+                            /*
+                             if(gameb1.mute_true_false)
                             {
 
                                 //play();
@@ -320,8 +331,7 @@ sound_listener();
 
                             }
 
-
-
+                             */
 
 
                         }
@@ -436,7 +446,7 @@ sound_listener();
                             {
 
 
-
+                               // mp.pause();
 
                                 pause();
 
@@ -886,7 +896,7 @@ sound_listener();
 
 
         mute1= new ImageView(this);
-        mute1.setImageResource(R.drawable.mute2);
+        mute1.setImageResource(R.drawable.mute3);
         between_arrows2.addView(mute1);
         controller_parms = new LinearLayout.LayoutParams(150,150);
         mute1.setLayoutParams(controller_parms);
@@ -1009,13 +1019,21 @@ sound_listener();
        play_pause2=false;
 
         gameb1.play_pause=false;
-        if(!mp.isLooping())   mp.start();
+        if(!mp.isLooping())
+
+        {
+            mp.start();
+           // sound_listener();
+        }
+
 
     }
 
     public void pause()
     {
+
         mp.pause();
+
         pause_control=true;
 
 
@@ -1064,28 +1082,47 @@ sound_listener();
 
                         if(pause_control)
                         {
-                            if(mp.isLooping())
+
+                            count_timer_3++;
+
+                            if(count_timer_3==1)
                             {
                                 mp.pause();
                             }
-                            else
+
+
+                            if(count_timer_3>3)
                             {
+                                pause();
                                 pause_control=false;
+                                count_timer_3=0;
                             }
+
+
                         }
 
 
 
-                        /*
-                             if(!play_pause2) {
-
-                            if(!mp.isLooping())   mp.start();
-
-                        }
-                         */
 
 
-                        Thread.sleep(10);
+                          if(!play_pause2) {
+
+                                if(!mp.isLooping())
+                                {
+                                    mp.start();
+                                   // sound_listener();
+                                }
+
+                            }
+
+
+
+
+
+
+
+
+                        Thread.sleep(1);
 
                     }
                 }
