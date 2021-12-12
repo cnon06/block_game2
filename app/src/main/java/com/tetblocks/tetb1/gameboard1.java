@@ -25,14 +25,24 @@ public class gameboard1 extends View
 {
 
 
-    boolean   thread1=false, play_pause=false, fast_press=false, ghost_true_false=false, mute_true_false=false;
+    Timer tm1, tm2;
+    TimerTask tt1, tt2;
+
+
+    boolean    fast_press=false, ghost_true_false=false,   thread1=false, pause=false;
+
+
+
+    final Object pauseLock = new Object();
 
     ImageView blocks2;
 
     protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, block_type_2=0, direction = 1,
             block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500,  speed2=0, score1=0
-            , ghost_vertical=0, count_press=0;
+            , ghost_vertical=0, count_press=0, count=0;
 
+
+    float volume1=1f,volume2=1f;
 
     MediaPlayer mp, mp2;
 
@@ -59,6 +69,28 @@ public class gameboard1 extends View
 
     Timer  timer3;
     Thread timer1;
+
+    int timer_count,timer_count2;
+
+    boolean hasrunning=false;
+
+
+    public boolean hasrunning()
+    {
+
+        hasrunning=false;
+
+        return hasrunning;
+    }
+
+
+    public void timer_example()
+    {
+
+
+
+
+    }
 
 
     public void ghost_vertical()
@@ -104,7 +136,7 @@ public class gameboard1 extends View
         }
         catch (Exception rt)
         {
-            System.out.println("Code rt34: "+rt);
+           // System.out.println("Code rt34: "+rt);
         }
 
 
@@ -158,14 +190,80 @@ public class gameboard1 extends View
 
 
 
+    public void timer_content()
+    {
+        try {
+            restart_blocks();
+            if (bottom_control() && vertical > 15) first_horizontal_position();
+            vertical++;
+            direction();
+
+            ghost_vertical();
+
+            invalidate();
+        }
+        catch (Exception rtyu)
+        {
+            System.out.println("Code 89ty: "+rtyu);
+        }
+
+    }
 
 
 
 
-    public boolean Timer1()
+
+
+
+    public  void play()
+    {
+            synchronized (pauseLock)
+            {
+                pauseLock.notifyAll();
+            }
+    }
+
+
+
+
+
+
+
+    public  boolean Timer1()
     {
 
-        timer1 = new Thread() {
+
+
+        /*
+          tm1= new Timer("Gameb Timer 1");
+
+
+        tt1=new TimerTask() {
+            @Override
+            public void run() {
+
+
+
+
+
+
+                   timer_content();
+
+
+
+             //   System.out.println("Timer is running: "+count);
+              //  count++;
+
+            }
+        };
+
+
+        tm1.schedule(tt1,0,speed);
+         */
+
+
+
+          timer1 = new Thread("Gameb-timer1") {
 
             // run() method to carry out the action of the task
 
@@ -179,43 +277,60 @@ public class gameboard1 extends View
                 try {
                     while (!thread1) {
 
-                        if(fast_press)
+
+                      //  System.out.println("tt1 is running: "+tt1.hasRunStarted());
+
+
+                          synchronized (pauseLock)
                         {
-                            count_press++;
-                            if(count_press>=3)
+
+
+                            if(pause)
                             {
-                                speed=30;
-                                fast_press=false;
-                                count_press=0;
+                                pauseLock.wait();
+                                pause=false;
                             }
-                            else
+
+
+
+                            if(fast_press)
                             {
-                                speed=100;
+                                count_press++;
+                                if(count_press>=3)
+                                {
+                                    speed=30;
+                                    fast_press=false;
+                                    count_press=0;
+                                }
+                                else
+                                {
+                                    speed=100;
+                                }
                             }
-                        }
 
 
-                        restart_blocks();
-                        if (bottom_control() && vertical > 15) first_horizontal_position();
+                            restart_blocks();
+                            if (bottom_control() && vertical > 15) first_horizontal_position();
 
-                        if(!play_pause)
-                        {
 
                             vertical++;
-                            // invalidate();
+
+
+                            direction();
+
+                            ghost_vertical();
+
+                            invalidate();
+
+                            Thread.sleep(speed);
 
                         }
 
-                        direction();
-
-                        ghost_vertical();
-
-                        invalidate();
-
-                        Thread.sleep(speed);
 
 
-                    }
+
+
+                   }
                 }
                 catch (Exception tyu)
                 {
@@ -232,10 +347,11 @@ public class gameboard1 extends View
 
         timer1.start();
 
+
+
+
         return false;
     }
-
-
 
 
 
@@ -350,6 +466,10 @@ public class gameboard1 extends View
 
          speed2 = speed;
 
+
+        timer_example();
+
+
         try {
             calibrate_record_blocks();
             max_direction_list();
@@ -377,9 +497,6 @@ public class gameboard1 extends View
             System.out.println("Code-13: "+e);
         }
 
-      Timer1();
-      //  Timer2();
-        //Timer4();
 
 
     }
@@ -412,10 +529,7 @@ public class gameboard1 extends View
                 for(int x=0; x<merge_blocks[0].length; x++)
                 {
 
-
                     if(merge_blocks[y][x]==true )  canvas.drawBitmap(ic_launcher3,10+(x*70),10+(y*70),null);
-
-
 
                 }
             }
@@ -448,14 +562,11 @@ public class gameboard1 extends View
                 }
             }
 
-
-
         }
         catch (Exception er)
         {
             System.out.println("Code-5543: "+er);
         }
-
 
 
     }
@@ -547,18 +658,12 @@ public class gameboard1 extends View
 
                     }
 
-
-
                 }
 
                 ygf--;
             }
 
         }
-
-
-
-
 
 
 
@@ -574,14 +679,10 @@ public class gameboard1 extends View
 
 
 
-
-
         remove_blocks_flicker();
 
 
         int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
-
-
 
 
           for (int y = 0; y < record_blocks4.length; y++) {
@@ -597,10 +698,7 @@ public class gameboard1 extends View
         }
 
 
-
         int xmax2 = 0, xmin2 = 50, ymin2 = 50, ymax2 = 0;
-
-
 
 
         for (int y = 0; y < record_blocks5.length; y++) {
@@ -620,15 +718,14 @@ public class gameboard1 extends View
         {
             score1=0;
 
-
            int number_of_removed_blocks=ymin2-ymin;
-
 
            if(number_of_removed_blocks<4)mp.start(); else mp2.start();
 
+            mp.setVolume(volume1,volume1);
+            mp2.setVolume(volume2,volume2);
+
             System.out.println("ymin2-ymin: "+(number_of_removed_blocks));
-
-
 
 
           //  remove_sound1=true;
@@ -636,13 +733,6 @@ public class gameboard1 extends View
             Timer3();
 
         }
-
-
-
-
-
-
-
 
     }
 
@@ -845,8 +935,6 @@ public class gameboard1 extends View
         }
 
 
-
-
         int vertical2 = vertical;
 
         if(y_intersection!=0 && block_width<block_height && y_intersection==ymax) vertical-=count;
@@ -910,8 +998,6 @@ public class gameboard1 extends View
             System.out.println("Code-43d3: "+e);
         }
         // System.out.println("y_intersection: "+y_intersection+" ymax: "+ymax);
-
-
         return dont_go;
 
     }
@@ -920,7 +1006,6 @@ public class gameboard1 extends View
 
     public boolean direction_left_right_border_control()
     {
-
 
 
         int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
@@ -1092,8 +1177,6 @@ public class gameboard1 extends View
             }
         }
 
-//&& ((block_type==5 &&vertical>=1) || (block_type!=5 &&vertical>=0) )
-     //   direction=2;
 
         int tiriviri=1;
 
@@ -1222,26 +1305,21 @@ public class gameboard1 extends View
 
                     }
                 } catch (Exception er) {
-                    System.out.println("Code-03: " + er);
+                  //  System.out.println("Code-03: " + er);
                 }
 
 
             }
-
         }
-
 
         if (rty) {
             first_horizontal_position();
 
         }
 
-
         return rty;
 
     }
-
-
 
 
 
@@ -1402,31 +1480,26 @@ public class gameboard1 extends View
                 case 1:
 
                     blocks2.setImageResource(R.drawable.block_bar);
-                    //block_type_d1();
-                    //horizontal
 
                     break;
 
                 case 2:
 
                     blocks2.setImageResource(R.drawable.block_z);
-                    //block_type_d2();
-                    //vertical
+
 
                     break;
 
                 case 3:
                     blocks2.setImageResource(R.drawable.block_z2);
-                    // block_type_d3();
-                    //horizontal
+
 
                     break;
 
                 case 4:
 
                     blocks2.setImageResource(R.drawable.block_l2);
-                    // block_type_d4();
-                    //vertical
+
 
                     break;
 
@@ -1435,8 +1508,6 @@ public class gameboard1 extends View
                 case 5:
 
                     blocks2.setImageResource(R.drawable.block_l);
-                    // block_type_d4();
-                    //vertical
 
                     break;
 
@@ -1445,8 +1516,6 @@ public class gameboard1 extends View
                 case 6:
 
                     blocks2.setImageResource(R.drawable.block_t);
-                    // block_type_d4();
-                    //vertical
 
                     break;
 
@@ -1454,18 +1523,9 @@ public class gameboard1 extends View
                 case 7:
 
                     blocks2.setImageResource(R.drawable.block_square);
-                    // block_type_d4();
-                    //vertical
 
                     break;
-
             }
-
-
-
-            // block_type=x+1;
-
-
 
         }
         catch (Exception e)
@@ -1474,8 +1534,6 @@ public class gameboard1 extends View
         }
 
         setMax_direction();
-
-
 
 
 
@@ -1494,14 +1552,6 @@ public class gameboard1 extends View
 
 
         if(speed2!=0) speed=speed2;
-
-      //  ghost_vertical();
-
-
-     //   first_colomn=true;
-
-
-
 
 
     }
@@ -1546,13 +1596,7 @@ public class gameboard1 extends View
         }
 
 
-
-    //    ghost_vertical();
-
     }
-
-
-
 
 
 
@@ -2250,13 +2294,6 @@ public class gameboard1 extends View
     public void ghost_reverse_L_d1() throws Exception {
 
 
-        /*
-         block_width = 3;
-        block_height = 2;
-         */
-
-
-
         for (int y = 0; y < ghost_coords.length; y++) {
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
@@ -2274,12 +2311,6 @@ public class gameboard1 extends View
     }
 
     public void ghost_reverse_L_d2() throws Exception {
-
-
-        /*
-         block_width = 2;
-        block_height = 3;
-         */
 
 
         for (int y = 0; y < ghost_coords.length; y++) {
@@ -2302,12 +2333,6 @@ public class gameboard1 extends View
     public void ghost_reverse_L_d3() throws Exception {
 
 
-        /*
-         block_width = 3;
-        block_height = 2;
-         */
-
-
         for (int y = 0; y < ghost_coords.length; y++) {
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
@@ -2325,12 +2350,6 @@ public class gameboard1 extends View
     }
 
     public void ghost_reverse_L_d4() throws Exception {
-
-
-        /*
-        block_width = 2;
-        block_height = 3;
-         */
 
 
         for (int y = 0; y < ghost_coords.length; y++) {
@@ -2352,14 +2371,6 @@ public class gameboard1 extends View
 
     public void ghost_regular_L_d1() throws Exception {
 
-
-        /*
-         block_width = 3;
-        block_height = 2;
-         */
-
-
-
         for (int y = 0; y < ghost_coords.length; y++) {
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
@@ -2377,13 +2388,6 @@ public class gameboard1 extends View
 
 
     public void ghost_regular_L_d2() throws Exception {
-
-
-        /*
-         block_width = 2;
-        block_height = 3;
-         */
-
 
         for (int y = 0; y < ghost_coords.length; y++) {
 
@@ -2403,11 +2407,6 @@ public class gameboard1 extends View
 
 
     public void ghost_regular_L_d3() throws Exception {
-
-        /*
-          block_width = 3;
-        block_height = 2;
-         */
 
 
         for (int y = 0; y < ghost_coords.length; y++) {
@@ -2429,13 +2428,6 @@ public class gameboard1 extends View
     public void ghost_regular_L_d4() throws Exception {
 
 
-        /*
-         block_width = 2;
-        block_height = 3;
-         */
-
-
-
         for (int y = 0; y < ghost_coords.length; y++) {
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
@@ -2455,14 +2447,6 @@ public class gameboard1 extends View
 
     public void ghost_reverse_z_d1() throws Exception {
 
-
-        /*
-          block_width = 3;
-        block_height = 2;
-         */
-
-
-
         for (int y = 0; y < ghost_coords.length; y++) {
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
@@ -2481,14 +2465,6 @@ public class gameboard1 extends View
 
     public void ghost_reverse_z_d2() throws Exception {
 
-
-       /*
-        block_width = 2;
-        block_height = 3;
-        */
-
-
-
         for (int y = 0; y < ghost_coords.length; y++) {
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
@@ -2502,18 +2478,10 @@ public class gameboard1 extends View
             }
         }
 
-
     }
 
 
     public void ghost_regular_z_d1() throws Exception {
-
-
-        /*
-          block_width = 3;
-        block_height = 2;
-         */
-
 
 
         for (int y = 0; y < ghost_coords.length; y++) {
@@ -2533,11 +2501,6 @@ public class gameboard1 extends View
 
     public void ghost_regular_z_d2() throws Exception {
 
-
-        /*
-          block_width = 2;
-        block_height = 3;
-         */
 
 
         for (int y = 0; y < ghost_coords.length; y++) {
@@ -2559,12 +2522,6 @@ public class gameboard1 extends View
     public void ghost_square() throws Exception {
 
 
-        /*
-         block_width = 2;
-        block_height = 2;
-         */
-
-
         for (int y = 0; y < ghost_coords.length; y++) {
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
@@ -2580,11 +2537,6 @@ public class gameboard1 extends View
 
 
     public void ghost_bar_d1() throws Exception {
-
-        /*
-          block_width = 4;
-        block_height = 1;
-         */
 
 
         for (int y = 0; y < ghost_coords.length; y++) {
@@ -2603,13 +2555,6 @@ public class gameboard1 extends View
 
 
     public void ghost_bar_d2() throws Exception {
-
-
-        /*
-          block_width = 1;
-        block_height = 4;
-         */
-
 
 
         for (int y = 0; y < ghost_coords.length; y++) {

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,95 +32,60 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
 
+    final Object pauseLock = new Object();
 
 
-    boolean go_right=false, go_left=false, timer_pause_start=false,  timer2_play_pause=false, thread1=false, pause_control=false, on_end_control=false;
+    boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, thread1=false, pause_control=false, on_end_control=false;
 
- boolean  play_pause2=false;
+boolean  play_pause2=false;
 
     int  go_left_right_control=0, count_timer_3=0, mute_count=1;
 
+
+    float volume1=1f;
+
   MediaPlayer mp;
+
+  Thread timer2, timer3;
 
 
     protected void onRestart() {
 
 
-        System.out.println("onRestart 12");
+       // System.out.println("onRestart 12");
         super.onRestart();
     }
 
+
+
+   public void onBackPressed()  {
+
+        mp.pause();
+      pause();
+      System.out.println("onBackPressed");
+
+
+    }
+
     protected void onDestroy () {
-
-
-
-       /*
-        timer_pause_start=false;
-        finish();
-        System.out.println("App is closing.");
-        */
-
+        mp.pause();
+        pause();
         super.onDestroy();
     }
 
 
 
-
-
-
     protected void onPause() {
+        mp.pause();
+       pause();
+       System.out.println("onPause");
 
-        pause();
-
-        /*
-        try {
-            // mp.pause();
-            pause_control=true;
-        }
-        catch (Exception ret)
-        {
-            System.out.println("Code 56rt: "+ret);
-        }
-         */
-
-
-        // pause();
-        // timer2_play_pause=true;
-        //pause();
-
-
-        System.out.println("on pause 1");
         super.onPause();
     }
 
-
-
     protected void onStop() {
-
-
+        mp.pause();
         pause();
-
-        /*
-         try {
-           // mp.pause();
-            pause_control=true;
-        }
-        catch (Exception ret)
-        {
-            System.out.println("Code 56rt: "+ret);
-        }
-         */
-
-
-
-     // pause();
-           // timer2_play_pause=true;
-       //pause();
-
-
-
-
-        System.out.println("on stop 1");
         super.onStop();
     }
 
@@ -137,11 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
        mp = MediaPlayer.create(this,R.raw.musics);
         mp.start();
+        mp.setVolume(volume1,volume1);
 
-     //   sound_listener();
 
-        timer2();
-        Timer3();
 
          try {
             Random random = new Random();
@@ -154,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
         {
 
         }
-
 
 
 
@@ -186,81 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-                //next_song=true;
-
-
-
-               /*
-                mp = MediaPlayer.create(MainActivity.this,R.raw.kalinka);
-
-                */
-
-        // mp.release();
-
-
-
-//ound_listener();
-
-/*
-
-
-         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-
-
-        playlist++;
-        if(playlist>4) playlist=1;
-
-
-        System.out.println("on Completed");
-
-        try {
-
-            switch (playlist) {
-                case 1:
-                    mp = MediaPlayer.create(MainActivity.this,R.raw.tetris);
-                    // mp.start();
-                    break;
-
-                case 2:
-                    mp = MediaPlayer.create(MainActivity.this,R.raw.katyusha);
-                    //  mp.start();
-                    break;
-
-                case 3:
-                    mp = MediaPlayer.create(MainActivity.this,R.raw.polyushka);
-                    // mp.start();
-                    break;
-
-                case 4:
-                    mp = MediaPlayer.create(MainActivity.this,R.raw.kalinka);
-                    // mp.start();
-                    break;
-
-                default:
-
-            }
-
-            mp.start();
-
-        }
-        catch (Exception ty)
-        {
-            System.out.println("Code yr86: "+ty);
-        }
-
-
-
-
-    }
-});
-         */
-
-
-
-
         mute1.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -285,20 +173,46 @@ public class MainActivity extends AppCompatActivity {
                             {
 
                                 case 1:
-                                    mp.setVolume(1f,1f);
+                                    volume1=1f;
+                                    mp.setVolume(volume1,volume1);
+
+
+                                    gameb1.volume1=1f; gameb1.volume2=1f;
+                                    gameb1.mp.setVolume(gameb1.volume1,gameb1.volume1);
+                                    gameb1.mp2.setVolume(gameb1.volume2,gameb1.volume2);
+
                                     mute1.setImageResource(R.drawable.mute3);
 
                                     break;
 
 
                                 case 2:
-                                    mp.setVolume(0,0);
+
+                                    volume1=0;
+                                    mp.setVolume(volume1,volume1);
+
+
+                                    gameb1.volume1=1f; gameb1.volume2=1f;
+                                    gameb1.mp.setVolume(gameb1.volume1,gameb1.volume1);
+                                    gameb1.mp2.setVolume(gameb1.volume2,gameb1.volume2);
+
+
+
+                                   // mp.setVolume(0,0);
                                     mute1.setImageResource(R.drawable.mute2);
 
                                     break;
 
                                 case 3:
-                                    mp.setVolume(0,0);
+
+                                    volume1=0;
+                                    mp.setVolume(volume1,volume1);
+
+                                    gameb1.volume1=0; gameb1.volume2=0;
+                                    gameb1.mp.setVolume(gameb1.volume1,gameb1.volume1);
+                                    gameb1.mp2.setVolume(gameb1.volume2,gameb1.volume2);
+
+                                 //   mp.setVolume(0,0);
                                     mute1.setImageResource(R.drawable.mute1);
                                     break;
 
@@ -308,48 +222,11 @@ public class MainActivity extends AppCompatActivity {
                             }
 
 
-
-
-
-                            /*
-                             if(gameb1.mute_true_false)
-                            {
-
-                                //play();
-                                mp.setVolume(1f,1f);
-                                mute1.setImageResource(R.drawable.mute2);
-                                gameb1.mute_true_false=false;
-
-                            }
-                            else
-                            {
-                                mp.setVolume(0,0);
-
-                                mute1.setImageResource(R.drawable.mute1);
-                                gameb1.mute_true_false=true;
-                                //  pause();
-
-                            }
-
-                             */
-
-
                         }
 
 
                         return true;
                     case MotionEvent.ACTION_UP:
-
-
-                        /*
-                          if(!play_pause2)
-                        {
-
-
-
-                        }
-                         */
-
 
 
                         return true;
@@ -394,23 +271,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
                         }
 
 
                         return true;
                     case MotionEvent.ACTION_UP:
-
-
-                        /*
-                          if(!play_pause2)
-                        {
-
-
-
-                        }
-                         */
 
 
 
@@ -436,24 +301,12 @@ public class MainActivity extends AppCompatActivity {
 
                             if(play_pause2)
                             {
-
-
                                 play();
-
-
                             }
                             else
                             {
-
-
-                               // mp.pause();
-
                                 pause();
-
                             }
-
-
-
 
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -477,20 +330,14 @@ public class MainActivity extends AppCompatActivity {
                         case MotionEvent.ACTION_DOWN:
 
 
-
                             if(!play_pause2)
                             {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                 vibe.vibrate(20);
-
                                 right_arrow.setImageResource(R.drawable.red_right_arrow);
-
                                 go_right=true;
 
-
                                 try {
-
-
 
                                     gameb1.right_control();
                                     gameb1.direction();
@@ -543,9 +390,6 @@ public class MainActivity extends AppCompatActivity {
 
                             left_arrow.setImageResource(R.drawable.red_left_arrow);
 
-                           // gameb1.break_loop=false;
-
-
                             try {
 
 
@@ -592,13 +436,8 @@ public class MainActivity extends AppCompatActivity {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-
-
                         if(!play_pause2)
                         {
-
-
-
 
                             Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             vibe.vibrate(20);
@@ -606,16 +445,6 @@ public class MainActivity extends AppCompatActivity {
                             direction_arrow.setImageResource(R.drawable.red_repeat);
 
                             try {
-
-
-
-                                /*
-                                 for (int i=0;i<10;i++) {
-                                    gameb1.ghost_vertical(gameb1.vertical);
-                                }
-                                 */
-
-
 
                                 gameb1.direction++;
                                 if(gameb1.direction>gameb1.max_direction) gameb1.direction=1;
@@ -635,12 +464,7 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 System.out.println("Code-9: "+e);
                             }
-
-
                         }
-
-
-
 
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -669,53 +493,54 @@ public class MainActivity extends AppCompatActivity {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-
-
-
                          if(!play_pause2) {
-
-
 
                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                              vibe.vibrate(20);
 
                              down_arrow.setImageResource(R.drawable.red_down_arrow);
 
-
                              gameb1.speed2=gameb1.speed;
+
+                             gameb1.speed=100;
 
                              gameb1.fast_press=true;
 
-
-                        }
-
-
-
+                         }
 
                             return true;
                             case MotionEvent.ACTION_UP:
-
-
 
                                 if(!play_pause2) {
 
                                     down_arrow.setImageResource(R.drawable.down_arrow);
                                     gameb1.speed=gameb1.speed2;
                                     gameb1.fast_press=false;
-                                  //  gameb1.speed_up_down();
-
-
-
-                                    //   timer1.schedule(task1, 0,speed);
                                 }
-
-
-
                         return true;
                 }
                 return false;
             }
         });
+
+
+
+        gameb1.Timer1();
+        timer2();
+        Timer3();
+
+    }
+
+
+
+    public  void play2()
+    {
+
+
+        synchronized (pauseLock)
+        {
+            pauseLock.notifyAll();
+        }
 
 
     }
@@ -728,30 +553,30 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        new Thread()
-       {
-            @Override
+       timer2 =  new Thread() {
+
+
             public void run() {
-                try
-                {
+                try {
 
-                    while (!timer_pause_start)
-                    {
+                    while (!timer_pause_start) {
 
 
+                        synchronized (pauseLock) {
 
 
+                            if (pause) {
+                                pauseLock.wait();
+                                pause = false;
+                            }
 
 
-                            if(go_left || go_right)
-                            {
+                            if (go_left || go_right) {
 
                                 go_left_right_control++;
 
-                                if(go_left_right_control>=2)
-                                {
-                                    if(go_left)
-                                    {
+                                if (go_left_right_control >= 2) {
+                                    if (go_left) {
 
                                         gameb1.left_control();
                                         gameb1.direction();
@@ -761,8 +586,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     }
 
-                                    if(go_right)
-                                    {
+                                    if (go_right) {
 
                                         gameb1.right_control();
                                         gameb1.direction();
@@ -776,23 +600,23 @@ public class MainActivity extends AppCompatActivity {
                             }
 
 
+                            sleep(100);
 
-                        sleep(100);
 
+                        }
+                    }
                     }
 
-                }
-                catch (Exception ed)
-                {
-                    System.out.println(ed);
-                }
+
+                catch(Exception ed)
+                    {
+                        System.out.println(ed);
+                    }
+
             }
-        }.start();
+        };
 
-
-
-
-
+        timer2.start();
 
     }
 
@@ -932,8 +756,6 @@ public class MainActivity extends AppCompatActivity {
         between_arrows(300,100);
         double_down_arrow();
 
-
-
     }
 
 
@@ -1016,32 +838,47 @@ public class MainActivity extends AppCompatActivity {
     public void play()
     {
         play_pause.setImageResource(R.drawable.pause2);
-       play_pause2=false;
 
-        gameb1.play_pause=false;
+
+        play_pause2=false;
+
+      //  gameb1.play_pause=false;
+
         if(!mp.isLooping())
 
         {
             mp.start();
-           // sound_listener();
+            mp.setVolume(volume1,volume1);
+
         }
 
+        gameb1.play();
+       play2();
 
     }
 
     public void pause()
     {
 
+        play_pause.setImageResource(R.drawable.play2);
         mp.pause();
 
-        pause_control=true;
 
 
-       play_pause2=true;
-        gameb1.play_pause=true;
-        play_pause.setImageResource(R.drawable.play2);
+        try {
 
+            gameb1.pause=true;
+            pause=true;
 
+          //  gameb1.play_pause=true;
+            play_pause2=true;
+            pause_control=true;
+
+        }
+        catch (Exception er)
+        {
+            System.out.println("Code 45k: "+er);
+        }
 
     }
 
@@ -1050,7 +887,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean Timer3()
     {
 
-        new Thread() {
+       timer3 = new Thread("Timer 3"){
 
             // run() method to carry out the action of the task
 
@@ -1059,71 +896,32 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
 
-
-
                 try {
                     while (!thread1) {
 
+                        synchronized (pauseLock) {
 
 
-
-                        /*
-                        if(timer2_play_pause)
-                        {
-
-                            pause();
-                            timer2_play_pause=false;
-                        }
-                         */
-
-
-
-                       // pause_control=true;
-
-                        if(pause_control)
-                        {
-
-                            count_timer_3++;
-
-                            if(count_timer_3==1)
-                            {
-                                mp.pause();
+                             if (pause) {
+                                pauseLock.wait();
+                                pause = false;
                             }
 
 
-                            if(count_timer_3>3)
-                            {
-                                pause();
-                                pause_control=false;
-                                count_timer_3=0;
-                            }
+                            if (!play_pause2) {
 
-
-                        }
-
-
-
-
-
-                          if(!play_pause2) {
-
-                                if(!mp.isLooping())
-                                {
+                                if (!mp.isLooping()) {
                                     mp.start();
-                                   // sound_listener();
+                                    mp.setVolume(volume1,volume1);
+
                                 }
 
-                            }
+                            } else pause();
 
 
+                            Thread.sleep(1);
 
-
-
-
-
-
-                        Thread.sleep(1);
-
+                        }
                     }
                 }
                 catch (Exception tyu)
@@ -1136,7 +934,9 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
-        }.start();
+        };
+
+       timer3.start();
 
 
 
