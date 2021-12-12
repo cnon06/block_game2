@@ -28,14 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout ln1, lln [],controller, space_between_game_board_and_controller;
     LinearLayout.LayoutParams parms, controller_parms;
-    ImageView right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause, ghost1, mute1;
+    ImageView right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause, ghost1, mute1, vib1;
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
 
     final Object pauseLock = new Object();
 
 
-    boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, thread1=false, pause_control=false, on_end_control=false;
+    boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, thread1=false, pause_control=false, vib_true_false=false;
 
 boolean  play_pause2=false;
 
@@ -149,6 +149,61 @@ boolean  play_pause2=false;
 
 
 
+        vib1.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event)  {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+
+
+                        if(!play_pause2)
+                        {
+
+                          if(!vib_true_false)
+                          {
+                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                              vibe.vibrate(20);
+                          }
+
+
+
+
+                            if(vib_true_false)
+                            {
+
+
+                                vib1.setImageResource(R.drawable.vib1);
+                                vib_true_false=false;
+
+                            }
+                            else
+                            {
+                                vib1.setImageResource(R.drawable.vib2);
+                                vib_true_false=true;
+
+
+                            }
+
+                        }
+
+
+                        return true;
+                    case MotionEvent.ACTION_UP:
+
+
+
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
+
+
+
         mute1.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -160,9 +215,12 @@ boolean  play_pause2=false;
 
                         if(!play_pause2)
                         {
-                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibe.vibrate(20);
 
+
+                            if(!vib_true_false) {
+                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                vibe.vibrate(20);
+                            }
 
 
                             mute_count++;
@@ -248,9 +306,12 @@ boolean  play_pause2=false;
 
                         if(!play_pause2)
                         {
-                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibe.vibrate(20);
 
+
+                            if(!vib_true_false) {
+                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                vibe.vibrate(20);
+                            }
 
 
                             if(gameb1.ghost_true_false)
@@ -294,9 +355,12 @@ boolean  play_pause2=false;
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        vibe.vibrate(20);
 
+
+                        if(!vib_true_false) {
+                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                            vibe.vibrate(20);
+                        }
 
 
                             if(play_pause2)
@@ -332,8 +396,12 @@ boolean  play_pause2=false;
 
                             if(!play_pause2)
                             {
-                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
+
+                                if(!vib_true_false) {
+                                    Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                    vibe.vibrate(20);
+                                }
+
                                 right_arrow.setImageResource(R.drawable.red_right_arrow);
                                 go_right=true;
 
@@ -385,8 +453,11 @@ boolean  play_pause2=false;
 
                         if(!play_pause2)
                         {
-                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibe.vibrate(20);
+                            if(!vib_true_false) {
+                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                vibe.vibrate(20);
+                            }
+
 
                             left_arrow.setImageResource(R.drawable.red_left_arrow);
 
@@ -439,8 +510,12 @@ boolean  play_pause2=false;
                         if(!play_pause2)
                         {
 
-                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibe.vibrate(20);
+                            if(!vib_true_false) {
+                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                vibe.vibrate(20);
+                            }
+
+
 
                             direction_arrow.setImageResource(R.drawable.red_repeat);
 
@@ -495,8 +570,12 @@ boolean  play_pause2=false;
 
                          if(!play_pause2) {
 
-                             Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                             vibe.vibrate(20);
+
+                             if(!vib_true_false) {
+                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                 vibe.vibrate(20);
+                             }
+
 
                              down_arrow.setImageResource(R.drawable.red_down_arrow);
 
@@ -654,7 +733,7 @@ boolean  play_pause2=false;
 
 
         LinearLayout between_arrows3  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms3 = new LinearLayout.LayoutParams(150,1000);
+        LinearLayout.LayoutParams between_arrows_parms3 = new LinearLayout.LayoutParams(150,1200);
         gb1.addView(between_arrows3,between_arrows_parms3);
         between_arrows3.setOrientation(LinearLayout.VERTICAL);
 
@@ -687,7 +766,7 @@ boolean  play_pause2=false;
 
 
         LinearLayout between_arrows2  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms2 = new LinearLayout.LayoutParams(150,600);
+        LinearLayout.LayoutParams between_arrows_parms2 = new LinearLayout.LayoutParams(150,700);
         between_arrows3.addView(between_arrows2,between_arrows_parms2);
         between_arrows2.setOrientation(LinearLayout.VERTICAL);
 
@@ -724,6 +803,20 @@ boolean  play_pause2=false;
         between_arrows2.addView(mute1);
         controller_parms = new LinearLayout.LayoutParams(150,150);
         mute1.setLayoutParams(controller_parms);
+
+
+
+        LinearLayout between_arrows7  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms7 = new LinearLayout.LayoutParams(150,30);
+        between_arrows2.addView(between_arrows7,between_arrows_parms5);
+        between_arrows5.setOrientation(LinearLayout.HORIZONTAL);
+
+
+        vib1= new ImageView(this);
+        vib1.setImageResource(R.drawable.vib1);
+        between_arrows2.addView(vib1);
+        controller_parms = new LinearLayout.LayoutParams(150,150);
+        vib1.setLayoutParams(controller_parms);
 
 
     }
