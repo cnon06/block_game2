@@ -210,11 +210,6 @@ public class gameboard1 extends View
     }
 
 
-
-
-
-
-
     public  void play()
     {
             synchronized (pauseLock)
@@ -267,12 +262,7 @@ public class gameboard1 extends View
 
             // run() method to carry out the action of the task
 
-
-
             public void run() {
-
-
-
 
                 try {
                     while (!thread1) {
@@ -326,10 +316,6 @@ public class gameboard1 extends View
 
                         }
 
-
-
-
-
                    }
                 }
                 catch (Exception tyu)
@@ -337,23 +323,13 @@ public class gameboard1 extends View
                     System.out.println("Code 56-er: "+tyu);
                 }
 
-
-
-
-
             }
         };
 
-
         timer1.start();
-
-
-
 
         return false;
     }
-
-
 
 
 
@@ -425,9 +401,6 @@ public class gameboard1 extends View
                         }
                     }
 
-
-
-
                     if(score1>=5)
                     {
                         for (int y = 0; y < record_blocks.length; y++) {
@@ -440,10 +413,7 @@ public class gameboard1 extends View
 
                     }
 
-
                         invalidate();
-
-
 
                 }
                 catch (Exception ed)
@@ -490,13 +460,11 @@ public class gameboard1 extends View
             ghost_regular_z_d2();
 
 
-
         }
         catch (Exception e)
         {
             System.out.println("Code-13: "+e);
         }
-
 
 
     }
@@ -512,16 +480,12 @@ public class gameboard1 extends View
         canvas.drawPaint(paint);
 
 
-
-
         try {
 
 
             merge_blocks();
 
             direction();
-
-
 
 
             for(int y=0; y<merge_blocks.length; y++)
@@ -550,8 +514,6 @@ public class gameboard1 extends View
             }
 
 
-
-
             for(int y=0; y<merge_blocks.length; y++)
             {
                 for(int x=0; x<merge_blocks[0].length; x++)
@@ -570,14 +532,6 @@ public class gameboard1 extends View
 
 
     }
-
-
-
-
-
-
-
-
 
 
     public void remove_rows_blocks()
@@ -786,7 +740,6 @@ public class gameboard1 extends View
     {
 
 
-
         int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
 
 
@@ -986,7 +939,6 @@ public class gameboard1 extends View
             dont_go=true;
             System.out.println("dontgo up down");
         }
-
 
 
         try
@@ -1255,14 +1207,10 @@ public class gameboard1 extends View
 
         }
 
-
-
         return dont_go_right_left;
 
 
     }
-
-
 
 
 
@@ -1418,7 +1366,6 @@ public class gameboard1 extends View
     public void first_horizontal_position() {
 
 
-
         record_blocks();
 
 
@@ -1487,12 +1434,10 @@ public class gameboard1 extends View
 
                     blocks2.setImageResource(R.drawable.block_z);
 
-
                     break;
 
                 case 3:
                     blocks2.setImageResource(R.drawable.block_z2);
-
 
                     break;
 
@@ -1500,10 +1445,7 @@ public class gameboard1 extends View
 
                     blocks2.setImageResource(R.drawable.block_l2);
 
-
                     break;
-
-
 
                 case 5:
 
@@ -1511,14 +1453,11 @@ public class gameboard1 extends View
 
                     break;
 
-
-
                 case 6:
 
                     blocks2.setImageResource(R.drawable.block_t);
 
                     break;
-
 
                 case 7:
 
@@ -1535,8 +1474,6 @@ public class gameboard1 extends View
 
         setMax_direction();
 
-
-
         try {
             direction();
         }
@@ -1545,18 +1482,12 @@ public class gameboard1 extends View
             System.out.println("code-23w: "+rt);
         }
 
-
-
         remove_rows_blocks();
-
-
 
         if(speed2!=0) speed=speed2;
 
 
     }
-
-
 
 
     public void direction() throws Exception {
@@ -1587,7 +1518,6 @@ public class gameboard1 extends View
 
                     break;
 
-
             }
 
 
@@ -1597,8 +1527,6 @@ public class gameboard1 extends View
 
 
     }
-
-
 
 
     public void block_type_d1() throws Exception {
@@ -2191,12 +2119,6 @@ public class gameboard1 extends View
     public void ghost_T_d1() throws Exception {
 
 
-        /*
-         block_width = 3;
-        block_height = 2;
-         */
-
-
         for (int y = 0; y < ghost_coords.length; y++) {
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
@@ -2214,11 +2136,6 @@ public class gameboard1 extends View
 
 
     public void ghost_T_d2() throws Exception {
-
-        /*
-         block_width = 2;
-        block_height = 3;
-         */
 
 
         for (int y = 0; y < ghost_coords.length; y++) {
@@ -2238,11 +2155,6 @@ public class gameboard1 extends View
     }
 
     public void ghost_T_d3() throws Exception {
-
-        /*
-        block_width = 3;
-        block_height = 2;
-         */
 
 
         for (int y = 0; y < ghost_coords.length; y++) {
@@ -2265,14 +2177,6 @@ public class gameboard1 extends View
 
 
     public void ghost_T_d4() throws Exception {
-
-
-        /*
-
-         block_width = 2;
-        block_height = 3;
-         */
-
 
 
         for (int y = 0; y < ghost_coords.length; y++) {
@@ -2469,7 +2373,6 @@ public class gameboard1 extends View
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
 
-
                 if (x >= horizontal && x <= horizontal && y >= ghost_vertical && y <= ghost_vertical + 1)
                     ghost_coords[y][x] = false;
                 else if (x >= horizontal + 1 && x <= horizontal + 1 && y >= ghost_vertical + 1 && y <= ghost_vertical + 2)
@@ -2480,9 +2383,7 @@ public class gameboard1 extends View
 
     }
 
-
     public void ghost_regular_z_d1() throws Exception {
-
 
         for (int y = 0; y < ghost_coords.length; y++) {
 
@@ -2502,7 +2403,6 @@ public class gameboard1 extends View
     public void ghost_regular_z_d2() throws Exception {
 
 
-
         for (int y = 0; y < ghost_coords.length; y++) {
 
             for (int x = 0; x < ghost_coords[0].length; x++) {
@@ -2520,7 +2420,6 @@ public class gameboard1 extends View
 
 
     public void ghost_square() throws Exception {
-
 
         for (int y = 0; y < ghost_coords.length; y++) {
 
@@ -2547,12 +2446,8 @@ public class gameboard1 extends View
                     ghost_coords[y][x] = false;
                 else ghost_coords[y][x] = true;
             }
-
         }
-
-
     }
-
 
     public void ghost_bar_d2() throws Exception {
 
@@ -2570,7 +2465,5 @@ public class gameboard1 extends View
         }
 
     }
-
-
 
 }

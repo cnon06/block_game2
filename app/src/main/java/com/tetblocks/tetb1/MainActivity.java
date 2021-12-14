@@ -1,9 +1,11 @@
 package com.tetblocks.tetb1;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Looper;
@@ -31,15 +33,16 @@ public class MainActivity extends AppCompatActivity {
     ImageView right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause, ghost1, mute1, vib1;
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
+   start_game start_game1;
 
     final Object pauseLock = new Object();
 
 
     boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, thread1=false, pause_control=false, vib_true_false=false;
 
-boolean  play_pause2=false;
+boolean  play_pause2=false, start_game=true;
 
-    int  go_left_right_control=0, count_timer_3=0, mute_count=1;
+    int  go_left_right_control=0, mute_count=1;
 
 
     float volume1=1f;
@@ -47,6 +50,422 @@ boolean  play_pause2=false;
   MediaPlayer mp;
 
   Thread timer2, timer3;
+
+public void timers()
+{
+    gameb1.Timer1();
+    timer2();
+    Timer3();
+}
+
+  public void buttons()
+  {
+      vib1.setOnTouchListener(new View.OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              switch (event.getAction()) {
+                  case MotionEvent.ACTION_DOWN:
+
+
+                      if (!play_pause2) {
+
+                          if (!vib_true_false) {
+                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                              vibe.vibrate(20);
+                          }
+
+
+                          if (vib_true_false) {
+
+
+                              vib1.setImageResource(R.drawable.vib1);
+                              vib_true_false = false;
+
+                          } else {
+                              vib1.setImageResource(R.drawable.vib2);
+                              vib_true_false = true;
+
+
+                          }
+
+                      }
+
+
+                      return true;
+                  case MotionEvent.ACTION_UP:
+
+
+                      return true;
+              }
+              return false;
+          }
+      });
+
+
+      mute1.setOnTouchListener(new View.OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              switch (event.getAction()) {
+                  case MotionEvent.ACTION_DOWN:
+
+
+                      if (!play_pause2) {
+
+
+                          if (!vib_true_false) {
+                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                              vibe.vibrate(20);
+                          }
+
+
+                          mute_count++;
+                          if (mute_count > 3) mute_count = 1;
+
+
+                          switch (mute_count) {
+
+                              case 1:
+                                  volume1 = 1f;
+                                  mp.setVolume(volume1, volume1);
+
+
+                                  gameb1.volume1 = 1f;
+                                  gameb1.volume2 = 1f;
+                                  gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
+                                  gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
+
+                                  mute1.setImageResource(R.drawable.mute3);
+
+                                  break;
+
+
+                              case 2:
+
+                                  volume1 = 0;
+                                  mp.setVolume(volume1, volume1);
+
+
+                                  gameb1.volume1 = 1f;
+                                  gameb1.volume2 = 1f;
+                                  gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
+                                  gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
+
+
+                                  // mp.setVolume(0,0);
+                                  mute1.setImageResource(R.drawable.mute2);
+
+                                  break;
+
+                              case 3:
+
+                                  volume1 = 0;
+                                  mp.setVolume(volume1, volume1);
+
+                                  gameb1.volume1 = 0;
+                                  gameb1.volume2 = 0;
+                                  gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
+                                  gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
+
+                                  //   mp.setVolume(0,0);
+                                  mute1.setImageResource(R.drawable.mute1);
+                                  break;
+
+
+                              default:
+
+                          }
+
+
+                      }
+
+
+                      return true;
+                  case MotionEvent.ACTION_UP:
+
+
+                      return true;
+              }
+              return false;
+          }
+      });
+
+
+      ghost1.setOnTouchListener(new View.OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              switch (event.getAction()) {
+                  case MotionEvent.ACTION_DOWN:
+
+
+                      if (!play_pause2) {
+
+
+                          if (!vib_true_false) {
+                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                              vibe.vibrate(20);
+                          }
+
+
+                          if (gameb1.ghost_true_false) {
+
+                              //play();
+                              ghost1.setImageResource(R.drawable.ghost1);
+                              gameb1.ghost_true_false = false;
+
+                          } else {
+                              ghost1.setImageResource(R.drawable.ghost2);
+                              gameb1.ghost_true_false = true;
+                              //  pause();
+
+                          }
+
+
+                      }
+
+
+                      return true;
+                  case MotionEvent.ACTION_UP:
+
+
+                      return true;
+              }
+              return false;
+          }
+      });
+
+
+      play_pause.setOnTouchListener(new View.OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              switch (event.getAction()) {
+                  case MotionEvent.ACTION_DOWN:
+
+
+                      if (!vib_true_false) {
+                          Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                          vibe.vibrate(20);
+                      }
+
+
+                      if (play_pause2) {
+                          play();
+                      } else {
+                          pause();
+                      }
+
+                      return true;
+                  case MotionEvent.ACTION_UP:
+
+
+                      return true;
+              }
+              return false;
+          }
+      });
+
+
+      right_arrow.setOnTouchListener(new View.OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              switch (event.getAction()) {
+                  case MotionEvent.ACTION_DOWN:
+
+
+                      if (!play_pause2) {
+
+                          if (!vib_true_false) {
+                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                              vibe.vibrate(20);
+                          }
+
+                          right_arrow.setImageResource(R.drawable.red_right_arrow);
+                          go_right = true;
+
+                          try {
+
+                              gameb1.right_control();
+                              gameb1.direction();
+                              gameb1.invalidate();
+                              gameb1.ghost_vertical();
+
+                          } catch (Exception e) {
+                              System.out.println("Code-45r3e: " + e);
+                          }
+                      }
+
+
+                      return true;
+                  case MotionEvent.ACTION_UP:
+
+                      if (!play_pause2) {
+                          right_arrow.setImageResource(R.drawable.right_arrow);
+                          go_right = false;
+                          go_left_right_control = 0;
+                          gameb1.fast_press = false;
+
+                      }
+
+
+                      return true;
+              }
+              return false;
+          }
+      });
+
+
+      left_arrow.setOnTouchListener(new View.OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              switch (event.getAction()) {
+                  case MotionEvent.ACTION_DOWN:
+
+
+                      if (!play_pause2) {
+                          if (!vib_true_false) {
+                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                              vibe.vibrate(20);
+                          }
+
+
+                          left_arrow.setImageResource(R.drawable.red_left_arrow);
+
+                          try {
+
+
+                              gameb1.left_control();
+                              gameb1.direction();
+                              gameb1.invalidate();
+                              gameb1.ghost_vertical();
+                          } catch (Exception e) {
+                              System.out.println("Code-423d: " + e);
+                          }
+
+
+                          go_left = true;
+
+                      }
+
+                      return true;
+                  case MotionEvent.ACTION_UP:
+
+
+                      if (!play_pause2) {
+                          left_arrow.setImageResource(R.drawable.left_arrow);
+                          go_left = false;
+                          go_left_right_control = 0;
+
+                      }
+
+                      return true;
+              }
+              return false;
+          }
+      });
+
+
+      direction_arrow.setOnTouchListener(new View.OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              switch (event.getAction()) {
+                  case MotionEvent.ACTION_DOWN:
+
+                      if (!play_pause2) {
+
+                          if (!vib_true_false) {
+                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                              vibe.vibrate(20);
+                          }
+
+
+                          direction_arrow.setImageResource(R.drawable.red_repeat);
+
+                          try {
+
+                              gameb1.direction++;
+                              if (gameb1.direction > gameb1.max_direction)
+                                  gameb1.direction = 1;
+                              gameb1.direction();
+
+
+                              if (!gameb1.direction_up_down_control())
+
+                                  if (!gameb1.direction_left_right_border_control())
+                                      gameb1.direction_left_right_control2();
+
+
+                              gameb1.invalidate();
+                              gameb1.ghost_vertical();
+
+                          } catch (Exception e) {
+                              System.out.println("Code-9: " + e);
+                          }
+                      }
+
+                      return true;
+                  case MotionEvent.ACTION_UP:
+
+
+                      if (!play_pause2) {
+                          direction_arrow.setImageResource(R.drawable.repeat);
+                      }
+
+
+                      return true;
+              }
+              return false;
+          }
+      });
+
+
+      down_arrow.setOnTouchListener(new View.OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              switch (event.getAction()) {
+                  case MotionEvent.ACTION_DOWN:
+
+                      if (!play_pause2) {
+
+
+                          if (!vib_true_false) {
+                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                              vibe.vibrate(20);
+                          }
+
+
+                          down_arrow.setImageResource(R.drawable.red_down_arrow);
+
+                          gameb1.speed2 = gameb1.speed;
+
+                          gameb1.speed = 100;
+
+                          gameb1.fast_press = true;
+
+                      }
+
+                      return true;
+                  case MotionEvent.ACTION_UP:
+
+                      if (!play_pause2) {
+
+                          down_arrow.setImageResource(R.drawable.down_arrow);
+                          gameb1.speed = gameb1.speed2;
+                          gameb1.fast_press = false;
+                      }
+                      return true;
+              }
+              return false;
+          }
+      });
+
+  }
 
 
     protected void onRestart() {
@@ -101,9 +520,13 @@ boolean  play_pause2=false;
         setContentView(R.layout.activity_main);
 
 
+
+
+
        mp = MediaPlayer.create(this,R.raw.musics);
-        mp.start();
-        mp.setVolume(volume1,volume1);
+
+
+
 
 
 
@@ -133,11 +556,45 @@ boolean  play_pause2=false;
 
             // Butonların ve gameboardın yerleri aşağıdaki methodlar ile yapılmıştır
 
-            game_board(70,70);
-            space_between_game_board_and_controller(50);
-            controller();
-            space_between_game_board_and_controller(10);
-            controller2();
+
+
+          if(start_game)
+          {
+              start_game();
+              mp.pause();
+              pause();
+          }
+
+
+          else
+          {
+
+
+              /*
+                 if(!mp.isPlaying())
+            {
+                mp.start();
+                mp.setVolume(volume1,volume1);
+
+            }
+               */
+
+
+
+
+
+              game_board(70,70);
+              space_between_game_board_and_controller(50);
+              controller();
+              space_between_game_board_and_controller(10);
+              controller2();
+          }
+
+
+
+
+
+
 
         }
         catch (Exception e)
@@ -148,465 +605,23 @@ boolean  play_pause2=false;
 
 
 
+        if(!start_game)
+        {
+            buttons();
+          timers();
+        }
 
-        vib1.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event)  {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
 
 
 
-                        if(!play_pause2)
-                        {
 
-                          if(!vib_true_false)
-                          {
-                              Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                              vibe.vibrate(20);
-                          }
 
 
 
 
-                            if(vib_true_false)
-                            {
 
 
-                                vib1.setImageResource(R.drawable.vib1);
-                                vib_true_false=false;
 
-                            }
-                            else
-                            {
-                                vib1.setImageResource(R.drawable.vib2);
-                                vib_true_false=true;
-
-
-                            }
-
-                        }
-
-
-                        return true;
-                    case MotionEvent.ACTION_UP:
-
-
-
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-
-
-
-        mute1.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event)  {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-
-
-                        if(!play_pause2)
-                        {
-
-
-                            if(!vib_true_false) {
-                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
-                            }
-
-
-                            mute_count++;
-                            if(mute_count>3) mute_count=1;
-
-
-                            switch (mute_count)
-                            {
-
-                                case 1:
-                                    volume1=1f;
-                                    mp.setVolume(volume1,volume1);
-
-
-                                    gameb1.volume1=1f; gameb1.volume2=1f;
-                                    gameb1.mp.setVolume(gameb1.volume1,gameb1.volume1);
-                                    gameb1.mp2.setVolume(gameb1.volume2,gameb1.volume2);
-
-                                    mute1.setImageResource(R.drawable.mute3);
-
-                                    break;
-
-
-                                case 2:
-
-                                    volume1=0;
-                                    mp.setVolume(volume1,volume1);
-
-
-                                    gameb1.volume1=1f; gameb1.volume2=1f;
-                                    gameb1.mp.setVolume(gameb1.volume1,gameb1.volume1);
-                                    gameb1.mp2.setVolume(gameb1.volume2,gameb1.volume2);
-
-
-
-                                   // mp.setVolume(0,0);
-                                    mute1.setImageResource(R.drawable.mute2);
-
-                                    break;
-
-                                case 3:
-
-                                    volume1=0;
-                                    mp.setVolume(volume1,volume1);
-
-                                    gameb1.volume1=0; gameb1.volume2=0;
-                                    gameb1.mp.setVolume(gameb1.volume1,gameb1.volume1);
-                                    gameb1.mp2.setVolume(gameb1.volume2,gameb1.volume2);
-
-                                 //   mp.setVolume(0,0);
-                                    mute1.setImageResource(R.drawable.mute1);
-                                    break;
-
-
-                                default:
-
-                            }
-
-
-                        }
-
-
-                        return true;
-                    case MotionEvent.ACTION_UP:
-
-
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-
-        ghost1.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event)  {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-
-
-                        if(!play_pause2)
-                        {
-
-
-                            if(!vib_true_false) {
-                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
-                            }
-
-
-                            if(gameb1.ghost_true_false)
-                            {
-
-                                //play();
-                                ghost1.setImageResource(R.drawable.ghost1);
-                                gameb1.ghost_true_false=false;
-
-                            }
-                            else
-                            {
-                                ghost1.setImageResource(R.drawable.ghost2);
-                                gameb1.ghost_true_false=true;
-                              //  pause();
-
-                            }
-
-
-
-                        }
-
-
-                        return true;
-                    case MotionEvent.ACTION_UP:
-
-
-
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-
-        play_pause.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event)  {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-
-
-                        if(!vib_true_false) {
-                            Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibe.vibrate(20);
-                        }
-
-
-                            if(play_pause2)
-                            {
-                                play();
-                            }
-                            else
-                            {
-                                pause();
-                            }
-
-                        return true;
-                    case MotionEvent.ACTION_UP:
-
-
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-        
-
-
-            right_arrow.setOnTouchListener(new View.OnTouchListener() {
-                @SuppressLint("ClickableViewAccessibility")
-                @Override
-                public boolean onTouch(View v, MotionEvent event)  {
-                    switch(event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-
-
-                            if(!play_pause2)
-                            {
-
-                                if(!vib_true_false) {
-                                    Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                    vibe.vibrate(20);
-                                }
-
-                                right_arrow.setImageResource(R.drawable.red_right_arrow);
-                                go_right=true;
-
-                                try {
-
-                                    gameb1.right_control();
-                                    gameb1.direction();
-                                    gameb1.invalidate();
-                                    gameb1.ghost_vertical();
-
-                                }
-                                catch (Exception e)
-                                {
-                                    System.out.println("Code-45r3e: "+e);
-                                }
-                            }
-
-
-                            return true;
-                        case MotionEvent.ACTION_UP:
-
-                            if(!play_pause2)
-                            {
-                                right_arrow.setImageResource(R.drawable.right_arrow);
-                                go_right=false;
-                                go_left_right_control=0;
-                                gameb1.fast_press=false;
-
-                            }
-
-
-                            return true;
-                    }
-                    return false;
-                }
-            });
-
-
-
-
-
-        left_arrow.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-
-                        if(!play_pause2)
-                        {
-                            if(!vib_true_false) {
-                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
-                            }
-
-
-                            left_arrow.setImageResource(R.drawable.red_left_arrow);
-
-                            try {
-
-
-
-                                gameb1.left_control();
-                                gameb1.direction();
-                                gameb1.invalidate();
-                                gameb1.ghost_vertical();
-                            }
-                            catch (Exception e)
-                            {
-                                System.out.println("Code-423d: "+e);
-                            }
-
-
-                            go_left=true;
-
-                        }
-
-                        return true;
-                    case MotionEvent.ACTION_UP:
-
-
-                        if(!play_pause2)
-                        {
-                            left_arrow.setImageResource(R.drawable.left_arrow);
-                            go_left=false;
-                            go_left_right_control=0;
-
-                        }
-
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-
-        direction_arrow.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-                        if(!play_pause2)
-                        {
-
-                            if(!vib_true_false) {
-                                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
-                            }
-
-
-
-                            direction_arrow.setImageResource(R.drawable.red_repeat);
-
-                            try {
-
-                                gameb1.direction++;
-                                if(gameb1.direction>gameb1.max_direction) gameb1.direction=1;
-                                gameb1.direction();
-
-
-                                if(! gameb1.direction_up_down_control())
-
-                                    if( !gameb1.direction_left_right_border_control()) gameb1.direction_left_right_control2();
-
-
-                                gameb1.invalidate();
-                                gameb1.ghost_vertical();
-
-                            }
-                            catch (Exception e)
-                            {
-                                System.out.println("Code-9: "+e);
-                            }
-                        }
-
-                        return true;
-                    case MotionEvent.ACTION_UP:
-
-
-                        if(!play_pause2)
-                        {
-                            direction_arrow.setImageResource(R.drawable.repeat);
-                        }
-
-
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-
-
-
-        down_arrow.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-                         if(!play_pause2) {
-
-
-                             if(!vib_true_false) {
-                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                 vibe.vibrate(20);
-                             }
-
-
-                             down_arrow.setImageResource(R.drawable.red_down_arrow);
-
-                             gameb1.speed2=gameb1.speed;
-
-                             gameb1.speed=100;
-
-                             gameb1.fast_press=true;
-
-                         }
-
-                            return true;
-                            case MotionEvent.ACTION_UP:
-
-                                if(!play_pause2) {
-
-                                    down_arrow.setImageResource(R.drawable.down_arrow);
-                                    gameb1.speed=gameb1.speed2;
-                                    gameb1.fast_press=false;
-                                }
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-
-        gameb1.Timer1();
-        timer2();
-        Timer3();
 
     }
 
@@ -702,8 +717,35 @@ boolean  play_pause2=false;
 
 
 
+    public void start_game() {
 
-    public void game_board(int Width, int Height)
+
+        LinearLayout gb1 = new LinearLayout(this);
+        gb1  = new LinearLayout(this);
+        ln1.addView(gb1,lp1);
+        gb1.setOrientation(LinearLayout.HORIZONTAL);
+        gb1.setGravity(Gravity.CENTER);
+
+
+        start_game1 = new start_game(this);
+
+        int width  = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        controller_parms = new LinearLayout.LayoutParams(width,height);
+        start_game1.setLayoutParams(controller_parms);
+
+        ln1.setGravity(Gravity.CENTER);
+
+        gb1.addView(start_game1);
+
+
+    }
+
+
+
+
+        public void game_board(int Width, int Height)
     {
 
 
@@ -819,7 +861,36 @@ boolean  play_pause2=false;
         vib1.setLayoutParams(controller_parms);
 
 
+
+        if (!mp.isLooping()) {
+            mp.start();
+            mp.setVolume(volume1,volume1);
+            completetion_listener();
+        }
+
+
     }
+
+
+
+    public void completetion_listener()
+    {
+
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+
+                if (!mp.isLooping()) {
+                    mp.start();
+                    mp.setVolume(volume1,volume1);
+                }
+
+                completetion_listener();
+               // finish(); // finish current activity
+            }
+        });
+
+    }
+
 
 
     public void controller() throws Exception
@@ -906,8 +977,6 @@ boolean  play_pause2=false;
       public void down_arrow() throws Exception
     {
 
-
-
         down_arrow= new ImageView(this);
         down_arrow.setImageResource(R.drawable.down_arrow);
         controller.addView(down_arrow, lp1);
@@ -917,9 +986,6 @@ boolean  play_pause2=false;
 
     public void double_down_arrow() throws Exception
     {
-
-
-
 
         LinearLayout between_arrows  = new LinearLayout(this);
         LinearLayout.LayoutParams between_arrows_parms = new LinearLayout.LayoutParams(150,100);
@@ -1001,7 +1067,9 @@ boolean  play_pause2=false;
                             }
 
 
-                            if (!play_pause2) {
+
+                             /*
+                               if (!play_pause2) {
 
                                 if (!mp.isLooping()) {
                                     mp.start();
@@ -1010,6 +1078,8 @@ boolean  play_pause2=false;
                                 }
 
                             } else pause();
+                              */
+
 
 
                             Thread.sleep(1);
