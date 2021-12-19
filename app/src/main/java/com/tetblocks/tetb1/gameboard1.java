@@ -17,25 +17,19 @@ import java.util.TimerTask;
 import java.util.TreeMap;
 
 
-
-
 public class gameboard1 extends View
 {
 
 
-
     boolean    fast_press=false, ghost_true_false=false,   thread1=false, pause=false;
-
-
 
     final Object pauseLock = new Object();
 
     ImageView blocks2;
 
-    protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 4, block_type_2=0, direction = 1,
+    protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 1, block_type_2=0, direction = 1,
             block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500,  speed2=0, score1=0
             , ghost_vertical=0, count_press=0, count=0;
-
 
     float volume1=1f,volume2=1f;
 
@@ -45,10 +39,6 @@ public class gameboard1 extends View
     boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10],
             record_blocks2[][] = new boolean[20][10], record_blocks3[][] = new boolean[20][10],  record_blocks4[][] = new boolean[20][10]
             , record_blocks5[][] = new boolean[20][10], ghost_coords[][] = new boolean[20][10];
-
- //  boolean break_loop=false;
-
-
 
 
     NavigableMap<String, Integer> max_direction2 = new TreeMap();
@@ -65,20 +55,94 @@ public class gameboard1 extends View
     Timer  timer3;
     Thread timer1;
 
-    int timer_count,timer_count2;
-
-    boolean hasrunning=false;
 
 
-    public boolean hasrunning()
+    public void random_blocks()
     {
 
-        hasrunning=false;
+       // block_type = block_type_2;
+        try {
+            Random random = new Random();
 
-        return hasrunning;
+            int x = random.nextInt(7);
+
+            block_type_2=x+1;
+
+            switch (block_type_2) {
+                case 1:
+
+                    blocks2.setImageResource(R.drawable.block_bar);
+
+                    break;
+
+                case 2:
+
+                    blocks2.setImageResource(R.drawable.block_z);
+
+                    break;
+
+                case 3:
+                    blocks2.setImageResource(R.drawable.block_z2);
+
+                    break;
+
+                case 4:
+
+                    blocks2.setImageResource(R.drawable.block_l2);
+
+                    break;
+
+                case 5:
+
+                    blocks2.setImageResource(R.drawable.block_l);
+
+                    break;
+
+                case 6:
+
+                    blocks2.setImageResource(R.drawable.block_t);
+
+                    break;
+
+                case 7:
+
+                    blocks2.setImageResource(R.drawable.block_square);
+
+                    break;
+            }
+
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
 
+    public boolean game_over()
+    {
+        int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
+
+        boolean return1=false;
+
+
+        for (int y = 0; y < record_blocks.length; y++) {
+            for (int x = 0; x < record_blocks[0].length; x++) {
+                if (!record_blocks[y][x]) {
+                    if (x > xmax) xmax = x;
+                    if (x < xmin) xmin = x;
+                    if (y > ymax) ymax = y;
+                    if (y < ymin) ymin = y;
+                }
+            }
+        }
+       // System.out.println("Ymin: "+ymin);
+
+        if(ymin==0) return1=true;
+
+        return return1;
+
+    }
 
 
     public void ghost_vertical()
@@ -134,8 +198,6 @@ public class gameboard1 extends View
 
     public void remove_blocks_flicker()
     {
-
-
 
         for(int y=0; y<record_blocks3.length; y++) {
 
@@ -263,10 +325,21 @@ public class gameboard1 extends View
                         {
 
 
+
+
+
                             if(pause)
                             {
                                 pauseLock.wait();
                                 pause=false;
+                            }
+
+
+
+
+                            if(block_type_2==0)
+                            {
+                                random_blocks();
                             }
 
 
@@ -422,8 +495,23 @@ public class gameboard1 extends View
         mp = MediaPlayer.create(context,R.raw.removeb1);
         mp2 = MediaPlayer.create(context,R.raw.removeb2);
 
-         speed2 = speed;
 
+
+
+        speed2 = speed;
+
+
+        try {
+            Random random = new Random();
+
+            int x = random.nextInt(7);
+           block_type=x+1;
+
+        }
+        catch (Exception e)
+        {
+
+        }
 
 
 
@@ -445,9 +533,9 @@ public class gameboard1 extends View
             }
 
 
-            ghost_regular_z_d2();
+          //  ghost_regular_z_d2();
 
-
+         //   random_blocks();
         }
         catch (Exception e)
         {
@@ -607,19 +695,12 @@ public class gameboard1 extends View
 
         }
 
-
-
-
         for (int y = 0; y < record_blocks.length; y++) {
             for (int x = 0; x < record_blocks[0].length; x++) {
 
                 record_blocks5[y][x] = record_blocks2[y][x];
-               // record_blocks5[y][x] = record_blocks2[y][x];
-
             }
         }
-
-
 
         remove_blocks_flicker();
 
@@ -1400,9 +1481,17 @@ public class gameboard1 extends View
         vertical = -1;
         direction = 1;
 
+
+
         block_type = block_type_2;
 
-        try {
+        random_blocks();
+
+
+
+        /*
+          block_type = block_type_2;
+           try {
             Random random = new Random();
 
             int x = random.nextInt(7);
@@ -1460,6 +1549,10 @@ public class gameboard1 extends View
 
         }
 
+
+         */
+
+
         setMax_direction();
 
         try {
@@ -1474,7 +1567,7 @@ public class gameboard1 extends View
 
         if(speed2!=0) speed=speed2;
 
-
+       // game_over();
     }
 
 

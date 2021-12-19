@@ -2,6 +2,7 @@ package com.tetblocks.tetb1;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,21 +14,50 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class gameboard extends AppCompatActivity
 {
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult activityResult) {
+                    int result= activityResult.getResultCode();
+                    Intent data = activityResult.getData();
+
+                    if(result == RESULT_OK)
+                    {
+                        String title = data.getStringExtra("title");
+                        setTitle(title);
+                        Toast.makeText(gameboard.this, "Title Modified", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(gameboard.this, "Operation canceled", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+    );
+
 
     LinearLayout ln1,controller, space_between_game_board_and_controller;
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause, ghost1, mute1, vib1;
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
-    start_game start_game1;
+    //start_game start_game1;
 
     final Object pauseLock = new Object();
 
@@ -57,24 +87,22 @@ public class gameboard extends AppCompatActivity
         getSupportActionBar().hide();
         setContentView(R.layout.gameboard);
 
-       // Timer3();
+        Timer3();
 
         mp = MediaPlayer.create(this,R.raw.musics);
         mp.start();
         mp.setVolume(volume1,volume1);
         completetion_listener();
 
-        try {
-            Random random = new Random();
 
-            int x = random.nextInt(7);
-            gameb1.block_type=x+1;
 
-        }
-        catch (Exception e)
-        {
 
-        }
+
+
+
+
+
+
 
         try {
             ln1 = findViewById(R.id.ln1);
@@ -85,16 +113,10 @@ public class gameboard extends AppCompatActivity
 
             ln1.setOrientation(LinearLayout.VERTICAL);
 
-
             gameb1 = new gameboard1(this);
-            start_game1 = new start_game(this);
-
-
+            //start_game1 = new start_game(this);
 
             game_console();
-
-
-
         }
         catch (Exception e)
         {
@@ -103,7 +125,7 @@ public class gameboard extends AppCompatActivity
 
 
 
-
+        //gameb1.random_blocks();
 
 
     }
@@ -415,8 +437,6 @@ public class gameboard extends AppCompatActivity
                             gameb1.fast_press = false;
 
                         }
-
-
                         return true;
                 }
                 return false;
@@ -437,13 +457,9 @@ public class gameboard extends AppCompatActivity
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                 vibe.vibrate(20);
                             }
-
-
                             left_arrow.setImageResource(R.drawable.red_left_arrow);
 
                             try {
-
-
                                 gameb1.left_control();
                                 gameb1.direction();
                                 gameb1.invalidate();
@@ -451,10 +467,7 @@ public class gameboard extends AppCompatActivity
                             } catch (Exception e) {
                                 System.out.println("Code-423d: " + e);
                             }
-
-
                             go_left = true;
-
                         }
 
                         return true;
@@ -710,16 +723,32 @@ public class gameboard extends AppCompatActivity
     {
 
 
+        LinearLayout gb2 = new LinearLayout(this);
+        gb2  = new LinearLayout(this);
+
+        LinearLayout.LayoutParams between_arrows_parms123 = new LinearLayout.LayoutParams(150,150);
+         ln1.addView(gb2,between_arrows_parms123 );
+      //  ln1.addView(gb2,lp1);
+        gb2.setOrientation(LinearLayout.HORIZONTAL);
+        gb2.setGravity(Gravity.CENTER);
+
+
+
+        // you will write the code of scoreboard here in gb2
+
         LinearLayout gb1 = new LinearLayout(this);
         gb1  = new LinearLayout(this);
-        ln1.addView(gb1,lp1);
+
+       // LinearLayout.LayoutParams between_arrows_parms123 = new LinearLayout.LayoutParams(150,150);
+       // ln1.addView(gb1,between_arrows_parms123 );
+         ln1.addView(gb1,lp1);
         gb1.setOrientation(LinearLayout.HORIZONTAL);
         gb1.setGravity(Gravity.CENTER);
 
 
 
         LinearLayout between_arrows  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms = new LinearLayout.LayoutParams(150,Height);
+        LinearLayout.LayoutParams between_arrows_parms = new LinearLayout.LayoutParams(150,150);
         gb1.addView(between_arrows,between_arrows_parms);
         between_arrows.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -760,6 +789,8 @@ public class gameboard extends AppCompatActivity
 
         gameb1.blocks2= new ImageView(this);
         gameb1.blocks2.setImageResource(R.drawable.block_bar);
+
+
 
         between_arrows4.addView(gameb1.blocks2);
         controller_parms = new LinearLayout.LayoutParams(300,300);
@@ -996,40 +1027,29 @@ public class gameboard extends AppCompatActivity
     }
 
 
-/*
+
   public boolean Timer3()
     {
-
-
 
         timer3 = new Timer();
         TimerTask task3 = new TimerTask() {
 
-
-
             public void run() {
 
-
                 try {
-                    System.out.println("New timer is running: "+start_game1.button_down);
 
-
-                    ln1.invalidate();
-
-                    if(start_game1.button_up)
+                    if(gameb1.game_over())
                     {
+                        Intent myIntent = new Intent(gameb1.getContext(), MainActivity.class);
 
-
-
-                        //game_console2();
-                        // ln1.invalidate();
-
-                        // play();
-                        //setContentView(ln1);
-                        start_game1.button_up=false;
+                        activityResultLauncher.launch(myIntent);
+                        cancel();
                     }
-                    //ln1.invalidate();
-                    //button_up=true;
+
+
+
+
+               //    if(gameb1.game_over()) setContentView(R.layout.activity_main);
 
                 }
                 catch (Exception e)
@@ -1037,22 +1057,14 @@ public class gameboard extends AppCompatActivity
 
                 }
 
-
             }
-
 
         };
 
-
-
         timer3.schedule(task3, 0,1);
-
 
         return false;
     }
- */
-
-
 
 
 }
