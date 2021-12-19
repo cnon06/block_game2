@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -36,10 +35,18 @@ public class start_game extends View
     Bitmap cath2=Bitmap.createScaledBitmap(cath,cath.getWidth(),cath.getHeight(),false);
 
 
-    boolean button_up_down=false;
+    boolean button_up_down=false, button_down=false, button_up=false;
+
+
+
+    MainActivity ma;
+
+
 
     public start_game(Context context) {
         super(context);
+
+         ma = new MainActivity();
 
     }
 
@@ -53,14 +60,12 @@ public class start_game extends View
 
 
 
+
         int eventaction = event.getAction();
 
 
         int event_x= (int) event.getX();
         int event_y= (int) event.getY();
-
-
-
 
 
 
@@ -71,24 +76,32 @@ public class start_game extends View
             if(event_x>x+120 && event_y>y && event_x<(x+ic_launcher2.getWidth()-110) &&  event_y<(y+ic_launcher2.getHeight()-30))
             {
                 button_up_down=true;
+                button_down=true;
                 invalidate();
             }
 
 
-            Log.e("", "ACTION_DOWN " );
+         //   Log.e("", "ACTION_DOWN " );
 
         break;
 
 
         case MotionEvent.ACTION_MOVE:   // touch drag with the ball
-            Log.e("", "ACTION_MOVE" );
+           // Log.e("", "ACTION_MOVE" );
         break;
 
         case MotionEvent.ACTION_UP:
-            button_up_down=false;
+           button_up_down=false;
+           if(button_down)
+           {
+             //  ma.game_console2();
+                 //   System.out.println("Button down"+button_down);
+               button_up=true;
+               button_down=false;
+           }
             invalidate();
           //  canvas.drawBitmap(ic_launcher2,x,y,null);
-            Log.e("", "ACTION_UP" );
+           // Log.e("", "ACTION_UP" );
 
         break;
     }
@@ -122,10 +135,14 @@ public class start_game extends View
         if(!button_up_down)
             canvas.drawBitmap(ic_launcher2,x_scale,y,null);
         else
+        {
             canvas.drawBitmap(ic_launcher4,x_scale,y,null);
 
+        }
 
-        Log.e("", "Get width: "+ic_launcher2.getWidth() );
+
+
+      //  Log.e("", "Get width: "+ic_launcher2.getWidth() );
 
 
 

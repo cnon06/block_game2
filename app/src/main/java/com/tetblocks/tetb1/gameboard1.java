@@ -10,8 +10,6 @@ import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.NavigableMap;
 import java.util.Random;
 import java.util.Timer;
@@ -24,9 +22,6 @@ import java.util.TreeMap;
 public class gameboard1 extends View
 {
 
-
-    Timer tm1, tm2;
-    TimerTask tt1, tt2;
 
 
     boolean    fast_press=false, ghost_true_false=false,   thread1=false, pause=false;
@@ -84,13 +79,6 @@ public class gameboard1 extends View
     }
 
 
-    public void timer_example()
-    {
-
-
-
-
-    }
 
 
     public void ghost_vertical()
@@ -437,7 +425,7 @@ public class gameboard1 extends View
          speed2 = speed;
 
 
-        timer_example();
+
 
 
         try {
