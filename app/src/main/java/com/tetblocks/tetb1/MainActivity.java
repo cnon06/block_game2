@@ -1,4 +1,5 @@
 package com.tetblocks.tetb1;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -26,19 +26,40 @@ public class MainActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult activityResult) {
-                    int result= activityResult.getResultCode();
+
+
+                  /*
+                      int result= activityResult.getResultCode();
                     Intent data = activityResult.getData();
 
-                    if(result == RESULT_OK)
+                    if(activityResult.getResultCode() == 78)
+
+                    // if(result == Activity.RESULT_OK)
                     {
-                        String title = data.getStringExtra("title");
-                        setTitle(title);
-                        Toast.makeText(MainActivity.this, "Title Modified", Toast.LENGTH_LONG).show();
+
+                        Intent data1 = activityResult.getData();
+
+                        if(data1 != null)
+                        {
+                            String title = data.getStringExtra("ss1");
+
+
+                            System.out.println("MEESAGE FROM MAINACTIVITY: "+title);
+
+                        }
+
+
                     }
                     else
                     {
-                        Toast.makeText(MainActivity.this, "Operation canceled", Toast.LENGTH_LONG).show();
+                     //   Toast.makeText(gameboard.this, "Operation canceled", Toast.LENGTH_LONG).show();
                     }
+                   */
+
+
+
+
+
                 }
             }
     );
@@ -46,6 +67,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     ImageView start;
+
+
+
+    protected void onStop() {
+        super.onStop();
+
+
+
+        System.out.println("Mainactivity onstop");
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +90,12 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
-        //  setContentView(R.layout.gameboard);
 
        start=(ImageView) findViewById(R.id.imageView2);
-       // start= new ImageView(this,R.id.imageView);
-       // start.setImageResource(R.id.imageView2);
+
+
+        Intent myIntent = getIntent();
+        System.out.println("MESAJ ALINDI: "+myIntent.getStringExtra("ss1")+", "+myIntent.getBooleanExtra("ss2",true));
 
 
         start.setOnTouchListener(new View.OnTouchListener() {
@@ -72,33 +105,23 @@ public class MainActivity extends AppCompatActivity {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                 vibe.vibrate(20);
 
-
-
-
-
-
                                 start.setImageResource(R.drawable.start1);
-
-
-
-
-
-
-
-
 
                         return true;
                     case MotionEvent.ACTION_UP:
 
-                        Intent myIntent = new Intent(v.getContext(), gameboard.class);
+                        start.setImageResource(R.drawable.start2);
 
+                         Intent myIntent = new Intent(MainActivity.this, gameboard.class);
+
+                        myIntent.putExtra("ss1","Message from Mainactivity");
+                        setResult(78, myIntent);
                         activityResultLauncher.launch(myIntent);
 
-                        start.setImageResource(R.drawable.start2);
+
                         return true;
                 }
                 return false;

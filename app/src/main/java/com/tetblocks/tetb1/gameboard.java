@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -28,28 +27,10 @@ import java.util.TimerTask;
 public class gameboard extends AppCompatActivity
 {
 
-    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
 
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult activityResult) {
-                    int result= activityResult.getResultCode();
-                    Intent data = activityResult.getData();
+    String getdata;
 
-                    if(result == RESULT_OK)
-                    {
-                        String title = data.getStringExtra("title");
-                        setTitle(title);
-                        Toast.makeText(gameboard.this, "Title Modified", Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    {
-                        Toast.makeText(gameboard.this, "Operation canceled", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-    );
+    ActivityResultLauncher<Intent> activityResultLauncher;
 
 
     LinearLayout ln1,controller, space_between_game_board_and_controller;
@@ -87,21 +68,65 @@ public class gameboard extends AppCompatActivity
         getSupportActionBar().hide();
         setContentView(R.layout.gameboard);
 
+
+
+        activityResultLauncher = registerForActivityResult(
+
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult activityResult) {
+
+
+
+                        /*
+                             int result= activityResult.getResultCode();
+
+                        if(activityResult.getResultCode() == 78)
+
+                        // if(result == Activity.RESULT_OK)
+                        {
+
+                            Intent data = activityResult.getData();
+
+                            if(data != null)
+                            {
+                                String title = data.getStringExtra("ss1");
+                                // setTitle(title);
+                                Toast.makeText(gameboard.this, "Title Modified", Toast.LENGTH_LONG).show();
+
+                                getdata=title;
+                                 System.out.println("MEESAGE FROM MAINACTIVITY: "+title);
+
+                            }
+
+                        }
+                        else
+                        {
+                            Toast.makeText(gameboard.this, "Operation canceled", Toast.LENGTH_LONG).show();
+                        }
+                         */
+
+                    }
+                }
+        );
+
+
+
+        Intent myIntent = getIntent();
+      System.out.println("MESAJ ALINDI: "+myIntent.getStringExtra("ss1"));
+
+
+        //activityResultLauncher.launch(myIntent);
+
+
+
         Timer3();
 
         mp = MediaPlayer.create(this,R.raw.musics);
         mp.start();
         mp.setVolume(volume1,volume1);
         completetion_listener();
-
-
-
-
-
-
-
-
-
 
 
         try {
@@ -129,8 +154,6 @@ public class gameboard extends AppCompatActivity
 
 
     }
-
-
 
 
     public void game_console()
@@ -1040,13 +1063,31 @@ public class gameboard extends AppCompatActivity
 
                     if(gameb1.game_over())
                     {
-                        Intent myIntent = new Intent(gameb1.getContext(), MainActivity.class);
+                        Intent myIntent = new Intent(gameboard.this, MainActivity.class);
+
+                      //  Intent myIntent = new Intent(MainActivity.this, gameboard.class);
+
+                      myIntent.putExtra("ss1","Message from gameboard");
+                        myIntent.putExtra("ss2",false);
+                        setResult(78, myIntent);
+
+
+                       // setResult(79, myIntent);
+
 
                         activityResultLauncher.launch(myIntent);
+
+
+                       // Intent myIntent = new Intent();
+
+                       // myIntent.putExtra("ss1","Message from sinan");
+                       // setResult(78, myIntent);
+
                         cancel();
                     }
 
 
+               // System.out.println("get data: "+getdata);
 
 
                //    if(gameb1.game_over()) setContentView(R.layout.activity_main);
