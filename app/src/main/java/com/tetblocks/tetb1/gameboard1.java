@@ -520,7 +520,7 @@ public class gameboard1 extends View
             calibrate_record_blocks();
             max_direction_list();
             setMax_direction();
-            first_horizontal_position_list();
+          //  first_horizontal_position_list();
 
 
             for(int y=0; y<ghost_coords.length; y++)
@@ -1418,15 +1418,86 @@ public class gameboard1 extends View
     }
 
 
-    public void first_horizontal_position_list() {
+    public void first_horizontal_position_horizontal_position() {
 
-        first_horizontal_position.put("bar", 3);
+        switch (block_type) {
+            case 1:
+
+                horizontal =3;
+                ghost_horizontal =3;
+
+                // horizontal = first_horizontal_position.get("bar");
+                // ghost_horizontal = first_horizontal_position.get("bar");
+                break;
+
+            case 2:
+
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+                //    horizontal = first_horizontal_position.get("regular_z");
+                //    ghost_horizontal = first_horizontal_position.get("regular_z");
+                break;
+
+            case 3:
+
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+                // horizontal = first_horizontal_position.get("reverse_z");
+                // ghost_horizontal = first_horizontal_position.get("reverse_z");
+                break;
+
+            case 4:
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+                // horizontal = first_horizontal_position.get("regular_L");
+                // ghost_horizontal = first_horizontal_position.get("regular_L");
+
+
+                break;
+
+            case 5:
+
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+
+                //   horizontal = first_horizontal_position.get("reverse_L");
+                //   ghost_horizontal = first_horizontal_position.get("reverse_L");
+                break;
+            case 6:
+
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+                // horizontal = first_horizontal_position.get("T");
+                // ghost_horizontal = first_horizontal_position.get("T");
+                break;
+
+            case 7:
+
+                horizontal = 4;
+                ghost_horizontal = 4;
+
+                //   horizontal = first_horizontal_position.get("square");
+                //   ghost_horizontal = first_horizontal_position.get("square");
+
+                break;
+
+        }
+
+        /*
+         first_horizontal_position.put("bar", 3);
         first_horizontal_position.put("regular_z", 3);
         first_horizontal_position.put("reverse_z", 3);
         first_horizontal_position.put("regular_L", 3);
         first_horizontal_position.put("reverse_L", 3);
         first_horizontal_position.put("T", 3);
-        first_horizontal_position.put("square", 4);
+        first_horizontal_position.put("square", 5);
+         */
+
 
 
     }
@@ -1438,44 +1509,7 @@ public class gameboard1 extends View
         record_blocks();
 
 
-        switch (block_type) {
-            case 1:
-                horizontal = first_horizontal_position.get("bar");
-                ghost_horizontal = first_horizontal_position.get("bar");
-                break;
 
-            case 2:
-                horizontal = first_horizontal_position.get("regular_z");
-                ghost_horizontal = first_horizontal_position.get("regular_z");
-                break;
-
-            case 3:
-                horizontal = first_horizontal_position.get("reverse_z");
-                ghost_horizontal = first_horizontal_position.get("reverse_z");
-                break;
-
-            case 4:
-                horizontal = first_horizontal_position.get("regular_L");
-                ghost_horizontal = first_horizontal_position.get("regular_L");
-
-                break;
-
-            case 5:
-                horizontal = first_horizontal_position.get("reverse_L");
-                ghost_horizontal = first_horizontal_position.get("reverse_L");
-                break;
-            case 6:
-                horizontal = first_horizontal_position.get("T");
-                ghost_horizontal = first_horizontal_position.get("T");
-                break;
-
-            case 7:
-                horizontal = first_horizontal_position.get("square");
-                ghost_horizontal = first_horizontal_position.get("square");
-
-                break;
-
-        }
 
 
         vertical = -1;
@@ -1486,6 +1520,79 @@ public class gameboard1 extends View
         block_type = block_type_2;
 
         random_blocks();
+
+        first_horizontal_position_horizontal_position();
+
+
+        /*
+           switch (block_type) {
+            case 1:
+
+                horizontal =3;
+                ghost_horizontal =3;
+
+                // horizontal = first_horizontal_position.get("bar");
+                // ghost_horizontal = first_horizontal_position.get("bar");
+                break;
+
+            case 2:
+
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+                //    horizontal = first_horizontal_position.get("regular_z");
+                //    ghost_horizontal = first_horizontal_position.get("regular_z");
+                break;
+
+            case 3:
+
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+                // horizontal = first_horizontal_position.get("reverse_z");
+                // ghost_horizontal = first_horizontal_position.get("reverse_z");
+                break;
+
+            case 4:
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+                // horizontal = first_horizontal_position.get("regular_L");
+                // ghost_horizontal = first_horizontal_position.get("regular_L");
+
+
+                break;
+
+            case 5:
+
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+
+                //   horizontal = first_horizontal_position.get("reverse_L");
+                //   ghost_horizontal = first_horizontal_position.get("reverse_L");
+                break;
+            case 6:
+
+                horizontal = 3;
+                ghost_horizontal = 3;
+
+                // horizontal = first_horizontal_position.get("T");
+                // ghost_horizontal = first_horizontal_position.get("T");
+                break;
+
+            case 7:
+
+                horizontal = 4;
+                ghost_horizontal = 4;
+
+                //   horizontal = first_horizontal_position.get("square");
+                //   ghost_horizontal = first_horizontal_position.get("square");
+
+                break;
+
+        }
+         */
 
 
 

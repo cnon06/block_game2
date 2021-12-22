@@ -57,22 +57,18 @@ public class MainActivity extends AppCompatActivity {
                    */
 
 
-
-
-
                 }
             }
     );
 
 
 
-    ImageView start;
+    ImageView start, debris;
 
 
 
     protected void onStop() {
         super.onStop();
-
 
 
         System.out.println("Mainactivity onstop");
@@ -91,14 +87,21 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-       start=(ImageView) findViewById(R.id.imageView2);
-
-
         Intent myIntent = getIntent();
+
+        boolean gg =myIntent.getBooleanExtra("ss2",true);
+
         System.out.println("MESAJ ALINDI: "+myIntent.getStringExtra("ss1")+", "+myIntent.getBooleanExtra("ss2",true));
 
+       debris=(ImageView) findViewById(R.id.imageView3);
+       start=(ImageView) findViewById(R.id.imageView2);
 
-        start.setOnTouchListener(new View.OnTouchListener() {
+        if(gg)   debris.setImageResource(R.drawable.debris);
+        else
+            debris.setImageResource(R.drawable.game_over);
+
+
+            start.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {

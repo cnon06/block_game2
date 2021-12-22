@@ -43,7 +43,8 @@ public class gameboard extends AppCompatActivity
     final Object pauseLock = new Object();
 
 
-    boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, thread1=false, pause_control=false, vib_true_false=false;
+    boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, thread1=false, pause_control=false, vib_true_false=false,
+    is_on_pause=false;
 
     boolean  play_pause2=false;
 
@@ -637,16 +638,26 @@ public class gameboard extends AppCompatActivity
 
 
     protected void onPause() {
-        mp.pause();
+
+      //  Intent myIntent = new Intent(gameboard.this, MainActivity.class);
+       // myIntent.putExtra("ss1","Message from gameboard");
+       // myIntent.putExtra("ss2",false);
+       // setResult(78, myIntent);
+
+      //  activityResultLauncher.launch(myIntent);
+
+
+
         pause();
-        System.out.println("onPause");
+        mp.pause();
+       // System.out.println("onPause");
 
         super.onPause();
     }
 
     protected void onStop() {
-        mp.pause();
-        pause();
+     //   mp.pause();
+     //   pause();
         super.onStop();
     }
 
@@ -1004,6 +1015,8 @@ public class gameboard extends AppCompatActivity
 
     public void play()
     {
+        is_on_pause=false;
+
         play_pause.setImageResource(R.drawable.pause2);
 
 
@@ -1026,6 +1039,8 @@ public class gameboard extends AppCompatActivity
 
     public void pause()
     {
+
+        is_on_pause=true;
 
         play_pause.setImageResource(R.drawable.play2);
         mp.pause();
@@ -1064,31 +1079,16 @@ public class gameboard extends AppCompatActivity
                     if(gameb1.game_over())
                     {
                         Intent myIntent = new Intent(gameboard.this, MainActivity.class);
-
-                      //  Intent myIntent = new Intent(MainActivity.this, gameboard.class);
-
-                      myIntent.putExtra("ss1","Message from gameboard");
+                        myIntent.putExtra("ss1","Message from gameboard");
                         myIntent.putExtra("ss2",false);
                         setResult(78, myIntent);
 
-
-                       // setResult(79, myIntent);
-
-
                         activityResultLauncher.launch(myIntent);
-
-
-                       // Intent myIntent = new Intent();
-
-                       // myIntent.putExtra("ss1","Message from sinan");
-                       // setResult(78, myIntent);
 
                         cancel();
                     }
 
-
-               // System.out.println("get data: "+getdata);
-
+                System.out.println("is_on_pause: "+is_on_pause);
 
                //    if(gameb1.game_over()) setContentView(R.layout.activity_main);
 
