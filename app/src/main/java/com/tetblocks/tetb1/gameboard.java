@@ -622,16 +622,16 @@ public class gameboard extends AppCompatActivity
 
     public void onBackPressed()  {
 
-        mp.pause();
-        pause();
-        System.out.println("onBackPressed");
+      //  mp.pause();
+      //  pause();
+      //  System.out.println("onBackPressed");
 
 
     }
 
     protected void onDestroy () {
-        mp.pause();
-        pause();
+     //   mp.pause();
+     //   pause();
         super.onDestroy();
     }
 
@@ -648,16 +648,16 @@ public class gameboard extends AppCompatActivity
 
 
 
-        pause();
-        mp.pause();
+     //  pause();
+     //  mp.pause();
        // System.out.println("onPause");
 
         super.onPause();
     }
 
     protected void onStop() {
-     //   mp.pause();
-     //   pause();
+       mp.pause();
+       pause();
         super.onStop();
     }
 

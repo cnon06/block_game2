@@ -1488,6 +1488,8 @@ public class gameboard1 extends View
 
         }
 
+
+
         /*
          first_horizontal_position.put("bar", 3);
         first_horizontal_position.put("regular_z", 3);
