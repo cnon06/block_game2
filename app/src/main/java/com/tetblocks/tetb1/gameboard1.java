@@ -7,8 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.NavigableMap;
 import java.util.Random;
@@ -20,6 +22,9 @@ import java.util.TreeMap;
 public class gameboard1 extends View
 {
 
+    TextView score_board;
+
+
 
     boolean    fast_press=false, ghost_true_false=false,   thread1=false, pause=false;
 
@@ -27,9 +32,9 @@ public class gameboard1 extends View
 
     ImageView blocks2;
 
-    protected int horizontal = 3, vertical = -1, max_direction = 4, block_type = 1, block_type_2=0, direction = 1,
+   int horizontal = 3, vertical = -1, max_direction = 4, block_type = 1, block_type_2=0, direction = 1,
             block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500,  speed2=0, score1=0
-            , ghost_vertical=0, count_press=0, count=0;
+            , ghost_vertical=0, count_press=0, score2=0;
 
     float volume1=1f,volume2=1f;
 
@@ -138,7 +143,7 @@ public class gameboard1 extends View
         }
        // System.out.println("Ymin: "+ymin);
 
-        if(ymin==0) return1=true;
+        if(ymin<=0) return1=true;
 
         return return1;
 
@@ -495,7 +500,10 @@ public class gameboard1 extends View
         mp = MediaPlayer.create(context,R.raw.removeb1);
         mp2 = MediaPlayer.create(context,R.raw.removeb2);
 
-
+        score_board= new TextView(context);
+        score_board.setText("0");
+       score_board.setTextSize(28.5f);
+       score_board.setGravity(Gravity.CENTER);
 
 
         speed2 = speed;
@@ -748,12 +756,41 @@ public class gameboard1 extends View
             mp.setVolume(volume1,volume1);
             mp2.setVolume(volume2,volume2);
 
-            System.out.println("ymin2-ymin: "+(number_of_removed_blocks));
+           // System.out.println("ymin2-ymin: "+(number_of_removed_blocks));
 
+
+            int bonus = 0;
+
+            switch (number_of_removed_blocks)
+
+            {
+                case 2:
+                    bonus=1;
+                    break;
+
+                case 3:
+                    bonus=2;
+                    break;
+
+                case 4:
+                    bonus=5;
+                    break;
+
+            }
+
+
+
+            int ghost_score=0;
+          if(ghost_true_false) ghost_score=2;
 
           //  remove_sound1=true;
 
             Timer3();
+
+
+            score2+=(number_of_removed_blocks*5)+bonus+ghost_score;
+
+            score_board.setText(score2+"");
 
         }
 

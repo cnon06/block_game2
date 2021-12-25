@@ -28,8 +28,6 @@ public class gameboard extends AppCompatActivity
 {
 
 
-    String getdata;
-
     ActivityResultLauncher<Intent> activityResultLauncher;
 
 
@@ -43,12 +41,11 @@ public class gameboard extends AppCompatActivity
     final Object pauseLock = new Object();
 
 
-    boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, thread1=false, pause_control=false, vib_true_false=false,
-    is_on_pause=false;
+    boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, pause_control=false, vib_true_false=false;
 
     boolean  play_pause2=false;
 
-    int  go_left_right_control=0, mute_count=1;
+    int  go_left_right_control=0, mute_count=1, score=0;
 
 
     float volume1=1f;
@@ -64,10 +61,11 @@ public class gameboard extends AppCompatActivity
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.gameboard);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
-        setContentView(R.layout.gameboard);
+
 
 
 
@@ -362,16 +360,11 @@ public class gameboard extends AppCompatActivity
 
 
                             if (gameb1.ghost_true_false) {
-
-                                //play();
                                 ghost1.setImageResource(R.drawable.ghost1);
                                 gameb1.ghost_true_false = false;
-
                             } else {
                                 ghost1.setImageResource(R.drawable.ghost2);
                                 gameb1.ghost_true_false = true;
-                                //  pause();
-
                             }
 
 
@@ -612,54 +605,40 @@ public class gameboard extends AppCompatActivity
 
 
     protected void onRestart() {
+        super.onRestart();
+     //   if(mp.isPlaying()) finish();
 
 
         // System.out.println("onRestart 12");
-        super.onRestart();
-    }
-
-
-
-    public void onBackPressed()  {
-
-      //  mp.pause();
-      //  pause();
-      //  System.out.println("onBackPressed");
-
 
     }
+
+
+
 
     protected void onDestroy () {
      //   mp.pause();
      //   pause();
+
         super.onDestroy();
     }
 
 
 
     protected void onPause() {
-
-      //  Intent myIntent = new Intent(gameboard.this, MainActivity.class);
-       // myIntent.putExtra("ss1","Message from gameboard");
-       // myIntent.putExtra("ss2",false);
-       // setResult(78, myIntent);
-
-      //  activityResultLauncher.launch(myIntent);
-
-
-
-     //  pause();
-     //  mp.pause();
-       // System.out.println("onPause");
-
         super.onPause();
+      pause();
+
     }
 
     protected void onStop() {
-       mp.pause();
-       pause();
         super.onStop();
+
+
     }
+
+
+
 
 
     public  void play2()
@@ -758,23 +737,23 @@ public class gameboard extends AppCompatActivity
 
 
         LinearLayout gb2 = new LinearLayout(this);
-        gb2  = new LinearLayout(this);
 
-        LinearLayout.LayoutParams between_arrows_parms123 = new LinearLayout.LayoutParams(150,150);
+
+        LinearLayout.LayoutParams between_arrows_parms123 = new LinearLayout.LayoutParams(1000,100);
          ln1.addView(gb2,between_arrows_parms123 );
-      //  ln1.addView(gb2,lp1);
+
         gb2.setOrientation(LinearLayout.HORIZONTAL);
         gb2.setGravity(Gravity.CENTER);
 
 
 
+        LinearLayout.LayoutParams between_arrows_parms1234 = new LinearLayout.LayoutParams(1000,100);
+        gb2.addView(gameb1.score_board,between_arrows_parms1234 );
         // you will write the code of scoreboard here in gb2
 
         LinearLayout gb1 = new LinearLayout(this);
         gb1  = new LinearLayout(this);
 
-       // LinearLayout.LayoutParams between_arrows_parms123 = new LinearLayout.LayoutParams(150,150);
-       // ln1.addView(gb1,between_arrows_parms123 );
          ln1.addView(gb1,lp1);
         gb1.setOrientation(LinearLayout.HORIZONTAL);
         gb1.setGravity(Gravity.CENTER);
@@ -814,8 +793,9 @@ public class gameboard extends AppCompatActivity
 
         TextView blocks7= new TextView(this);
         blocks7.setText("Next");
-
         between_arrows4.addView(blocks7);
+
+
         controller_parms = new LinearLayout.LayoutParams(150,50);
         blocks7.setLayoutParams(controller_parms);
         blocks7.setGravity(Gravity.CENTER);
@@ -1015,7 +995,7 @@ public class gameboard extends AppCompatActivity
 
     public void play()
     {
-        is_on_pause=false;
+      //  is_on_pause=false;
 
         play_pause.setImageResource(R.drawable.pause2);
 
@@ -1040,27 +1020,13 @@ public class gameboard extends AppCompatActivity
     public void pause()
     {
 
-        is_on_pause=true;
-
         play_pause.setImageResource(R.drawable.play2);
         mp.pause();
 
-
-
-        try {
-
-            gameb1.pause=true;
-            pause=true;
-
-            //  gameb1.play_pause=true;
-            play_pause2=true;
-            pause_control=true;
-
-        }
-        catch (Exception er)
-        {
-            System.out.println("Code 45k: "+er);
-        }
+        gameb1.pause=true;
+        pause=true;
+        play_pause2=true;
+        pause_control=true;
 
     }
 
@@ -1088,9 +1054,6 @@ public class gameboard extends AppCompatActivity
                         cancel();
                     }
 
-                System.out.println("is_on_pause: "+is_on_pause);
-
-               //    if(gameb1.game_over()) setContentView(R.layout.activity_main);
 
                 }
                 catch (Exception e)
