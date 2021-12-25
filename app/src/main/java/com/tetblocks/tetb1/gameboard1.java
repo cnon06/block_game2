@@ -34,7 +34,7 @@ public class gameboard1 extends View
 
    int horizontal = 3, vertical = -1, max_direction = 4, block_type = 1, block_type_2=0, direction = 1,
             block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500,  speed2=0, score1=0
-            , ghost_vertical=0, count_press=0, score2=0;
+            , ghost_vertical=0, count_press=0, score2=0, removed_lines=0;
 
     float volume1=1f,volume2=1f;
 
@@ -142,6 +142,10 @@ public class gameboard1 extends View
             }
         }
        // System.out.println("Ymin: "+ymin);
+
+
+
+
 
         if(ymin<=0) return1=true;
 

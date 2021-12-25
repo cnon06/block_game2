@@ -752,12 +752,11 @@ public class gameboard extends AppCompatActivity
         // you will write the code of scoreboard here in gb2
 
         LinearLayout gb1 = new LinearLayout(this);
-        gb1  = new LinearLayout(this);
+
 
          ln1.addView(gb1,lp1);
         gb1.setOrientation(LinearLayout.HORIZONTAL);
         gb1.setGravity(Gravity.CENTER);
-
 
 
         LinearLayout between_arrows  = new LinearLayout(this);
@@ -784,10 +783,42 @@ public class gameboard extends AppCompatActivity
 
 
         LinearLayout between_arrows4  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms4 = new LinearLayout.LayoutParams(150,400);
+        LinearLayout.LayoutParams between_arrows_parms4 = new LinearLayout.LayoutParams(150,500);
         between_arrows3.addView(between_arrows4,between_arrows_parms4);
         between_arrows4.setOrientation(LinearLayout.VERTICAL);
         between_arrows4.setGravity(Gravity.CENTER);
+
+
+
+        TextView lvl= new TextView(this);
+        lvl.setText("LVL:");
+        between_arrows4.addView(lvl);
+
+
+        controller_parms = new LinearLayout.LayoutParams(150,50);
+        lvl.setLayoutParams(controller_parms);
+        lvl.setGravity(Gravity.CENTER);
+
+
+
+
+
+
+
+        TextView lvl2= new TextView(this);
+        lvl2.setText("0");
+        between_arrows4.addView(lvl2);
+
+
+        LinearLayout between_arrows11  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms11 = new LinearLayout.LayoutParams(150,30);
+        between_arrows4.addView(between_arrows11,between_arrows_parms11);
+        between_arrows11.setOrientation(LinearLayout.HORIZONTAL);
+
+
+        controller_parms = new LinearLayout.LayoutParams(150,50);
+        lvl2.setLayoutParams(controller_parms);
+        lvl2.setGravity(Gravity.CENTER);
 
 
 
@@ -811,6 +842,11 @@ public class gameboard extends AppCompatActivity
         gameb1.blocks2.setLayoutParams(controller_parms);
         gameb1.blocks2.setRotation(90);
 
+
+        LinearLayout between_arrows12  = new LinearLayout(this);
+        LinearLayout.LayoutParams between_arrows_parms12 = new LinearLayout.LayoutParams(150,30);
+        between_arrows4.addView(between_arrows12,between_arrows_parms12);
+        between_arrows12.setOrientation(LinearLayout.HORIZONTAL);
 
 
         LinearLayout between_arrows2  = new LinearLayout(this);
