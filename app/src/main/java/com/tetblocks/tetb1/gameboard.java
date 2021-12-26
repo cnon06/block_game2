@@ -46,7 +46,7 @@ public class gameboard extends AppCompatActivity
 
     boolean  play_pause2=false;
 
-    int  go_left_right_control=0, mute_count=1, score=0;
+    int  go_left_right_control=0, mute_count=1, go_to=0;
 
 
     float volume1=1f;
@@ -650,7 +650,7 @@ public class gameboard extends AppCompatActivity
 
 
 
-        timer2 =  new Thread() {
+        new Thread() {
 
 
             public void run() {
@@ -711,9 +711,9 @@ public class gameboard extends AppCompatActivity
                 }
 
             }
-        };
+        }.start();
 
-        timer2.start();
+     //   timer2.start();
 
     }
 
@@ -1012,29 +1012,54 @@ public class gameboard extends AppCompatActivity
 
         //  gameb1.play_pause=false;
 
-        if(!mp.isLooping())
+        mp = MediaPlayer.create(this,R.raw.musics);
+        //mp.start();
+        mp.seekTo(go_to);
+        mp.start();
+        mp.setVolume(volume1,volume1);
+        completetion_listener();
+
+        /*
+          if(!mp.isLooping())
 
         {
             mp.start();
             mp.setVolume(volume1,volume1);
 
         }
+         */
 
+
+       // timer2();
         gameb1.play();
         play2();
+        Timer3();
+
 
     }
 
     public void pause()
     {
 
+
         play_pause.setImageResource(R.drawable.play2);
-        mp.pause();
+       // mp.pause();
+        mp.stop();
+       go_to = mp.getCurrentPosition();
+
+     //  if(mp==null) mp.release();
+
+        mp.release();
+        mp=null;
+
+       // timer_pause_start=true;
 
         gameb1.pause=true;
         pause=true;
         play_pause2=true;
         pause_control=true;
+        timer3.cancel();
+
 
     }
 
@@ -1052,6 +1077,14 @@ public class gameboard extends AppCompatActivity
 
                     if(gameb1.game_over())
                     {
+
+
+
+
+                        mp.stop();
+                        mp.release();
+                        mp=null;
+
                         Intent myIntent = new Intent(gameboard.this, MainActivity.class);
                         myIntent.putExtra("ss1","Message from gameboard");
                         myIntent.putExtra("ss2",false);

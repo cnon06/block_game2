@@ -38,7 +38,7 @@ public class gameboard1 extends View
 
     float volume1=1f,volume2=1f;
 
-    MediaPlayer mp, mp2;
+    MediaPlayer mp, mp2,mp3;
 
 
     boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10],
@@ -317,7 +317,7 @@ public class gameboard1 extends View
 
 
 
-          timer1 = new Thread("Gameb-timer1") {
+        new Thread("Gameb-timer1") {
 
             // run() method to carry out the action of the task
 
@@ -405,9 +405,9 @@ public class gameboard1 extends View
                 }
 
             }
-        };
+        }.start();
 
-        timer1.start();
+     //   timer1.start();
 
         return false;
     }
@@ -514,6 +514,7 @@ public class gameboard1 extends View
 
         mp = MediaPlayer.create(context,R.raw.removeb1);
         mp2 = MediaPlayer.create(context,R.raw.removeb2);
+        mp3 = MediaPlayer.create(context,R.raw.level_up);
 
         score_board= new TextView(context);
         score_board.setText("SCORE: 0");
@@ -782,6 +783,8 @@ public class gameboard1 extends View
                lvl++;
                removed_lines=0;
 
+
+               mp3.start();
             //   System.out.println("level up speed: "+speed);
 
 
