@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -593,6 +594,7 @@ public class gameboard extends AppCompatActivity
 
                             down_arrow.setImageResource(R.drawable.down_arrow);
                             gameb1.speed = gameb1.speed2;
+
                             gameb1.fast_press = false;
                         }
                         return true;
@@ -602,8 +604,7 @@ public class gameboard extends AppCompatActivity
         });
 
     }
-
-
+    
     protected void onRestart() {
         super.onRestart();
      //   if(mp.isPlaying()) finish();
@@ -612,9 +613,6 @@ public class gameboard extends AppCompatActivity
         // System.out.println("onRestart 12");
 
     }
-
-
-
 
     protected void onDestroy () {
      //   mp.pause();
@@ -637,10 +635,6 @@ public class gameboard extends AppCompatActivity
 
     }
 
-
-
-
-
     public  void play2()
     {
 
@@ -649,11 +643,7 @@ public class gameboard extends AppCompatActivity
         {
             pauseLock.notifyAll();
         }
-
-
     }
-
-
 
     public void timer2()
     {
@@ -727,11 +717,6 @@ public class gameboard extends AppCompatActivity
 
     }
 
-
-
-
-
-
     public void game_board(int Width, int Height)
     {
 
@@ -745,27 +730,20 @@ public class gameboard extends AppCompatActivity
         gb2.setOrientation(LinearLayout.HORIZONTAL);
         gb2.setGravity(Gravity.CENTER);
 
-
-
         LinearLayout.LayoutParams between_arrows_parms1234 = new LinearLayout.LayoutParams(1000,100);
         gb2.addView(gameb1.score_board,between_arrows_parms1234 );
         // you will write the code of scoreboard here in gb2
 
         LinearLayout gb1 = new LinearLayout(this);
 
-
          ln1.addView(gb1,lp1);
         gb1.setOrientation(LinearLayout.HORIZONTAL);
         gb1.setGravity(Gravity.CENTER);
-
 
         LinearLayout between_arrows  = new LinearLayout(this);
         LinearLayout.LayoutParams between_arrows_parms = new LinearLayout.LayoutParams(150,150);
         gb1.addView(between_arrows,between_arrows_parms);
         between_arrows.setOrientation(LinearLayout.HORIZONTAL);
-
-
-
 
         controller_parms = new LinearLayout.LayoutParams(715,1420);
         gameb1.setLayoutParams(controller_parms);
@@ -774,41 +752,43 @@ public class gameboard extends AppCompatActivity
 
         gb1.addView(gameb1);
 
-
-
         LinearLayout between_arrows3  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms3 = new LinearLayout.LayoutParams(150,1200);
+        LinearLayout.LayoutParams between_arrows_parms3 = new LinearLayout.LayoutParams(150,1400);
         gb1.addView(between_arrows3,between_arrows_parms3);
         between_arrows3.setOrientation(LinearLayout.VERTICAL);
 
-
         LinearLayout between_arrows4  = new LinearLayout(this);
-        LinearLayout.LayoutParams between_arrows_parms4 = new LinearLayout.LayoutParams(150,500);
+        LinearLayout.LayoutParams between_arrows_parms4 = new LinearLayout.LayoutParams(150,600);
         between_arrows3.addView(between_arrows4,between_arrows_parms4);
         between_arrows4.setOrientation(LinearLayout.VERTICAL);
         between_arrows4.setGravity(Gravity.CENTER);
 
-
-
         TextView lvl= new TextView(this);
         lvl.setText("LVL:");
+        lvl.setTextSize(20.5f);
+        lvl.setTypeface(null, Typeface.BOLD);
         between_arrows4.addView(lvl);
 
-
-        controller_parms = new LinearLayout.LayoutParams(150,50);
+        controller_parms = new LinearLayout.LayoutParams(150,70);
         lvl.setLayoutParams(controller_parms);
         lvl.setGravity(Gravity.CENTER);
 
-
-
-
-
-
-
+       /*
         TextView lvl2= new TextView(this);
         lvl2.setText("0");
-        between_arrows4.addView(lvl2);
+        lvl2.setTextSize(20.5f);
+        lvl2.setTypeface(null, Typeface.BOLD);
 
+         controller_parms = new LinearLayout.LayoutParams(150,70);
+        lvl2.setLayoutParams(controller_parms);
+
+
+        */
+
+
+
+
+        between_arrows4.addView(gameb1.lvl2);
 
         LinearLayout between_arrows11  = new LinearLayout(this);
         LinearLayout.LayoutParams between_arrows_parms11 = new LinearLayout.LayoutParams(150,30);
@@ -816,32 +796,24 @@ public class gameboard extends AppCompatActivity
         between_arrows11.setOrientation(LinearLayout.HORIZONTAL);
 
 
-        controller_parms = new LinearLayout.LayoutParams(150,50);
-        lvl2.setLayoutParams(controller_parms);
-        lvl2.setGravity(Gravity.CENTER);
-
-
 
         TextView blocks7= new TextView(this);
         blocks7.setText("Next");
+        blocks7.setTextSize(20f);
+        blocks7.setTypeface(null, Typeface.BOLD);
         between_arrows4.addView(blocks7);
 
-
-        controller_parms = new LinearLayout.LayoutParams(150,50);
+        controller_parms = new LinearLayout.LayoutParams(150,70);
         blocks7.setLayoutParams(controller_parms);
         blocks7.setGravity(Gravity.CENTER);
 
-
         gameb1.blocks2= new ImageView(this);
         gameb1.blocks2.setImageResource(R.drawable.block_bar);
-
-
 
         between_arrows4.addView(gameb1.blocks2);
         controller_parms = new LinearLayout.LayoutParams(300,300);
         gameb1.blocks2.setLayoutParams(controller_parms);
         gameb1.blocks2.setRotation(90);
-
 
         LinearLayout between_arrows12  = new LinearLayout(this);
         LinearLayout.LayoutParams between_arrows_parms12 = new LinearLayout.LayoutParams(150,30);
@@ -1088,6 +1060,7 @@ public class gameboard extends AppCompatActivity
                         activityResultLauncher.launch(myIntent);
 
                         cancel();
+                        finish();
                     }
 
 

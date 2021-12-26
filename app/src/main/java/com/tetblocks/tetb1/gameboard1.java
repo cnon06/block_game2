@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.view.Gravity;
 import android.view.View;
@@ -22,9 +23,8 @@ import java.util.TreeMap;
 public class gameboard1 extends View
 {
 
-    TextView score_board;
 
-
+    TextView score_board, lvl2;
 
     boolean    fast_press=false, ghost_true_false=false,   thread1=false, pause=false;
 
@@ -34,7 +34,7 @@ public class gameboard1 extends View
 
    int horizontal = 3, vertical = -1, max_direction = 4, block_type = 1, block_type_2=0, direction = 1,
             block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500,  speed2=0, score1=0
-            , ghost_vertical=0, count_press=0, score2=0, removed_lines=0;
+            , ghost_vertical=0, count_press=0, score2=0, removed_lines=0, lvl=1, lvl_up=0;
 
     float volume1=1f,volume2=1f;
 
@@ -355,6 +355,7 @@ public class gameboard1 extends View
 
                             if(fast_press)
                             {
+
                                 count_press++;
                                 if(count_press>=3)
                                 {
@@ -366,7 +367,11 @@ public class gameboard1 extends View
                                 {
                                     speed=100;
                                 }
+
+
+                                lvl_up=0;
                             }
+                            else lvl_up=lvl*100;
 
 
                             restart_blocks();
@@ -380,9 +385,15 @@ public class gameboard1 extends View
 
                             ghost_vertical();
 
+
+
                             invalidate();
 
+
+                            System.out.println("speed: "+speed+" removed lines: "+removed_lines+" lvl: "+lvl);
                             Thread.sleep(speed);
+
+                          // Thread.sleep(speed);
 
                         }
 
@@ -505,9 +516,17 @@ public class gameboard1 extends View
         mp2 = MediaPlayer.create(context,R.raw.removeb2);
 
         score_board= new TextView(context);
-        score_board.setText("0");
+        score_board.setText("SCORE: 0");
        score_board.setTextSize(28.5f);
+        score_board.setTypeface(null, Typeface.BOLD);
        score_board.setGravity(Gravity.CENTER);
+
+
+        lvl2= new TextView(context);
+        lvl2.setText("1");
+        lvl2.setTextSize(25.5f);
+        lvl2.setTypeface(null, Typeface.BOLD);
+        lvl2.setGravity(Gravity.CENTER);
 
 
         speed2 = speed;
@@ -755,6 +774,32 @@ public class gameboard1 extends View
 
            int number_of_removed_blocks=ymin2-ymin;
 
+           removed_lines +=number_of_removed_blocks;
+
+           if(removed_lines>=10)
+
+           {
+               lvl++;
+               removed_lines=0;
+
+            //   System.out.println("level up speed: "+speed);
+
+
+               speed2-=35;
+               if(speed2<35) speed2=35;
+               //speed2=200;
+
+
+
+
+
+
+             //  System.out.println("level up speed: "+speed);
+           }
+
+
+
+
            if(number_of_removed_blocks<4)mp.start(); else mp2.start();
 
             mp.setVolume(volume1,volume1);
@@ -769,15 +814,15 @@ public class gameboard1 extends View
 
             {
                 case 2:
-                    bonus=1;
+                    bonus=7;
                     break;
 
                 case 3:
-                    bonus=2;
+                    bonus=14;
                     break;
 
                 case 4:
-                    bonus=5;
+                    bonus=33;
                     break;
 
             }
@@ -785,16 +830,16 @@ public class gameboard1 extends View
 
 
             int ghost_score=0;
-          if(ghost_true_false) ghost_score=2;
+          if(ghost_true_false) ghost_score=27;
 
           //  remove_sound1=true;
 
             Timer3();
 
+            score2+=(number_of_removed_blocks*15)+bonus+ghost_score;
+            lvl2.setText(lvl+"");
 
-            score2+=(number_of_removed_blocks*5)+bonus+ghost_score;
-
-            score_board.setText(score2+"");
+            score_board.setText("SCORE: "+score2);
 
         }
 
