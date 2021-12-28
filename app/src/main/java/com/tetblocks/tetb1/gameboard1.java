@@ -62,6 +62,10 @@ public class gameboard1 extends View
 
 
 
+
+
+
+
     public void random_blocks()
     {
 
@@ -390,7 +394,7 @@ public class gameboard1 extends View
                             invalidate();
 
 
-                            System.out.println("speed: "+speed+" removed lines: "+removed_lines+" lvl: "+lvl);
+                         //   System.out.println("speed: "+speed+" removed lines: "+removed_lines+" lvl: "+lvl);
                             Thread.sleep(speed);
 
                           // Thread.sleep(speed);
@@ -783,18 +787,13 @@ public class gameboard1 extends View
                lvl++;
                removed_lines=0;
 
-
                mp3.start();
             //   System.out.println("level up speed: "+speed);
 
 
-               speed2-=35;
-               if(speed2<35) speed2=35;
+               speed2-=25;
+               if(speed2<25) speed2=25;
                //speed2=200;
-
-
-
-
 
 
              //  System.out.println("level up speed: "+speed);
@@ -808,7 +807,7 @@ public class gameboard1 extends View
             mp.setVolume(volume1,volume1);
             mp2.setVolume(volume2,volume2);
 
-           // System.out.println("ymin2-ymin: "+(number_of_removed_blocks));
+
 
 
             int bonus = 0;

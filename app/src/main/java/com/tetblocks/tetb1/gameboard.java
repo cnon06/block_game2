@@ -22,6 +22,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,7 +44,7 @@ public class gameboard extends AppCompatActivity
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
     //start_game start_game1;
-
+    String text2;
     final Object pauseLock = new Object();
 
 
@@ -46,7 +52,7 @@ public class gameboard extends AppCompatActivity
 
     boolean  play_pause2=false;
 
-    int  go_left_right_control=0, mute_count=1, go_to=0;
+    int  go_left_right_control=0, mute_count=1, go_to=0, best_score=0;
 
 
     float volume1=1f;
@@ -54,7 +60,7 @@ public class gameboard extends AppCompatActivity
     MediaPlayer mp;
 
     Thread timer2;
-    Timer timer3;
+    Timer timer3, timer5;
 
 
 
@@ -68,6 +74,8 @@ public class gameboard extends AppCompatActivity
         getSupportActionBar().hide();
 
 
+
+        read_file();
 
 
         activityResultLauncher = registerForActivityResult(
@@ -150,6 +158,7 @@ public class gameboard extends AppCompatActivity
 
 
 
+
         //gameb1.random_blocks();
 
 
@@ -193,7 +202,7 @@ public class gameboard extends AppCompatActivity
     public void timers()
     {
         gameb1.Timer1();
-        timer2();
+       timer2();
 
     }
 
@@ -429,6 +438,9 @@ public class gameboard extends AppCompatActivity
                                 vibe.vibrate(20);
                             }
 
+
+
+
                             right_arrow.setImageResource(R.drawable.red_right_arrow);
                             go_right = true;
 
@@ -438,6 +450,7 @@ public class gameboard extends AppCompatActivity
                                 gameb1.direction();
                                 gameb1.invalidate();
                                 gameb1.ghost_vertical();
+                               // timer2();
 
                             } catch (Exception e) {
                                 System.out.println("Code-45r3e: " + e);
@@ -453,6 +466,7 @@ public class gameboard extends AppCompatActivity
                             go_right = false;
                             go_left_right_control = 0;
                             gameb1.fast_press = false;
+                          // timer5.cancel();
 
                         }
                         return true;
@@ -605,35 +619,13 @@ public class gameboard extends AppCompatActivity
 
     }
     
-    protected void onRestart() {
-        super.onRestart();
-     //   if(mp.isPlaying()) finish();
-
-
-        // System.out.println("onRestart 12");
-
-    }
-
-    protected void onDestroy () {
-     //   mp.pause();
-     //   pause();
-
-        super.onDestroy();
-    }
-
-
-
+    
     protected void onPause() {
         super.onPause();
       pause();
 
     }
 
-    protected void onStop() {
-        super.onStop();
-
-
-    }
 
     public  void play2()
     {
@@ -650,7 +642,7 @@ public class gameboard extends AppCompatActivity
 
 
 
-        new Thread() {
+          new Thread() {
 
 
             public void run() {
@@ -697,7 +689,7 @@ public class gameboard extends AppCompatActivity
                             }
 
 
-                            sleep(100);
+                            sleep(75);
 
 
                         }
@@ -712,6 +704,8 @@ public class gameboard extends AppCompatActivity
 
             }
         }.start();
+
+
 
      //   timer2.start();
 
@@ -1044,13 +1038,25 @@ public class gameboard extends AppCompatActivity
 
         play_pause.setImageResource(R.drawable.play2);
        // mp.pause();
-        mp.stop();
-       go_to = mp.getCurrentPosition();
 
-     //  if(mp==null) mp.release();
 
-        mp.release();
-        mp=null;
+
+        try {
+            if(mp !=null)
+            {
+                mp.stop();
+                go_to = mp.getCurrentPosition();
+
+                mp.release();
+            }
+
+        }
+        catch (Exception ert)
+        {
+            System.out.println("code 563rf: "+ert);
+        }
+
+
 
        // timer_pause_start=true;
 
@@ -1065,6 +1071,80 @@ public class gameboard extends AppCompatActivity
 
 
 
+    public void read_file() {
+
+        String FILE_NAME = "high_score.txt";
+
+
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null) {
+                sb.append(text).append("\n");
+            }
+
+
+            System.out.println("File was read: "+sb);
+            text2 =sb.toString();
+            best_score=(int)Integer.parseInt(text2.trim());
+
+
+            //sb;
+            //  msg_box(sb.toString());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public  void writeStringAsFile() {
+
+
+        String FILE_NAME = "high_score.txt";
+
+        String text = gameb1.score2+"";
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+           // edt1.getText().clear();
+            System.out.println("Saved to " + getFilesDir() + "/" + FILE_NAME);
+           // Toast.makeText(this, "Saved to " + getFilesDir() + "/" + FILE_NAME,
+                //    Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+
+
+    }
+
+
   public boolean Timer3()
     {
 
@@ -1075,15 +1155,31 @@ public class gameboard extends AppCompatActivity
 
                 try {
 
+                    System.out.println(best_score+"");
+                   // System.out.println(text2+"");
+
+                  //  if(best_score<gameb1.score2)writeStringAsFile();
+                    if(best_score<gameb1.score2) best_score=gameb1.score2;
+
                     if(gameb1.game_over())
                     {
 
 
+                        try {
+                            if(mp!=null)
+                            {
+                                mp.stop();
+                                mp.release();
+                                // mp=null;
 
+                            }
+                        }
+                        catch (Exception erty)
+                        {
 
-                        mp.stop();
-                        mp.release();
-                        mp=null;
+                        }
+
+                        writeStringAsFile();
 
                         Intent myIntent = new Intent(gameboard.this, MainActivity.class);
                         myIntent.putExtra("ss1","Message from gameboard");
@@ -1092,10 +1188,9 @@ public class gameboard extends AppCompatActivity
 
                         activityResultLauncher.launch(myIntent);
 
-                        cancel();
+                       // cancel();
                         finish();
                     }
-
 
                 }
                 catch (Exception e)
@@ -1107,7 +1202,7 @@ public class gameboard extends AppCompatActivity
 
         };
 
-        timer3.schedule(task3, 0,1);
+        timer3.schedule(task3, 0,500);
 
         return false;
     }
