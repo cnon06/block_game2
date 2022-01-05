@@ -50,9 +50,11 @@ public class gameboard extends AppCompatActivity
 
 
 
+
+
     boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, pause_control=false, vib_true_false=false;
 
-    boolean  play_pause2=false, game_over2=true;
+    boolean  play_pause2=false, play_pause3=false;
 
     int  go_left_right_control=0, mute_count=1, go_to=0, best_score=0, vibration=50;
 
@@ -132,9 +134,34 @@ debris=(ImageView) findViewById(R.id.imageView3);
         Timer3();
 
         mp = MediaPlayer.create(this,R.raw.musics);
-        mp.start();
-        mp.setVolume(volume1,volume1);
-        completetion_listener();
+
+
+        mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+              //  mediaPlayer.seekTo(length);
+              //  mediaPlayer.start();
+
+                    mp.seekTo(go_to);
+                    mp.start();
+                    mp.setVolume(volume1,volume1);
+                    completetion_listener();
+            }
+        });
+
+      if(!mp.isPlaying())
+      {
+          try {
+              mp.prepareAsync();
+              play_pause3=false;
+          }
+          catch (Exception tyu)
+          {
+              Log.d("Error rtr353:",tyu.toString());
+          }
+
+      }
+
 
 
         try {
@@ -156,28 +183,19 @@ debris=(ImageView) findViewById(R.id.imageView3);
         {
             System.out.println(e);
         }
-
-
-       // write_score_AsFile(100);
+     //  write_score_AsFile(100);
 
         read_file();
-
-
-
-        //gameb1.random_blocks();
-
 
     }
 
 
+
+
+
+
     public  boolean Timer1()
     {
-       // runOnUiThread(new Runnable()
-
-
-
-
-      //  runOnUiThread(new Runnable()
 
          new Thread("Gameb-timer1")
         {
@@ -286,9 +304,25 @@ debris=(ImageView) findViewById(R.id.imageView3);
 
 
             if (!mp.isLooping()) {
-                mp.start();
+
+                try {
+                    mp.prepareAsync();
+                    play_pause3=false;
+
+
+                }
+                catch (Exception tyu)
+                {
+                    Log.d("Error rtr353:",tyu.toString());
+                }
+
+                /*
+                  mp.start();
                 mp.setVolume(volume1,volume1);
                 completetion_listener();
+                 */
+
+
             }
 
             timers();
@@ -792,19 +826,11 @@ debris=(ImageView) findViewById(R.id.imageView3);
     // finish();
 
 
-        try {
-            mp.pause();
-        }
-        catch (Exception ertgd)
-        {
-            Log.d("Code 345f2: ",ertgd+"");
-        }
-
             //completetion_listener();
 
 
            pause();
-            //pause();
+
 
 
 
@@ -924,15 +950,25 @@ debris=(ImageView) findViewById(R.id.imageView3);
         LinearLayout gb2 = new LinearLayout(this);
 
 
-        LinearLayout.LayoutParams between_arrows_parms123 = new LinearLayout.LayoutParams(1000,100);
+        LinearLayout.LayoutParams between_arrows_parms123 = new LinearLayout.LayoutParams(1000,130);
          ln1.addView(gb2,between_arrows_parms123 );
 
-        gb2.setOrientation(LinearLayout.HORIZONTAL);
+        gb2.setOrientation(LinearLayout.VERTICAL);
         gb2.setGravity(Gravity.CENTER);
 
         LinearLayout.LayoutParams between_arrows_parms1234 = new LinearLayout.LayoutParams(1000,100);
         gb2.addView(gameb1.score_board,between_arrows_parms1234 );
         // you will write the code of scoreboard here in gb2
+
+        LinearLayout gb3 = new LinearLayout(this);
+
+        LinearLayout.LayoutParams between_arrows_parms12345 = new LinearLayout.LayoutParams(1000,30);
+        gb2.addView(gb3,between_arrows_parms12345 );
+
+        gb3.setOrientation(LinearLayout.HORIZONTAL);
+        gb3.setGravity(Gravity.CENTER);
+
+
 
         LinearLayout gb1 = new LinearLayout(this);
 
@@ -1086,11 +1122,26 @@ debris=(ImageView) findViewById(R.id.imageView3);
             public void onCompletion(MediaPlayer mp) {
 
                 if (!mp.isLooping()) {
-                    mp.start();
+
+                    try {
+                        mp.prepareAsync();
+                        play_pause3=false;
+                    }
+                    catch (Exception tyu)
+                    {
+                        Log.d("Error rtr353:",tyu.toString());
+                    }
+
+
+                    /*
+                     mp.start();
                     mp.setVolume(volume1,volume1);
+                    completetion_listener();
+                     */
+
                 }
 
-                completetion_listener();
+
                 // finish(); // finish current activity
             }
         });
@@ -1220,17 +1271,30 @@ debris=(ImageView) findViewById(R.id.imageView3);
         mp.setVolume(volume1,volume1);
 
          */
-        mp.start();
-        completetion_listener();
+      if(!mp.isPlaying())
+      {
+          try {
+              mp.prepareAsync();
+              play_pause3=false;
+
+          }
+          catch (Exception tyu)
+          {
+              Log.d("Error rtr353:",tyu.toString());
+          }
 
 
-          if(!mp.isLooping())
+          /*
+             mp.start();
+          completetion_listener();
+           */
 
-        {
-            mp.start();
-            mp.setVolume(volume1,volume1);
+      }
 
-        }
+
+
+
+
 
 
 
@@ -1248,13 +1312,21 @@ debris=(ImageView) findViewById(R.id.imageView3);
 
         play_pause.setImageResource(R.drawable.play2);
 
-try {
-    mp.pause();
-}
-catch (Exception ttr)
-{
-    Log.d("Code rty654: ", ttr.toString());
-}
+
+
+
+
+
+        if(mp.isPlaying())
+        {
+          //  mp.pause();
+
+            mp.stop();
+            go_to = mp.getCurrentPosition();
+
+        }
+
+
 
       //  mp.start();
 
@@ -1382,13 +1454,16 @@ catch (Exception ttr)
 
 
 
-
+                    /*
                         if(!mp.isPlaying())
                     {
                         mp.start();
                         mp.setVolume(volume1,volume1);
                         completetion_listener();
                     }
+                     */
+
+
 
 
 
@@ -1411,7 +1486,22 @@ catch (Exception ttr)
 
 
 
-                        if(best_score<gameb1.score2)  write_score_AsFile(gameb1.score2);
+                        if(best_score<gameb1.score2) // write_score_AsFile(gameb1.score2);
+
+
+                             {
+
+                            best_score3.setText(gameb1.score2+"");
+                                 write_score_AsFile(gameb1.score2);
+                        }
+                            else
+                        {
+                            best_score3.setText(best_score+"");
+                        }
+
+
+
+
 
 
                         mp.stop();
