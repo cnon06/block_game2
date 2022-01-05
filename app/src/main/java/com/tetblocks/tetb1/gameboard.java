@@ -146,6 +146,7 @@ debris=(ImageView) findViewById(R.id.imageView3);
                     mp.start();
                     mp.setVolume(volume1,volume1);
                     completetion_listener();
+                    go_to=0;
             }
         });
 
@@ -1121,26 +1122,19 @@ debris=(ImageView) findViewById(R.id.imageView3);
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
 
-                if (!mp.isLooping()) {
 
-                    try {
-                        mp.prepareAsync();
-                        play_pause3=false;
-                    }
-                    catch (Exception tyu)
-                    {
-                        Log.d("Error rtr353:",tyu.toString());
-                    }
-
-
-                    /*
-                     mp.start();
-                    mp.setVolume(volume1,volume1);
-                    completetion_listener();
-                     */
+                try {
+                    mp.prepareAsync();
+                    //  play_pause3=false;
 
                 }
+                catch (Exception tyu)
+                {
+                    Log.d("Error rtr353t4:",tyu.toString());
+                    mp.start();
+                }
 
+             //   mp.prepareAsync();
 
                 // finish(); // finish current activity
             }
@@ -1275,7 +1269,7 @@ debris=(ImageView) findViewById(R.id.imageView3);
       {
           try {
               mp.prepareAsync();
-              play_pause3=false;
+            //  play_pause3=false;
 
           }
           catch (Exception tyu)
@@ -1284,10 +1278,7 @@ debris=(ImageView) findViewById(R.id.imageView3);
           }
 
 
-          /*
-             mp.start();
-          completetion_listener();
-           */
+
 
       }
 
@@ -1463,6 +1454,23 @@ debris=(ImageView) findViewById(R.id.imageView3);
                     }
                      */
 
+
+
+                    /*
+                        if(!mp.isPlaying())
+                    {
+                        try {
+
+                            mp.prepareAsync();
+
+                        }
+                        catch (Exception tyu)
+                        {
+                            Log.d("Error rtr353:",tyu.toString());
+                        }
+
+                    }
+                     */
 
 
 
