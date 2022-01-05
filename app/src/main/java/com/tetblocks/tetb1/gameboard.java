@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,7 +39,7 @@ public class gameboard extends AppCompatActivity
     ActivityResultLauncher<Intent> activityResultLauncher;
 
 
-    LinearLayout ln1,controller, space_between_game_board_and_controller;
+    LinearLayout ln1,controller, space_between_game_board_and_controller, ln2;
     LinearLayout.LayoutParams parms, controller_parms;
     ImageView right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause, ghost1, mute1, vib1;
     LinearLayout.LayoutParams lp1;
@@ -48,11 +49,12 @@ public class gameboard extends AppCompatActivity
     final Object pauseLock = new Object();
 
 
+
     boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, pause_control=false, vib_true_false=false;
 
-    boolean  play_pause2=false;
+    boolean  play_pause2=false, game_over2=true;
 
-    int  go_left_right_control=0, mute_count=1, go_to=0, best_score=0;
+    int  go_left_right_control=0, mute_count=1, go_to=0, best_score=0, vibration=50;
 
 
     float volume1=1f;
@@ -60,11 +62,10 @@ public class gameboard extends AppCompatActivity
     MediaPlayer mp;
 
     Thread timer2;
-    Timer timer3, timer5;
+    Timer timer3, timer4;
 
-
-
-
+    TextView best_score2, best_score3;
+    ImageView debris,start;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +76,34 @@ public class gameboard extends AppCompatActivity
 
 
 
-        read_file();
+debris=(ImageView) findViewById(R.id.imageView3);
+        debris.setImageResource(R.drawable.game_over);
+
+        start=(ImageView) findViewById(R.id.imageView2);
+
+
+
+         best_score2 = findViewById(R.id.Best_Score);
+        best_score2.setText("BEST SCORE:");
+        best_score2.setTextSize(28.5f);
+        best_score2.setTypeface(null, Typeface.BOLD);
+        best_score2.setGravity(Gravity.CENTER);
+        // best_score.setVisibility(View.INVISIBLE);
+
+        best_score3 = findViewById(R.id.Best_Score2);
+        best_score3.setText("10020");
+        best_score3.setTextSize(28.5f);
+        best_score3.setTypeface(null, Typeface.BOLD);
+        best_score3.setGravity(Gravity.CENTER);
+
+    //   invisible_objects();
+        start.setEnabled(false);
+
+
+
+
+
+
 
 
         activityResultLauncher = registerForActivityResult(
@@ -86,34 +114,6 @@ public class gameboard extends AppCompatActivity
                     public void onActivityResult(ActivityResult activityResult) {
 
 
-
-                        /*
-                             int result= activityResult.getResultCode();
-
-                        if(activityResult.getResultCode() == 78)
-
-                        // if(result == Activity.RESULT_OK)
-                        {
-
-                            Intent data = activityResult.getData();
-
-                            if(data != null)
-                            {
-                                String title = data.getStringExtra("ss1");
-                                // setTitle(title);
-                                Toast.makeText(gameboard.this, "Title Modified", Toast.LENGTH_LONG).show();
-
-                                getdata=title;
-                                 System.out.println("MEESAGE FROM MAINACTIVITY: "+title);
-
-                            }
-
-                        }
-                        else
-                        {
-                            Toast.makeText(gameboard.this, "Operation canceled", Toast.LENGTH_LONG).show();
-                        }
-                         */
 
                     }
                 }
@@ -139,6 +139,7 @@ public class gameboard extends AppCompatActivity
 
         try {
             ln1 = findViewById(R.id.ln1);
+            ln2 = findViewById(R.id.ln2);
 
             lp1 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
@@ -157,6 +158,10 @@ public class gameboard extends AppCompatActivity
         }
 
 
+       // write_score_AsFile(100);
+
+        read_file();
+
 
 
         //gameb1.random_blocks();
@@ -164,6 +169,107 @@ public class gameboard extends AppCompatActivity
 
     }
 
+
+    public  boolean Timer1()
+    {
+       // runOnUiThread(new Runnable()
+
+
+
+
+      //  runOnUiThread(new Runnable()
+
+         new Thread("Gameb-timer1")
+        {
+            @Override
+            public void run() {
+
+                try {
+                    while (!gameb1.thread1) {
+
+                        synchronized (gameb1.pauseLock)
+                        {
+
+                            if(gameb1.pause)
+                            {
+                                gameb1.pauseLock.wait();
+                                gameb1.pause=false;
+                            }
+
+                             runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+
+                                    try {
+
+
+
+                                        if (gameb1.block_type_2 == 0) {
+                                            gameb1.random_blocks();
+                                        }
+
+                                        if (gameb1.fast_press) {
+
+                                            gameb1.count_press++;
+                                            if (gameb1.count_press >= 3) {
+                                                gameb1.speed = 30;
+                                                gameb1.fast_press = false;
+                                                gameb1.count_press = 0;
+                                            } else {
+                                                gameb1.speed = 100;
+                                            }
+
+                                            gameb1.lvl_up = 0;
+                                        } else gameb1.lvl_up = gameb1.lvl * 100;
+
+                                        gameb1.restart_blocks();
+                                        if (gameb1.bottom_control() && gameb1.vertical > 15)
+                                            gameb1.first_horizontal_position();
+
+                                        gameb1.vertical++;
+
+                                        gameb1.direction();
+
+                                        gameb1.ghost_vertical();
+
+                                        gameb1.invalidate();
+
+
+
+                                    }
+                                    catch (Exception ert)
+                                    {
+                                        Log.d("Error 5644rte: ",ert.toString());
+                                    }
+
+
+
+
+                                }
+                            });
+
+                            Thread.sleep(gameb1.speed);
+
+                        }
+
+                    }
+                }
+                catch (Exception tyu)
+                {
+                    System.out.println("Code 56-er: "+tyu);
+                }
+
+
+            }
+        }.start();
+
+
+
+
+
+        return false;
+    }
 
     public void game_console()
     {
@@ -201,7 +307,8 @@ public class gameboard extends AppCompatActivity
 
     public void timers()
     {
-        gameb1.Timer1();
+        Timer1();
+        //gameb1.Timer1();
        timer2();
 
     }
@@ -211,6 +318,47 @@ public class gameboard extends AppCompatActivity
 
     public void buttons()
     {
+
+
+
+        start.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        vibe.vibrate(20);
+
+                        start.setImageResource(R.drawable.start1);
+
+                        return true;
+                    case MotionEvent.ACTION_UP:
+
+                        start.setImageResource(R.drawable.start2);
+
+
+                      //  Intent myIntent = new Intent(gameboard.this, MainActivity.class);
+                      //  myIntent.putExtra("ss1","Message from gameboard");
+                      //  myIntent.putExtra("ss2",false);
+                      //  setResult(78, myIntent);
+
+                      //  activityResultLauncher.launch(myIntent);
+                        activityResultLauncher.launch(getIntent());
+
+
+
+
+
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
+
         vib1.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -232,7 +380,7 @@ public class gameboard extends AppCompatActivity
 
                             if (!vib_true_false) {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
+                                vibe.vibrate(vibration);
                             }
 
 
@@ -276,7 +424,7 @@ public class gameboard extends AppCompatActivity
 
                             if (!vib_true_false) {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
+                                vibe.vibrate(vibration);
                             }
 
 
@@ -295,6 +443,7 @@ public class gameboard extends AppCompatActivity
                                     gameb1.volume2 = 1f;
                                     gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
                                     gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
+                                    gameb1.mp3.setVolume(gameb1.volume2, gameb1.volume2);
 
                                     mute1.setImageResource(R.drawable.mute3);
 
@@ -311,6 +460,7 @@ public class gameboard extends AppCompatActivity
                                     gameb1.volume2 = 1f;
                                     gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
                                     gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
+                                    gameb1.mp3.setVolume(gameb1.volume2, gameb1.volume2);
 
 
                                     // mp.setVolume(0,0);
@@ -327,6 +477,7 @@ public class gameboard extends AppCompatActivity
                                     gameb1.volume2 = 0;
                                     gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
                                     gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
+                                    gameb1.mp3.setVolume(gameb1.volume2, gameb1.volume2);
 
                                     //   mp.setVolume(0,0);
                                     mute1.setImageResource(R.drawable.mute1);
@@ -365,7 +516,7 @@ public class gameboard extends AppCompatActivity
 
                             if (!vib_true_false) {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
+                                vibe.vibrate(vibration);
                             }
 
 
@@ -402,7 +553,7 @@ public class gameboard extends AppCompatActivity
 
                         if (!vib_true_false) {
                             Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            vibe.vibrate(20);
+                            vibe.vibrate(vibration);
                         }
 
 
@@ -435,7 +586,7 @@ public class gameboard extends AppCompatActivity
 
                             if (!vib_true_false) {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
+                                vibe.vibrate(vibration);
                             }
 
 
@@ -449,8 +600,11 @@ public class gameboard extends AppCompatActivity
                                 gameb1.right_control();
                                 gameb1.direction();
                                 gameb1.invalidate();
+
+
+
                                 gameb1.ghost_vertical();
-                               // timer2();
+
 
                             } catch (Exception e) {
                                 System.out.println("Code-45r3e: " + e);
@@ -487,7 +641,7 @@ public class gameboard extends AppCompatActivity
                         if (!play_pause2) {
                             if (!vib_true_false) {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
+                                vibe.vibrate(vibration);
                             }
                             left_arrow.setImageResource(R.drawable.red_left_arrow);
 
@@ -531,7 +685,7 @@ public class gameboard extends AppCompatActivity
 
                             if (!vib_true_false) {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
+                                vibe.vibrate(vibration);
                             }
 
 
@@ -587,7 +741,7 @@ public class gameboard extends AppCompatActivity
 
                             if (!vib_true_false) {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                                vibe.vibrate(20);
+                                vibe.vibrate(vibration);
                             }
 
 
@@ -620,9 +774,42 @@ public class gameboard extends AppCompatActivity
     }
     
     
-    protected void onPause() {
+    public synchronized void onPause() {
         super.onPause();
-      pause();
+        /*
+         try {
+               mp.stop();
+              mp.release();
+             // write_score_AsFile(55);
+        }
+        catch (Exception rty)
+        {
+
+        }
+         */
+
+
+    // finish();
+
+
+        try {
+            mp.pause();
+        }
+        catch (Exception ertgd)
+        {
+            Log.d("Code 345f2: ",ertgd+"");
+        }
+
+            //completetion_listener();
+
+
+           pause();
+            //pause();
+
+
+
+
+
 
     }
 
@@ -660,36 +847,55 @@ public class gameboard extends AppCompatActivity
                             }
 
 
-                            if (go_left || go_right) {
 
-                                go_left_right_control++;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                if (go_left_right_control >= 2) {
-                                    if (go_left) {
+                                    try {
+                                        if (go_left || go_right) {
 
-                                        gameb1.left_control();
-                                        gameb1.direction();
-                                        gameb1.ghost_vertical();
-                                        gameb1.invalidate();
+                                            go_left_right_control++;
+
+                                            if (go_left_right_control >= 2) {
+                                                if (go_left) {
+
+                                                    gameb1.left_control();
+                                                    gameb1.direction();
+                                                    gameb1.ghost_vertical();
+                                                    gameb1.invalidate();
+
+
+                                                }
+
+                                                if (go_right) {
+
+                                                    gameb1.right_control();
+                                                    gameb1.direction();
+                                                    gameb1.ghost_vertical();
+                                                    gameb1.invalidate();
+
+
+                                                }
+                                            }
+
+                                        }
 
 
                                     }
-
-                                    if (go_right) {
-
-                                        gameb1.right_control();
-                                        gameb1.direction();
-                                        gameb1.ghost_vertical();
-                                        gameb1.invalidate();
-
-
+                                    catch (Exception hjr)
+                                    {
+                                        Log.d("Error 674ty: ",hjr.toString());
                                     }
+
+
                                 }
+                            });
 
-                            }
 
 
-                            sleep(75);
+
+                            sleep(100);
 
 
                         }
@@ -1006,14 +1212,18 @@ public class gameboard extends AppCompatActivity
 
         //  gameb1.play_pause=false;
 
+        /*
         mp = MediaPlayer.create(this,R.raw.musics);
         //mp.start();
         mp.seekTo(go_to);
         mp.start();
         mp.setVolume(volume1,volume1);
+
+         */
+        mp.start();
         completetion_listener();
 
-        /*
+
           if(!mp.isLooping())
 
         {
@@ -1021,13 +1231,13 @@ public class gameboard extends AppCompatActivity
             mp.setVolume(volume1,volume1);
 
         }
-         */
+
 
 
        // timer2();
         gameb1.play();
         play2();
-        Timer3();
+      Timer3();
 
 
     }
@@ -1037,11 +1247,21 @@ public class gameboard extends AppCompatActivity
 
 
         play_pause.setImageResource(R.drawable.play2);
-       // mp.pause();
+
+try {
+    mp.pause();
+}
+catch (Exception ttr)
+{
+    Log.d("Code rty654: ", ttr.toString());
+}
+
+      //  mp.start();
 
 
 
-        try {
+        /*
+          try {
             if(mp !=null)
             {
                 mp.stop();
@@ -1055,6 +1275,8 @@ public class gameboard extends AppCompatActivity
         {
             System.out.println("code 563rf: "+ert);
         }
+         */
+
 
 
 
@@ -1064,7 +1286,7 @@ public class gameboard extends AppCompatActivity
         pause=true;
         play_pause2=true;
         pause_control=true;
-        timer3.cancel();
+       timer3.cancel();
 
 
     }
@@ -1088,10 +1310,12 @@ public class gameboard extends AppCompatActivity
             }
 
 
-            System.out.println("File was read: "+sb);
+
             text2 =sb.toString();
             best_score=(int)Integer.parseInt(text2.trim());
 
+           // System.out.println("File was read: "+gameb1.best_score);
+//            gameb1.best_score = best_score;
 
             //sb;
             //  msg_box(sb.toString());
@@ -1111,20 +1335,19 @@ public class gameboard extends AppCompatActivity
         }
     }
 
-    public  void writeStringAsFile() {
+    public  void  write_score_AsFile(int score) {
 
 
         String FILE_NAME = "high_score.txt";
 
-        String text = gameb1.score2+"";
+        String text = score+"";
         FileOutputStream fos = null;
         try {
             fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
             fos.write(text.getBytes());
-           // edt1.getText().clear();
+
             System.out.println("Saved to " + getFilesDir() + "/" + FILE_NAME);
-           // Toast.makeText(this, "Saved to " + getFilesDir() + "/" + FILE_NAME,
-                //    Toast.LENGTH_LONG).show();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -1139,13 +1362,10 @@ public class gameboard extends AppCompatActivity
             }
         }
 
-
-
-
     }
 
 
-  public boolean Timer3()
+  public  boolean Timer3()
     {
 
         timer3 = new Timer();
@@ -1155,54 +1375,63 @@ public class gameboard extends AppCompatActivity
 
                 try {
 
-                    System.out.println(best_score+"");
-                   // System.out.println(text2+"");
 
-                  //  if(best_score<gameb1.score2)writeStringAsFile();
-                    if(best_score<gameb1.score2) best_score=gameb1.score2;
 
-                    if(gameb1.game_over())
+
+                //    System.out.println(best_score+"");
+
+
+
+
+                        if(!mp.isPlaying())
                     {
-
-
-                        try {
-                            if(mp!=null)
-                            {
-                                mp.stop();
-                                mp.release();
-                                // mp=null;
-
-                            }
-                        }
-                        catch (Exception erty)
-                        {
-
-                        }
-
-                        writeStringAsFile();
-
-                        Intent myIntent = new Intent(gameboard.this, MainActivity.class);
-                        myIntent.putExtra("ss1","Message from gameboard");
-                        myIntent.putExtra("ss2",false);
-                        setResult(78, myIntent);
-
-                        activityResultLauncher.launch(myIntent);
-
-                       // cancel();
-                        finish();
+                        mp.start();
+                        mp.setVolume(volume1,volume1);
+                        completetion_listener();
                     }
 
+
+
+
+                   // Log.d("tttt","vvvv");
+
+
+
+                      if(gameb1.game_over() )
+                    {
+                        Log.d("GAME OVER","GAME OVER 2 ");
+
+
+                        ln1.setVisibility(View.INVISIBLE);
+                        ln2.setVisibility(View.INVISIBLE);
+
+
+                       // visible_objects();
+                      //  invisible_objects();
+
+
+
+                        if(best_score<gameb1.score2)  write_score_AsFile(gameb1.score2);
+
+
+                        mp.stop();
+
+                        gameb1.thread1=true;
+                        timer_pause_start=true;
+                        start.setEnabled(true);
+                       cancel();
+                        }
                 }
                 catch (Exception e)
                 {
-
+                    Log.d("Error 754ggh: ",e.toString());
                 }
 
             }
 
         };
 
-        timer3.schedule(task3, 0,500);
+        timer3.schedule(task3, 0,100);
 
         return false;
     }

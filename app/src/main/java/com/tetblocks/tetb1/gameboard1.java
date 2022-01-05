@@ -23,7 +23,6 @@ import java.util.TreeMap;
 public class gameboard1 extends View
 {
 
-
     TextView score_board, lvl2;
 
     boolean    fast_press=false, ghost_true_false=false,   thread1=false, pause=false;
@@ -32,13 +31,18 @@ public class gameboard1 extends View
 
     ImageView blocks2;
 
+    gameboard gb1;
+
    int horizontal = 3, vertical = -1, max_direction = 4, block_type = 1, block_type_2=0, direction = 1,
-            block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500,  speed2=0, score1=0
-            , ghost_vertical=0, count_press=0, score2=0, removed_lines=0, lvl=1, lvl_up=0;
+            block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500,  speed2=0, score1=0,
+           ghost_vertical=0, count_press=0, score2=0, removed_lines=0, lvl=1, lvl_up=0;
 
     float volume1=1f,volume2=1f;
 
     MediaPlayer mp, mp2,mp3;
+
+
+
 
 
     boolean coords[][] = new boolean[20][10], record_blocks[][] = new boolean[20][10], merge_blocks[][] = new boolean[20][10],
@@ -47,7 +51,7 @@ public class gameboard1 extends View
 
 
     NavigableMap<String, Integer> max_direction2 = new TreeMap();
-    NavigableMap<String, Integer> first_horizontal_position = new TreeMap();
+
 
 
     Bitmap ic_launcher = BitmapFactory.decodeResource(this.getResources(),R.drawable.tet6);
@@ -58,11 +62,6 @@ public class gameboard1 extends View
     Bitmap ic_launcher5=Bitmap.createScaledBitmap(ic_launcher6,65,65,false);
 
     Timer  timer3;
-    Thread timer1;
-
-
-
-
 
 
 
@@ -128,6 +127,7 @@ public class gameboard1 extends View
     }
 
 
+
     public boolean game_over()
     {
         int xmax = 0, xmin = 50, width = 0, ymin = 50, ymax = 0;
@@ -148,10 +148,7 @@ public class gameboard1 extends View
        // System.out.println("Ymin: "+ymin);
 
 
-
-
-
-        if(ymin<=0) return1=true;
+        if(ymin<=0)   return1=true;
 
         return return1;
 
@@ -285,61 +282,20 @@ public class gameboard1 extends View
 
 
 
-
-
-    public  boolean Timer1()
+/*
+ public  boolean Timer1()
     {
-
-
-
-        /*
-          tm1= new Timer("Gameb Timer 1");
-
-
-        tt1=new TimerTask() {
-            @Override
-            public void run() {
-
-
-
-
-
-
-                   timer_content();
-
-
-
-             //   System.out.println("Timer is running: "+count);
-              //  count++;
-
-            }
-        };
-
-
-        tm1.schedule(tt1,0,speed);
-         */
-
-
 
         new Thread("Gameb-timer1") {
 
-            // run() method to carry out the action of the task
 
             public void run() {
 
                 try {
                     while (!thread1) {
 
-
-                      //  System.out.println("tt1 is running: "+tt1.hasRunStarted());
-
-
                           synchronized (pauseLock)
                         {
-
-
-
-
 
                             if(pause)
                             {
@@ -347,15 +303,10 @@ public class gameboard1 extends View
                                 pause=false;
                             }
 
-
-
-
                             if(block_type_2==0)
                             {
                                 random_blocks();
                             }
-
-
 
                             if(fast_press)
                             {
@@ -372,32 +323,22 @@ public class gameboard1 extends View
                                     speed=100;
                                 }
 
-
                                 lvl_up=0;
                             }
                             else lvl_up=lvl*100;
 
-
                             restart_blocks();
                             if (bottom_control() && vertical > 15) first_horizontal_position();
 
-
                             vertical++;
-
 
                             direction();
 
                             ghost_vertical();
 
-
-
                             invalidate();
 
-
-                         //   System.out.println("speed: "+speed+" removed lines: "+removed_lines+" lvl: "+lvl);
                             Thread.sleep(speed);
-
-                          // Thread.sleep(speed);
 
                         }
 
@@ -411,10 +352,11 @@ public class gameboard1 extends View
             }
         }.start();
 
-     //   timer1.start();
-
         return false;
     }
+
+ */
+
 
 
 
@@ -516,6 +458,11 @@ public class gameboard1 extends View
     public gameboard1(Context context) {
         super(context);
 
+
+        gb1 = new gameboard();
+
+      //  gb1.visible_objects();
+
         mp = MediaPlayer.create(context,R.raw.removeb1);
         mp2 = MediaPlayer.create(context,R.raw.removeb2);
         mp3 = MediaPlayer.create(context,R.raw.level_up);
@@ -527,6 +474,8 @@ public class gameboard1 extends View
        score_board.setGravity(Gravity.CENTER);
 
 
+
+
         lvl2= new TextView(context);
         lvl2.setText("1");
         lvl2.setTextSize(25.5f);
@@ -535,6 +484,9 @@ public class gameboard1 extends View
 
 
         speed2 = speed;
+
+
+
 
 
         try {
@@ -788,6 +740,7 @@ public class gameboard1 extends View
                removed_lines=0;
 
                mp3.start();
+               mp3.setVolume(volume2,volume2);
             //   System.out.println("level up speed: "+speed);
 
 
@@ -1595,160 +1548,16 @@ public class gameboard1 extends View
 
     public void first_horizontal_position() {
 
-
         record_blocks();
-
-
-
-
 
         vertical = -1;
         direction = 1;
-
-
 
         block_type = block_type_2;
 
         random_blocks();
 
         first_horizontal_position_horizontal_position();
-
-
-        /*
-           switch (block_type) {
-            case 1:
-
-                horizontal =3;
-                ghost_horizontal =3;
-
-                // horizontal = first_horizontal_position.get("bar");
-                // ghost_horizontal = first_horizontal_position.get("bar");
-                break;
-
-            case 2:
-
-                horizontal = 3;
-                ghost_horizontal = 3;
-
-                //    horizontal = first_horizontal_position.get("regular_z");
-                //    ghost_horizontal = first_horizontal_position.get("regular_z");
-                break;
-
-            case 3:
-
-                horizontal = 3;
-                ghost_horizontal = 3;
-
-                // horizontal = first_horizontal_position.get("reverse_z");
-                // ghost_horizontal = first_horizontal_position.get("reverse_z");
-                break;
-
-            case 4:
-                horizontal = 3;
-                ghost_horizontal = 3;
-
-                // horizontal = first_horizontal_position.get("regular_L");
-                // ghost_horizontal = first_horizontal_position.get("regular_L");
-
-
-                break;
-
-            case 5:
-
-                horizontal = 3;
-                ghost_horizontal = 3;
-
-
-                //   horizontal = first_horizontal_position.get("reverse_L");
-                //   ghost_horizontal = first_horizontal_position.get("reverse_L");
-                break;
-            case 6:
-
-                horizontal = 3;
-                ghost_horizontal = 3;
-
-                // horizontal = first_horizontal_position.get("T");
-                // ghost_horizontal = first_horizontal_position.get("T");
-                break;
-
-            case 7:
-
-                horizontal = 4;
-                ghost_horizontal = 4;
-
-                //   horizontal = first_horizontal_position.get("square");
-                //   ghost_horizontal = first_horizontal_position.get("square");
-
-                break;
-
-        }
-         */
-
-
-
-        /*
-          block_type = block_type_2;
-           try {
-            Random random = new Random();
-
-            int x = random.nextInt(7);
-
-          block_type_2=x+1;
-
-
-
-            switch (block_type_2) {
-                case 1:
-
-                    blocks2.setImageResource(R.drawable.block_bar);
-
-                    break;
-
-                case 2:
-
-                    blocks2.setImageResource(R.drawable.block_z);
-
-                    break;
-
-                case 3:
-                    blocks2.setImageResource(R.drawable.block_z2);
-
-                    break;
-
-                case 4:
-
-                    blocks2.setImageResource(R.drawable.block_l2);
-
-                    break;
-
-                case 5:
-
-                    blocks2.setImageResource(R.drawable.block_l);
-
-                    break;
-
-                case 6:
-
-                    blocks2.setImageResource(R.drawable.block_t);
-
-                    break;
-
-                case 7:
-
-                    blocks2.setImageResource(R.drawable.block_square);
-
-                    break;
-            }
-
-        }
-        catch (Exception e)
-        {
-
-        }
-
-
-         */
-
 
         setMax_direction();
 
@@ -1764,7 +1573,23 @@ public class gameboard1 extends View
 
         if(speed2!=0) speed=speed2;
 
-       // game_over();
+
+
+       if(game_over())
+       {
+
+           thread1=true;
+
+       }
+
+
+
+
+
+
+
+
+
     }
 
 
