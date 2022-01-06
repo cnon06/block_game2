@@ -184,7 +184,7 @@ debris=(ImageView) findViewById(R.id.imageView3);
         {
             System.out.println(e);
         }
-     //  write_score_AsFile(100);
+     // write_score_AsFile(100);
 
         read_file();
 
@@ -1376,6 +1376,7 @@ debris=(ImageView) findViewById(R.id.imageView3);
 
             text2 =sb.toString();
             best_score=(int)Integer.parseInt(text2.trim());
+            gameb1.best_score=best_score;
 
            // System.out.println("File was read: "+gameb1.best_score);
 //            gameb1.best_score = best_score;

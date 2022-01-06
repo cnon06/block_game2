@@ -25,7 +25,7 @@ public class gameboard1 extends View
 
     TextView score_board, lvl2;
 
-    boolean    fast_press=false, ghost_true_false=false,   thread1=false, pause=false;
+    boolean    fast_press=false, ghost_true_false=false,   thread1=false, pause=false, only_once=false;
 
     final Object pauseLock = new Object();
 
@@ -35,11 +35,14 @@ public class gameboard1 extends View
 
    int horizontal = 3, vertical = -1, max_direction = 4, block_type = 1, block_type_2=0, direction = 1,
             block_width = 0, block_height = 0, ghost_horizontal = 3, speed = 500,  speed2=0, score1=0,
-           ghost_vertical=0, count_press=0, score2=0, removed_lines=0, lvl=1, lvl_up=0;
+           ghost_vertical=0, count_press=0, score2=0, removed_lines=0, lvl=1, lvl_up=0, best_score=0,score3=0, text_color=0;
 
     float volume1=1f,volume2=1f;
 
-    MediaPlayer mp, mp2,mp3;
+
+    String score_board2="";
+
+    MediaPlayer mp, mp2,mp3,mp4;
 
 
 
@@ -206,6 +209,25 @@ public class gameboard1 extends View
     }
 
 
+
+
+    public void setBest_score()
+    {
+       if(score2>best_score && !only_once)
+       {
+           score_board2=score_board.getText().toString();
+           text_color=score_board.getCurrentTextColor();
+           score_board.setText("!! HIGH SCORE !!");
+           score_board.setTextColor(Color.RED);
+           mp4.start();
+
+
+       best_score_timer();
+       only_once=true;
+       }
+
+    }
+
     public void remove_blocks_flicker()
     {
 
@@ -360,6 +382,48 @@ public class gameboard1 extends View
 
 
 
+
+    public void best_score_timer()
+    {
+
+
+        Timer timer3 = new Timer();
+        TimerTask task3 = new TimerTask() {
+
+
+
+            public void run() {
+
+
+                try
+                {
+
+                    score3++;
+
+                    if(score3>3)
+                    {
+                        score_board.setText(score_board2);
+                        score_board.setTextColor(text_color);
+                        cancel();
+                    }
+
+                  //  invalidate();
+
+                }
+                catch (Exception ed)
+                {
+                    System.out.println("Code-11"+ed);
+                }
+
+            };
+        };
+
+
+        timer3.schedule(task3, 0,700);
+    }
+
+
+
     public void Timer3()
     {
 
@@ -466,6 +530,7 @@ public class gameboard1 extends View
         mp = MediaPlayer.create(context,R.raw.removeb1);
         mp2 = MediaPlayer.create(context,R.raw.removeb2);
         mp3 = MediaPlayer.create(context,R.raw.level_up);
+        mp4 = MediaPlayer.create(context,R.raw.best_score);
 
         score_board= new TextView(context);
         score_board.setText("SCORE: 0");
@@ -1585,7 +1650,7 @@ public class gameboard1 extends View
 
 
 
-
+        setBest_score();
 
 
 
