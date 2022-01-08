@@ -1,4 +1,4 @@
-package com.tetblocks.tetb1;
+package com.debris.debris;
 
 import android.content.Context;
 import android.graphics.Bitmap;

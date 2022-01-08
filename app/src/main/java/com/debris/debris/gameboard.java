@@ -1,4 +1,4 @@
-package com.tetblocks.tetb1;
+package com.debris.debris;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
