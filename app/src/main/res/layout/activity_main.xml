@@ -43,7 +43,16 @@
        />
 
 
+   <ImageView
+       android:id="@+id/cnon_software"
+       android:layout_width="300dp"
+       android:layout_height="60dp"
 
+       android:layout_below="@id/Best_Score2"
+       android:layout_marginTop="120dp"
+
+       android:layout_centerHorizontal="true"
+       app:srcCompat="@drawable/cnonsoftware" />
 
    <ImageView
        android:id="@+id/imageView3"

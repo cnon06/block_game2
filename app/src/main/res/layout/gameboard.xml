@@ -66,7 +66,16 @@
             android:layout_centerInParent="true"
             />
 
+    <ImageView
+        android:id="@+id/cnon_software"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
 
+        android:layout_below="@id/Best_Score2"
+        android:layout_marginTop="120dp"
+
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/cnonsoftware" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -79,6 +88,12 @@
 
         >
 
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:srcCompat="@drawable/cath2" />
 
     </LinearLayout>
 
