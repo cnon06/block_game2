@@ -44,7 +44,6 @@ public class gameboard extends AppCompatActivity
     ImageView right_arrow, left_arrow,  direction_arrow, down_arrow, play_pause, ghost1, mute1, vib1;
     LinearLayout.LayoutParams lp1;
     gameboard1 gameb1;
-    //start_game start_game1;
     String text2;
     final Object pauseLock = new Object();
 
@@ -54,7 +53,7 @@ public class gameboard extends AppCompatActivity
 
     boolean go_right=false, go_left=false, timer_pause_start=false,  pause=false, pause_control=false, vib_true_false=false;
 
-    boolean  play_pause2=false, play_pause3=false;
+    boolean  play_pause2=false, play_pause3=false, vib_cont=false;
 
     int  go_left_right_control=0, mute_count=1, go_to=0, best_score=0, vibration=50;
 
@@ -62,9 +61,7 @@ public class gameboard extends AppCompatActivity
     float volume1=1f;
 
     MediaPlayer mp;
-
-    Thread timer2;
-    Timer timer3, timer4;
+    Timer timer3;
 
     TextView best_score2, best_score3;
     ImageView debris,start;
@@ -78,7 +75,7 @@ public class gameboard extends AppCompatActivity
 
 
 
-debris=(ImageView) findViewById(R.id.imageView3);
+        debris=(ImageView) findViewById(R.id.imageView3);
         debris.setImageResource(R.drawable.game_over);
 
         start=(ImageView) findViewById(R.id.imageView2);
@@ -100,10 +97,6 @@ debris=(ImageView) findViewById(R.id.imageView3);
 
     //   invisible_objects();
         start.setEnabled(false);
-
-
-
-
 
 
 
@@ -184,13 +177,56 @@ debris=(ImageView) findViewById(R.id.imageView3);
         {
             System.out.println(e);
         }
-     // write_score_AsFile(100);
 
         read_file();
+
+        read_vibration_file();
+
+        read_mute_file();
+
+        read_ghost_file();
+
+       // write_score_AsFile(10);
 
     }
 
 
+
+    public void ghost()
+    {
+        if (gameb1.ghost_true_false) {
+            ghost1.setImageResource(R.drawable.ghost1);
+            write_ghost_AsFile(gameb1.ghost_true_false);
+            gameb1.ghost_true_false = false;
+        } else {
+            ghost1.setImageResource(R.drawable.ghost2);
+            write_ghost_AsFile(gameb1.ghost_true_false);
+            gameb1.ghost_true_false = true;
+        }
+    }
+
+
+
+    public void vib_true_false()
+    {
+        if (vib_true_false) {
+
+            vib1.setImageResource(R.drawable.vib1);
+
+            write_vib_AsFile(vib_true_false);
+            vib_true_false = false;
+
+
+
+        } else {
+            vib1.setImageResource(R.drawable.vib2);
+
+            write_vib_AsFile(vib_true_false);
+            vib_true_false = true;
+
+
+        }
+    }
 
 
 
@@ -351,6 +387,71 @@ debris=(ImageView) findViewById(R.id.imageView3);
 
 
 
+    public void mute()
+    {
+
+
+        switch (mute_count) {
+
+            case 1:
+                volume1 = 1f;
+                mp.setVolume(volume1, volume1);
+
+
+                gameb1.volume1 = 1f;
+                gameb1.volume2 = 1f;
+                gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
+                gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
+                gameb1.mp3.setVolume(gameb1.volume2, gameb1.volume2);
+                gameb1.mp4.setVolume(gameb1.volume2, gameb1.volume2);
+
+                write_mute_AsFile(mute_count);
+
+                mute1.setImageResource(R.drawable.mute3);
+
+                break;
+
+
+            case 2:
+
+                volume1 = 0;
+                mp.setVolume(volume1, volume1);
+
+
+                gameb1.volume1 = 1f;
+                gameb1.volume2 = 1f;
+                gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
+                gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
+                gameb1.mp3.setVolume(gameb1.volume2, gameb1.volume2);
+                gameb1.mp4.setVolume(gameb1.volume2, gameb1.volume2);
+
+                write_mute_AsFile(mute_count);
+                // mp.setVolume(0,0);
+                mute1.setImageResource(R.drawable.mute2);
+
+                break;
+
+            case 3:
+
+                volume1 = 0;
+                mp.setVolume(volume1, volume1);
+
+                gameb1.volume1 = 0;
+                gameb1.volume2 = 0;
+                gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
+                gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
+                gameb1.mp3.setVolume(gameb1.volume2, gameb1.volume2);
+                gameb1.mp4.setVolume(gameb1.volume2, gameb1.volume2);
+
+                write_mute_AsFile(mute_count);
+                //   mp.setVolume(0,0);
+                mute1.setImageResource(R.drawable.mute1);
+                break;
+            default:
+        }
+    }
+
+
     public void buttons()
     {
 
@@ -413,24 +514,20 @@ debris=(ImageView) findViewById(R.id.imageView3);
 
                         if (!play_pause2) {
 
+
+
+
                             if (!vib_true_false) {
                                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                 vibe.vibrate(vibration);
                             }
 
 
-                            if (vib_true_false) {
 
 
-                                vib1.setImageResource(R.drawable.vib1);
-                                vib_true_false = false;
-
-                            } else {
-                                vib1.setImageResource(R.drawable.vib2);
-                                vib_true_false = true;
+                            vib_true_false();
 
 
-                            }
 
                         }
 
@@ -466,66 +563,10 @@ debris=(ImageView) findViewById(R.id.imageView3);
                             mute_count++;
                             if (mute_count > 3) mute_count = 1;
 
-
-                            switch (mute_count) {
-
-                                case 1:
-                                    volume1 = 1f;
-                                    mp.setVolume(volume1, volume1);
-
-
-                                    gameb1.volume1 = 1f;
-                                    gameb1.volume2 = 1f;
-                                    gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
-                                    gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
-                                    gameb1.mp3.setVolume(gameb1.volume2, gameb1.volume2);
-
-                                    mute1.setImageResource(R.drawable.mute3);
-
-                                    break;
-
-
-                                case 2:
-
-                                    volume1 = 0;
-                                    mp.setVolume(volume1, volume1);
-
-
-                                    gameb1.volume1 = 1f;
-                                    gameb1.volume2 = 1f;
-                                    gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
-                                    gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
-                                    gameb1.mp3.setVolume(gameb1.volume2, gameb1.volume2);
-
-
-                                    // mp.setVolume(0,0);
-                                    mute1.setImageResource(R.drawable.mute2);
-
-                                    break;
-
-                                case 3:
-
-                                    volume1 = 0;
-                                    mp.setVolume(volume1, volume1);
-
-                                    gameb1.volume1 = 0;
-                                    gameb1.volume2 = 0;
-                                    gameb1.mp.setVolume(gameb1.volume1, gameb1.volume1);
-                                    gameb1.mp2.setVolume(gameb1.volume2, gameb1.volume2);
-                                    gameb1.mp3.setVolume(gameb1.volume2, gameb1.volume2);
-
-                                    //   mp.setVolume(0,0);
-                                    mute1.setImageResource(R.drawable.mute1);
-                                    break;
-
-
-                                default:
-
-                            }
+                            mute();
 
 
                         }
-
 
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -555,13 +596,9 @@ debris=(ImageView) findViewById(R.id.imageView3);
                             }
 
 
-                            if (gameb1.ghost_true_false) {
-                                ghost1.setImageResource(R.drawable.ghost1);
-                                gameb1.ghost_true_false = false;
-                            } else {
-                                ghost1.setImageResource(R.drawable.ghost2);
-                                gameb1.ghost_true_false = true;
-                            }
+                            ghost();
+
+
 
 
                         }
@@ -811,30 +848,8 @@ debris=(ImageView) findViewById(R.id.imageView3);
     
     public synchronized void onPause() {
         super.onPause();
-        /*
-         try {
-               mp.stop();
-              mp.release();
-             // write_score_AsFile(55);
-        }
-        catch (Exception rty)
-        {
-
-        }
-         */
-
-
-    // finish();
-
-
-            //completetion_listener();
-
 
            pause();
-
-
-
-
 
 
 
@@ -1356,6 +1371,148 @@ debris=(ImageView) findViewById(R.id.imageView3);
 
 
 
+
+    public void read_mute_file() {
+
+        String FILE_NAME = "mute.txt";
+
+
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null) {
+                sb.append(text).append("\n");
+            }
+
+
+            mute_count=Integer.parseInt(sb.toString().trim());
+
+           // vib_true_false = Boolean.parseBoolean(sb.toString().trim());
+
+            mute();
+
+
+            //Log.d("READ VIBRATION FILE",vib_true_false+"");
+
+            // text2 =sb.toString();
+            // best_score=(int)Integer.parseInt(text2.trim());
+            // gameb1.best_score=best_score;
+
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    public void read_vibration_file() {
+
+        String FILE_NAME = "vibration.txt";
+
+
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null) {
+                sb.append(text).append("\n");
+            }
+
+
+            vib_true_false = Boolean.parseBoolean(sb.toString().trim());
+
+            vib_true_false();
+
+
+            Log.d("READ VIBRATION FILE",vib_true_false+"");
+
+           // text2 =sb.toString();
+           // best_score=(int)Integer.parseInt(text2.trim());
+           // gameb1.best_score=best_score;
+
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    public void read_ghost_file() {
+
+        String FILE_NAME = "ghost.txt";
+
+
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null) {
+                sb.append(text).append("\n");
+            }
+
+
+            gameb1.ghost_true_false = Boolean.parseBoolean(sb.toString().trim());
+
+            ghost();
+          //  vib_true_false();
+
+
+          //  Log.d("READ VIBRATION FILE",vib_true_false+"");
+
+            // text2 =sb.toString();
+            // best_score=(int)Integer.parseInt(text2.trim());
+            // gameb1.best_score=best_score;
+
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
     public void read_file() {
 
         String FILE_NAME = "high_score.txt";
@@ -1398,6 +1555,103 @@ debris=(ImageView) findViewById(R.id.imageView3);
             }
         }
     }
+
+
+
+
+
+    public  void  write_mute_AsFile(int mute) {
+
+
+        String FILE_NAME = "mute.txt";
+
+        String text = mute+"";
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+
+            System.out.println("Saved to " + getFilesDir() + "/" + FILE_NAME);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+
+
+    public  void  write_ghost_AsFile(boolean ghost) {
+
+
+        String FILE_NAME = "ghost.txt";
+
+        String text = ghost+"";
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+
+            System.out.println("Saved to " + getFilesDir() + "/" + FILE_NAME);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+
+
+
+    public  void  write_vib_AsFile(boolean vib) {
+
+
+        String FILE_NAME = "vibration.txt";
+
+        String text = vib+"";
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+
+            System.out.println("Saved to " + getFilesDir() + "/" + FILE_NAME);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
 
     public  void  write_score_AsFile(int score) {
 
@@ -1442,42 +1696,13 @@ debris=(ImageView) findViewById(R.id.imageView3);
 
 
 
-                //    System.out.println(best_score+"");
-
-
-
                     /*
-                        if(!mp.isPlaying())
+                    if(!vib_cont)
                     {
-                        mp.start();
-                        mp.setVolume(volume1,volume1);
-                        completetion_listener();
+                        read_vibration_file();
+                        vib_cont=true;
                     }
                      */
-
-
-
-                    /*
-                        if(!mp.isPlaying())
-                    {
-                        try {
-
-                            mp.prepareAsync();
-
-                        }
-                        catch (Exception tyu)
-                        {
-                            Log.d("Error rtr353:",tyu.toString());
-                        }
-
-                    }
-                     */
-
-
-
-
-
-                   // Log.d("tttt","vvvv");
 
 
 

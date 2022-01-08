@@ -809,8 +809,8 @@ public class gameboard1 extends View
             //   System.out.println("level up speed: "+speed);
 
 
-               speed2-=25;
-               if(speed2<25) speed2=25;
+               speed2-=30;
+               if(speed2<25) speed2=30;
                //speed2=200;
 
 
@@ -850,7 +850,7 @@ public class gameboard1 extends View
 
 
             int ghost_score=0;
-          if(ghost_true_false) ghost_score=27;
+          if(ghost_true_false) ghost_score=13;
 
           //  remove_sound1=true;
 
