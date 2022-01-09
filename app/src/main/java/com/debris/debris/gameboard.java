@@ -21,7 +21,18 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -31,6 +42,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static android.content.ContentValues.TAG;
 
 public class gameboard extends AppCompatActivity
 {
@@ -47,7 +60,7 @@ public class gameboard extends AppCompatActivity
     String text2;
     final Object pauseLock = new Object();
 
-
+    private InterstitialAd mInterstitialAd;
 
 
 
@@ -185,6 +198,42 @@ public class gameboard extends AppCompatActivity
         read_mute_file();
 
         read_ghost_file();
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(gameboard.this,"ca-app-pub-2857067127002684/5575569818", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i(TAG, "onAdLoaded");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        activityResultLauncher.launch(getIntent());
+                        Log.i(TAG, loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+
+
+
+
+
+
+
 
        // write_score_AsFile(10);
 
@@ -475,13 +524,49 @@ public class gameboard extends AppCompatActivity
                         start.setImageResource(R.drawable.start2);
 
 
+
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                activityResultLauncher.launch(getIntent());
+                                // Called when fullscreen content is dismissed.
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                activityResultLauncher.launch(getIntent());
+                                // Called when fullscreen content failed to show.
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                mInterstitialAd = null;
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+
+
+                        if (mInterstitialAd != null) {
+                            mInterstitialAd.show(gameboard.this);
+                        } else {
+                            Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                        }
+
+
+                        // admob
+
                       //  Intent myIntent = new Intent(gameboard.this, MainActivity.class);
                       //  myIntent.putExtra("ss1","Message from gameboard");
                       //  myIntent.putExtra("ss2",false);
                       //  setResult(78, myIntent);
 
                       //  activityResultLauncher.launch(myIntent);
-                        activityResultLauncher.launch(getIntent());
+                     //  activityResultLauncher.launch(getIntent());
 
 
 
