@@ -228,14 +228,7 @@ public class gameboard extends AppCompatActivity
                     }
                 });
 
-
-
-
-
-
-
-
-       // write_score_AsFile(10);
+        //write_score_AsFile(10);
 
     }
 
@@ -554,6 +547,7 @@ public class gameboard extends AppCompatActivity
                         if (mInterstitialAd != null) {
                             mInterstitialAd.show(gameboard.this);
                         } else {
+                            activityResultLauncher.launch(getIntent());
                             Log.d("TAG", "The interstitial ad wasn't ready yet.");
                         }
 

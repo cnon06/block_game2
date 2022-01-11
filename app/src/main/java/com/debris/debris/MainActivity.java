@@ -32,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
      ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
 
             new ActivityResultContracts.StartActivityForResult(),
