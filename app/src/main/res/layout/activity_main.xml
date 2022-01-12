@@ -1,25 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-
     >
 
-   <LinearLayout
+
+
+
+   <ImageView
+       android:id="@+id/imageView"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_centerInParent="true"
-       android:orientation="horizontal"
-       android:id="@+id/ln1"
-
-      >
+       app:srcCompat="@drawable/cath2" />
 
 
-   </LinearLayout>
+
+
+   <TextView
+       android:id="@+id/Best_Score2"
+       android:layout_width="1000dp"
+       android:layout_height="35dp"
+       android:text="Best Score"
+       android:layout_centerHorizontal="true"
+       android:layout_below="@id/Best_Score"
+       />
+
+
+
+   <TextView
+       android:id="@+id/Best_Score"
+       android:layout_width="1000dp"
+       android:layout_height="35dp"
+       android:text="Best Score"
+       android:layout_marginTop="50dp"
+       android:layout_centerHorizontal="true"
+       android:layout_below="@id/imageView2"
+       />
+
+
+   <ImageView
+       android:id="@+id/cnon_software"
+       android:layout_width="300dp"
+       android:layout_height="60dp"
+
+       android:layout_below="@id/Best_Score2"
+       android:layout_marginTop="120dp"
+
+       android:layout_centerHorizontal="true"
+       app:srcCompat="@drawable/cnonsoftware" />
+
+   <ImageView
+       android:id="@+id/imageView3"
+       android:layout_width="300dp"
+       android:layout_height="160dp"
+       app:srcCompat="@drawable/debris"
+
+       android:layout_centerHorizontal="true"
+       android:layout_above="@id/imageView2"
+       />
+
+
+   <ImageView
+       android:id="@+id/imageView2"
+       android:layout_width="300dp"
+       android:layout_height="50dp"
+       app:srcCompat="@drawable/start1"
+       android:layout_marginTop="70dp"
+       android:layout_centerInParent="true"
+       />
+
+
+
+
 
 
 
